@@ -1,9 +1,13 @@
+import Registration from "../registration";
+import Authorization from "../authorization";
+
 function App() {
-return(
-    <div>
-        <p>Hello world</p>
-    </div>
-)
+    return (
+        <div>
+            {/*<Authorization/>*/}
+            <Registration/>
+        </div>
+    )
 }
 
 export default App;
