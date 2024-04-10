@@ -1,0 +1,70 @@
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+h1{
+    font-family: "Comic Sans MS", serif;
+    color: white;
+}
+
+
+.rectangle {
+    padding: 40px;
+    margin: 20px;
+    text-align: center;
+    min-width: 600px;
+    min-height: 600px;
+    background-image: url('https://wallpapers.com/images/featured/background-design-background-6tgpche84avnjqvz.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 24px 48px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+    filter: brightness(0.7);
+}
+
+.rectangle:hover {
+    transform: scale(1.1);
+    filter: brightness(1);
+}
+
+
+@media (max-width: 1399px) {
+    .rectangle {
+        transition: transform 0.3s ease-in-out;
+        filter: brightness(1);
+        min-width: 500px;
+        min-height: 500px;
+    }
+    .rectangle:hover {
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width: 1199px) {
+    .rectangle {
+        min-width: 400px;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 991px) {
+    .rectangle {
+
+        min-width: 300px;
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 767px) {
+    .rectangle {
+        min-width: 200px;
+        min-height: 100px;
+    }
+}

@@ -11,10 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.sql.Timestamp;
 import java.util.Base64;
-import java.util.Date;
 
 @Service
 public class AuthenticationService {
