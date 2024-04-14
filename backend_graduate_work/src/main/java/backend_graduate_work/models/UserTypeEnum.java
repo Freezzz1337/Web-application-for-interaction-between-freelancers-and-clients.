@@ -3,13 +3,13 @@ package backend_graduate_work.models;
 import lombok.Getter;
 
 @Getter
-public enum UserType {
+public enum UserTypeEnum {
     FREELANCER("FREELANCER"),
     EMPLOYER("EMPLOYER");
 
     private final String userType;
 
-    UserType(String userType) {
+    UserTypeEnum(String userType) {
         this.userType = userType;
     }
 }

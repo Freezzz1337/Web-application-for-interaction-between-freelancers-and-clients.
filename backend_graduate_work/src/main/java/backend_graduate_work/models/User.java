@@ -24,8 +24,8 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private long id;
 
-    @Column(name = "username")
-    private String username;
+//    @Column(name = "username")
+//    private String username;
 
     @Column(name = "email")
     private String email;
@@ -37,12 +37,12 @@ public class User implements UserDetails {
     private String fullName;
 
     @Lob
-    @Column(name = "bio")
+    @Column(name = "bio", columnDefinition = "LONGTEXT")
     private String bio;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    private UserType userType;
+    private UserTypeEnum userTypeEnum;
 
     @Lob
     @Column(name = "profile_picture",columnDefinition = "longblob")

@@ -3,7 +3,7 @@ package backend_graduate_work.services;
 import backend_graduate_work.DTO.authDTO.LoginUserDto;
 import backend_graduate_work.DTO.authDTO.RegisterUserDto;
 import backend_graduate_work.models.User;
-import backend_graduate_work.models.UserType;
+import backend_graduate_work.models.UserTypeEnum;
 import backend_graduate_work.repositories.UserRepository;
 import backend_graduate_work.util.UserWithThisEmailAlreadyExistsException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,10 +41,10 @@ public class AuthenticationService {
             user.setEmail(input.getEmail());
             user.setPassword(passwordEncoder.encode(input.getPassword()));
             user.setBio(input.getBio());
-            user.setUsername(input.getUsername());
+//            user.setUsername(input.getUsername());
 
 // TODO: 3/28/2024  toUpperCase() - may be worth deleting this method below
-            user.setUserType(UserType.valueOf(input.getUserType().toUpperCase()));
+            user.setUserTypeEnum(UserTypeEnum.valueOf(input.getUserType().toUpperCase()));
 
             if (input.getProfilePicture() != null) {
                 user.setProfilePicture(convertToByteArray(input.getProfilePicture()));
