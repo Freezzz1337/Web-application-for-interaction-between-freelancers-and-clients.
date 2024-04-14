@@ -6,4 +6,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/project")
 @RestController
 public class ProjectController {
+
 }

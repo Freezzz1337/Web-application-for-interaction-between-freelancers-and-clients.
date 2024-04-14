@@ -20,8 +20,8 @@ public class Project {
     @Column(name = "project_id")
     private long id;
 
-    @Column(name = "tittle")
-    private String tittle;
+    @Column(name = "title")
+    private String title;
 
     @Lob
     @Column(name = "description", columnDefinition = "LONGTEXT")
@@ -34,11 +34,11 @@ public class Project {
     private Timestamp deadline;
 
     @ManyToOne
-    @Column(name = "employer_id")
+    @JoinColumn(name = "employer_id")
     private User employer;
 
     @ManyToOne
-    @Column(name = "freelancer_id")
+    @JoinColumn(name = "freelancer_id")
     private User freelancer;
 
     @Enumerated(EnumType.STRING)
