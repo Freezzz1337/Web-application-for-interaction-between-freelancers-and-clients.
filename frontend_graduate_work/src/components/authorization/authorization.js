@@ -33,7 +33,7 @@ const Authorization = () => {
                 const serverResponse = await authorization(JSON.stringify(formData));
                 if (serverResponse.token) {
                     login(serverResponse.token, serverResponse.expiresIn);
-                    navigate("/main");
+                    navigate("/profile");
                 } else {
                     setError(serverResponse.description);
                 }

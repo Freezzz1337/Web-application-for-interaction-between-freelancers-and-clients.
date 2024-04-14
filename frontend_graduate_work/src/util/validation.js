@@ -35,7 +35,17 @@ const registrationValidation = (formData) => {
     }
     return errors;
 }
+
+const editProfileValidation = (formData) => {
+    const errors = {};
+
+    if (!formData.fullName) {
+        errors.fullName = "The username field should not be empty";
+    }
+    return errors;
+}
 export {
     authorizationValidation,
-    registrationValidation
+    registrationValidation,
+    editProfileValidation
 }

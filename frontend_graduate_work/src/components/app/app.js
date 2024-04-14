@@ -3,7 +3,13 @@ import Authorization from "../authorization";
 import {Route, Routes} from "react-router-dom";
 import Start from "../start";
 import {useAuth} from "../../context/auth-context";
-import MainPage from "../main-page";
+import Main from "../main";
+import Header from "../header";
+import Footer from "../footer";
+import Profile from "../profile";
+import ProfileEdit from "../profile-edit";
+import ProjectCreate from "../project-create";
+import ProjectPage from "../project-page";
 
 function App() {
     const {token} = useAuth();
@@ -11,10 +17,18 @@ function App() {
 
     return (
         <>
+            {token && <Header/>}
+
             <Routes>
                 {token ? (
                     <>
-                        <Route path="/main" element={<MainPage/>}/>
+                        <Route path="/main" element={<Main/>}/>
+
+                        <Route path="/profile" element={<Profile/>}/>
+                        <Route path="/profile/edit" element={<ProfileEdit/>}/>
+
+                        <Route path="/projects" element={<ProjectPage/>}/>
+                        <Route path="/project/create" element={<ProjectCreate/>}/>
                     </>
                 ) : (
                     <>
@@ -24,6 +38,8 @@ function App() {
                     </>
                 )}
             </Routes>
+
+            {token && <Footer/>}
         </>
     )
 }
