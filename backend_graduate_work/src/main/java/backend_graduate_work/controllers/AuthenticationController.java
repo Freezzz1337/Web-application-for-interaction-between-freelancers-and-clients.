@@ -42,6 +42,7 @@ public class AuthenticationController {
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setToken(jwtToken);
         loginResponseDto.setExpiresIn(jwtService.getExpirationTime());
+        loginResponseDto.setUserType(String.valueOf(authenticatedUser.getUserTypeEnum()));
 
         return ResponseEntity.ok(loginResponseDto);
     }

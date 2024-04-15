@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -28,7 +30,7 @@ public class Project {
     private String description;
 
     @Column(name = "budget", precision = 10, scale = 2)
-    private BigDecimal bigDecimal;
+    private BigDecimal budget;
 
     @Column(name = "deadline")
     private Timestamp deadline;
@@ -43,15 +45,17 @@ public class Project {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusProject status;
+    private StatusProject status = StatusProject.OPEN;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
-    private PaymentStatusProject paymentStatus;
+    private PaymentStatusProject paymentStatus = PaymentStatusProject.PENDING;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 }

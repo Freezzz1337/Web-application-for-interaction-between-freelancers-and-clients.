@@ -20,6 +20,12 @@ const editProfile = async (formData, token) => {
         .then(response => response.json());
 }
 
+const createProject = async (formData, token) => {
+    console.log(formData);
+    return await fetch(`${_api}project/create`, _requestOptionsPOST(formData, token))
+        .then(response => response.json());
+}
+
 const _requestOptionsPOST = (formData, token = "") => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -45,5 +51,7 @@ export {
     authorization,
     registration,
     getUserData,
-    editProfile
+    editProfile,
+
+    createProject
 }

@@ -32,7 +32,7 @@ const Authorization = () => {
             try {
                 const serverResponse = await authorization(JSON.stringify(formData));
                 if (serverResponse.token) {
-                    login(serverResponse.token, serverResponse.expiresIn);
+                    login(serverResponse.token, serverResponse.expiresIn, serverResponse.userType);
                     navigate("/profile");
                 } else {
                     setError(serverResponse.description);

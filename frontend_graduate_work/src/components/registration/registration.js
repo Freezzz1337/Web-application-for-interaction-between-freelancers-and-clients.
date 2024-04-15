@@ -37,7 +37,6 @@ const Registration = () => {
         const newValidErrors = registrationValidation(formData);
         setValidErrors(newValidErrors);
 
-        console.log(formData);
         if (Object.keys(newValidErrors).length === 0) {
             try {
                 const serverResponse = await registration(JSON.stringify(formData));

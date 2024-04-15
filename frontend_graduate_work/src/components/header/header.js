@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const Header = () => {
     const [show, setShow] = useState(false);
-    const {logout} = useAuth();
+    const {logout, userType} = useAuth();
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
@@ -40,7 +40,9 @@ const Header = () => {
                             <Nav.Link>Home</Nav.Link>
                             <Nav.Link>Explore</Nav.Link>
                             <Nav.Link>Notifications</Nav.Link>
-                            <Nav.Link onClick={handleMyProjects}>My Projects</Nav.Link>
+                            {userType === "EMPLOYER" &&
+                                <Nav.Link onClick={handleMyProjects}>My Projects</Nav.Link>
+                            }
                             <Nav.Link onClick={handleProfile}>Profile</Nav.Link>
                             <Nav.Link onClick={handleLogoutClick}>Log out</Nav.Link>
                         </Nav>

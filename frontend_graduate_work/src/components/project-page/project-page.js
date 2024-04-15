@@ -1,4 +1,5 @@
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 const ProjectPage = () => {
     const projects = [
@@ -14,7 +15,7 @@ const ProjectPage = () => {
             <Row className="justify-content-center">
                 <Col md={6} className="text-center">
                     <h2 >Мої проекти</h2>
-                    <Button variant="primary" href="/create-project" block>Створити новий проект</Button>
+                    <Link variant="primary" to="/project/create" block>Створити новий проект</Link>
                 </Col>
             </Row>
             <Row className="mt-3">
