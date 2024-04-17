@@ -4,6 +4,7 @@ import backend_graduate_work.util.UserNotFoundException;
 import backend_graduate_work.util.UserWithThisEmailAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
@@ -50,8 +51,6 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleUserNotFoundException(UserNotFoundException exception) {
         return createProblemDetail(HttpStatus.BAD_REQUEST, exception.getMessage(), exception.getMessage());
     }
-
-
 
 
 

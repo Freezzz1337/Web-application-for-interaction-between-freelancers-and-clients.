@@ -1,14 +1,17 @@
-package backend_graduate_work.DTO.requestDTO;
+package backend_graduate_work.DTO.userDTO;
 
 import jakarta.persistence.Lob;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+@Builder
 @Getter
-@Setter
-public class UserProfileEditRequestDTO {
+public class UserProfileResponseDTO {
     private String fullName;
     @Lob
     private String bio;
     @Lob
     private byte[] profilePicture;
+    private String userType;
 }

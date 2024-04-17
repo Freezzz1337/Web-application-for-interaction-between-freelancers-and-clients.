@@ -2,7 +2,7 @@ import "./profile.css"
 import {useAuth} from "../../context/auth-context";
 import {Col, Container, Row, Image, Button} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import {getUserData} from "../../services/auth-service";
+import {getUserData} from "../../services/profile-service";
 import {useNavigate} from "react-router-dom";
 
 const Profile = () => {
@@ -15,7 +15,6 @@ const Profile = () => {
             const serverResponse = await getUserData(token);
             if (serverResponse) {
                 setUserData(serverResponse);
-                console.log(userData);
             }
         };
         fetchData();

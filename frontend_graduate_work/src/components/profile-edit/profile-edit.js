@@ -1,8 +1,8 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Button, Col, Container, Row, Form, Card, Alert} from "react-bootstrap";
-import {editProfileValidation} from "../../util/validation";
-import {editProfile} from "../../services/auth-service";
+import {editProfileValidation} from "../../util/validation/profile-validation";
+import {editProfile} from "../../services/profile-service";
 import {useAuth} from "../../context/auth-context";
 import {convertFileToBase64} from "../../util/convert-file-to-base64";
 
@@ -16,8 +16,8 @@ const ProfileEdit = () => {
 
     useEffect(() => {
         if (location.state && location.state.userData) {
-            const {fullName,bio,profilePicture} = location.state.userData;
-            setFormData({fullName,bio,profilePicture});
+            const {fullName, bio, profilePicture} = location.state.userData;
+            setFormData({fullName, bio, profilePicture});
         }
     }, [location.state]);
 

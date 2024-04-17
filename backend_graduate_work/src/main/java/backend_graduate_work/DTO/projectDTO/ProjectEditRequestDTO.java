@@ -1,16 +1,18 @@
-package backend_graduate_work.DTO.requestDTO;
+package backend_graduate_work.DTO.projectDTO;
 
+import backend_graduate_work.models.User;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@Setter
 @Getter
-public class ProjectCreateRequestDTO {
+public class ProjectEditRequestDTO {
+    private long id;
     private String title;
     private String description;
     private BigDecimal budget;
     private Timestamp deadline;
+    private User freelancer;
+    private String status;
 }

@@ -1,9 +1,9 @@
 import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useRef, useState} from "react";
 import {convertFileToBase64} from "../../util/convert-file-to-base64";
-import {registrationValidation} from "../../util/validation";
 import {Link, useNavigate} from "react-router-dom";
 import {registration} from "../../services/auth-service";
+import {registrationValidation} from "../../util/validation/auth-validation";
 
 const Registration = () => {
     const [formData, setFormData] = useState({
@@ -90,18 +90,18 @@ const Registration = () => {
                                             </Form.Control>
                                         </Form.Group>
 
-                                        <Form.Group className="mb-4">
-                                            <Form.Label>Your Username</Form.Label>
+                                        {/*<Form.Group className="mb-4">*/}
+                                        {/*    <Form.Label>Your Username</Form.Label>*/}
 
-                                            <Form.Control type="text"
-                                                 className={`form-control-lg ${validErrors.fullName ? 'is-invalid' : ''}`}
-                                                          name="username"
-                                                          onChange={handleChange}
-                                            />
-                                            {validErrors.fullName &&
-                                                <Form.Control.Feedback
-                                                    type="invalid">{validErrors.fullName}</Form.Control.Feedback>}
-                                        </Form.Group>
+                                        {/*    <Form.Control type="text"*/}
+                                        {/*         className={`form-control-lg ${validErrors.fullName ? 'is-invalid' : ''}`}*/}
+                                        {/*                  name="username"*/}
+                                        {/*                  onChange={handleChange}*/}
+                                        {/*    />*/}
+                                        {/*    {validErrors.fullName &&*/}
+                                        {/*        <Form.Control.Feedback*/}
+                                        {/*            type="invalid">{validErrors.fullName}</Form.Control.Feedback>}*/}
+                                        {/*</Form.Group>*/}
 
                                         <Form.Group className="mb-4">
                                             <Form.Label>Your Email</Form.Label>

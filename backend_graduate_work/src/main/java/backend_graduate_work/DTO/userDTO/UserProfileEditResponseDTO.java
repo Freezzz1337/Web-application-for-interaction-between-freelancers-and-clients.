@@ -1,4 +1,4 @@
-package backend_graduate_work.DTO.responseDTO;
+package backend_graduate_work.DTO.userDTO;
 
 import lombok.Getter;
 

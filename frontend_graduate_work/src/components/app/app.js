@@ -8,8 +8,10 @@ import Header from "../header";
 import Footer from "../footer";
 import Profile from "../profile";
 import ProfileEdit from "../profile-edit";
-import ProjectCreate from "../project-create";
-import ProjectPage from "../project-page";
+import ProjectCreate from "../employer/project-create";
+import ProjectPage from "../employer/project-page";
+import ProjectDetailsEmployer from "../employer/project-details-employer/projectDetailsEmployer";
+import ProjectEdit from "../employer/project-edit";
 
 function App() {
     const {token} = useAuth();
@@ -29,6 +31,9 @@ function App() {
 
                         <Route path="/projects" element={<ProjectPage/>}/>
                         <Route path="/project/create" element={<ProjectCreate/>}/>
+                        <Route path="/project/details/:projectId" element={<ProjectDetailsEmployer/>}/>
+                        <Route path="/project/edit/:projectId" element={<ProjectEdit/>}/>
+
                     </>
                 ) : (
                     <>

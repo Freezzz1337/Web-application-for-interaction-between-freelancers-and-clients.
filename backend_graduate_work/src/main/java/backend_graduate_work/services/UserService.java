@@ -1,7 +1,7 @@
 package backend_graduate_work.services;
 
-import backend_graduate_work.DTO.requestDTO.UserProfileEditRequestDTO;
-import backend_graduate_work.DTO.responseDTO.UserProfileResponseDTO;
+import backend_graduate_work.DTO.userDTO.UserProfileEditRequestDTO;
+import backend_graduate_work.DTO.userDTO.UserProfileResponseDTO;
 import backend_graduate_work.models.User;
 import backend_graduate_work.repositories.UserRepository;
 
@@ -24,24 +24,18 @@ public class UserService {
     }
 
     public UserProfileResponseDTO getUserProfileData() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-
-        UserProfileResponseDTO userProfileResponseDTO = new UserProfileResponseDTO();
-
-//        userProfileResponseDTO.setUsername(currentUser.getUsername());
-        userProfileResponseDTO.setFullName(currentUser.getFullName());
-        userProfileResponseDTO.setBio(currentUser.getBio());
-        userProfileResponseDTO.setUserType(String.valueOf(currentUser.getUserTypeEnum()));
-        userProfileResponseDTO.setProfilePicture(currentUser.getProfilePicture());
-
-        return userProfileResponseDTO;
+        User currentUser = getCurrentUser();
+        return UserProfileResponseDTO.builder()
+                .fullName(currentUser.getFullName())
+                .bio(currentUser.getBio())
+                .userType(String.valueOf(currentUser.getUserTypeEnum()))
+                .profilePicture(currentUser.getProfilePicture())
+                .build();
     }
 
     @Transactional
     public void userEdit(UserProfileEditRequestDTO profileRequestDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = getCurrentUser();
 
         currentUser.setFullName(profileRequestDTO.getFullName());
         currentUser.setBio(profileRequestDTO.getBio());
@@ -51,4 +45,8 @@ public class UserService {
         userRepository.save(currentUser);
     }
 
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
+    }
 }
