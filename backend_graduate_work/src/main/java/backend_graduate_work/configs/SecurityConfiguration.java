@@ -50,7 +50,7 @@ public class SecurityConfiguration{
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("http://localhost:3000/"));
-        configuration.setAllowedMethods(List.of("GET","POST","PATCH"));
+        configuration.setAllowedMethods(List.of("GET","POST","PATCH","DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

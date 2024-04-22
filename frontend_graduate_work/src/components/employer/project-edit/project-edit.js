@@ -1,4 +1,4 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../context/auth-context";
 import {
@@ -12,25 +12,74 @@ import {
     Row
 } from "react-bootstrap";
 import {editProjectValidation} from "../../../util/validation/project-validation";
-import {editProject} from "../../../services/project-service";
+import {
+    editProject,
+    getAllProjectTypes,
+    getProjectDetailsForEmployer,
+    getSubprojectsTypes
+} from "../../../services/project-service";
 
 const ProjectEdit = () => {
-    const location = useLocation();
-    const [formData, setFormData] = useState();
+    const {projectId} = useParams();
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({});
     const [validErrors, setValidErrors] = useState({});
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
     const {token} = useAuth();
+    const [projectTypes, setProjectTypes] = useState(null);
+    const [subprojectTypes, setSubprojectTypes] = useState(null);
 
     useEffect(() => {
-        if (location.state && location.state.project) {
-            const {title, description, budget, deadline, id} = location.state.project;
-            setFormData({title, description, budget, deadline, id});
+        const fetchData = async () => {
+            const serverResponseProjectDetailsForEmployer = await getProjectDetailsForEmployer(projectId, token);
+            const serverResponseAllProjectTypes = await getAllProjectTypes(token);
+            const serverResponseSubprojectsTypes = await getSubprojectsTypes(token, projectId);
+
+            if (serverResponseProjectDetailsForEmployer &&
+                serverResponseAllProjectTypes &&
+                serverResponseSubprojectsTypes) {
+
+                setProjectTypes(serverResponseAllProjectTypes);
+                setSubprojectTypes(serverResponseSubprojectsTypes);
+
+                setFormData(serverResponseProjectDetailsForEmployer);
+                console.log(serverResponseProjectDetailsForEmployer)
+            }
         }
-    }, [location.state]);
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (formData.projectType && formData.projectType.id) {
+            const fetchSubprojectTypes = async () => {
+                const serverResponse = await getSubprojectsTypes(token, formData.projectType.id);
+                setSubprojectTypes(serverResponse);
+            };
+
+            fetchSubprojectTypes();
+        }
+    }, [formData.projectType]);
+
 
     const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
+        const {name, value} = e.target;
+
+        if (name === "projectType" || name === "subprojectType") {
+            const selectedIndex = e.target.selectedIndex;
+            const selectedProjectTypeId = e.target.options[selectedIndex].value;
+            const selectedProjectTypeName = e.target.options[selectedIndex].text;
+
+            setFormData({
+                ...formData,
+                [name]: {
+                    id: selectedProjectTypeId,
+                    name: selectedProjectTypeName
+                }
+            });
+        } else {
+            setFormData({...formData, [name]: value});
+        }
     }
 
     const convertToDateTimeLocal = (isoDateTimeString) => {
@@ -87,6 +136,43 @@ const ProjectEdit = () => {
                                             <Form.Control.Feedback
                                                 type="invalid">{validErrors.title}</Form.Control.Feedback>}
                                     </Form.Group>
+
+                                    <Form.Group className="mb-4">
+                                        <Form.Label>Project Type</Form.Label>
+                                        <Form.Select
+                                            as="select"
+                                            name="projectType"
+                                            onChange={handleChange}
+                                            value={formData.projectType ? formData.projectType.id : ""}
+                                            required>
+                                            {projectTypes && projectTypes.map(projectType => (
+                                                <option key={projectType.id} value={projectType.id}>
+                                                    {projectType.name}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-4">
+                                        <Form.Label>Subproject Type</Form.Label>
+                                        <Form.Select
+                                            as="select"
+                                            name="subprojectType"
+                                            onChange={handleChange}
+                                            value={formData.projectType ? formData.subprojectType.id : ""}
+                                            required>
+                                            {formData.projectType && (formData.projectType.name === "" || formData.projectType.id === "0") ? (
+                                                <option value="0">Select a subproject</option>
+                                            ) : (
+                                                subprojectTypes && subprojectTypes.map(subprojectType => (
+                                                    <option key={subprojectType.id} value={subprojectType.id}>
+                                                        {subprojectType.name}
+                                                    </option>
+                                                ))
+                                            )}
+                                        </Form.Select>
+                                    </Form.Group>
+
                                     <Form.Group className="mb-4">
                                         <Form.Label>Description</Form.Label>
                                         <Form.Control
@@ -142,9 +228,9 @@ const ProjectEdit = () => {
 
                                     <div className="d-flex justify-content-center">
                                         <Button type="submit" variant="info"
-                                                className="btn btn-info btn-lg text-body w-100 rounded-0">Create
-                                            Project</Button>
+                                                className="btn btn-info btn-lg text-body w-100 rounded-0">Edit Project</Button>
                                     </div>
+
                                 </Form>
                             </Card.Body>
                         </Card>

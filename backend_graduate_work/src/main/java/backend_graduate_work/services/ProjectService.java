@@ -5,25 +5,29 @@ import backend_graduate_work.DTO.projectDTO.ProjectDetailsResponseDTO;
 import backend_graduate_work.DTO.projectDTO.ProjectEditRequestDTO;
 import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
 import backend_graduate_work.models.Project;
-import backend_graduate_work.models.StatusProject;
+import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
 import backend_graduate_work.repositories.ProjectRepository;
+import backend_graduate_work.repositories.SubprojectTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 public class ProjectService {
     private final ProjectRepository projectRepository;
+    private final SubprojectTypeRepository subprojectTypeRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository) {
         this.projectRepository = projectRepository;
+        this.subprojectTypeRepository = subprojectTypeRepository;
     }
 
     public List<ProjectGetAllForEmployerResponseDTO> getAllForEmployer() {
@@ -49,6 +53,7 @@ public class ProjectService {
         newProject.setDescription(projectCreateRequestDTO.getDescription());
         newProject.setBudget(projectCreateRequestDTO.getBudget());
         newProject.setDeadline(projectCreateRequestDTO.getDeadline());
+        newProject.setSubprojectType(subprojectTypeRepository.findById(Long.parseLong(projectCreateRequestDTO.getSubprojectType())));
 
         newProject.setEmployer(currentUser);
 
@@ -66,6 +71,8 @@ public class ProjectService {
                 .deadline(project.getDeadline())
                 .freelancer(project.getFreelancer())
                 .status(project.getStatus().toString())
+                .projectType(project.getSubprojectType().getProjectType())
+                .subprojectType(project.getSubprojectType())
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())
                 .build();
@@ -80,8 +87,11 @@ public class ProjectService {
         project.setBudget(editRequestDTO.getBudget());
         project.setDeadline(editRequestDTO.getDeadline());
         project.setFreelancer(editRequestDTO.getFreelancer());
+        project.setSubprojectType(editRequestDTO.getSubprojectType());
+        project.getSubprojectType().setProjectType(editRequestDTO.getProjectType());
         if (editRequestDTO.getStatus() != null && !editRequestDTO.getStatus().isEmpty())
             project.setStatus(StatusProject.valueOf(editRequestDTO.getStatus()));
+        project.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         projectRepository.save(project);
     }
@@ -89,5 +99,10 @@ public class ProjectService {
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
+    }
+
+    @Transactional
+    public void delete(long id) {
+        projectRepository.deleteById(id);
     }
 }

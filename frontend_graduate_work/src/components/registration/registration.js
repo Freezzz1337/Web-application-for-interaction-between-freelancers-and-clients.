@@ -90,19 +90,6 @@ const Registration = () => {
                                             </Form.Control>
                                         </Form.Group>
 
-                                        {/*<Form.Group className="mb-4">*/}
-                                        {/*    <Form.Label>Your Username</Form.Label>*/}
-
-                                        {/*    <Form.Control type="text"*/}
-                                        {/*         className={`form-control-lg ${validErrors.fullName ? 'is-invalid' : ''}`}*/}
-                                        {/*                  name="username"*/}
-                                        {/*                  onChange={handleChange}*/}
-                                        {/*    />*/}
-                                        {/*    {validErrors.fullName &&*/}
-                                        {/*        <Form.Control.Feedback*/}
-                                        {/*            type="invalid">{validErrors.fullName}</Form.Control.Feedback>}*/}
-                                        {/*</Form.Group>*/}
-
                                         <Form.Group className="mb-4">
                                             <Form.Label>Your Email</Form.Label>
                                             <Form.Control type="email"

@@ -4,12 +4,12 @@ import {
     Card,
     CardBody,
     CardHeader,
-    CardText,
-    Container
+    CardText, Col,
+    Container, Row
 } from "react-bootstrap";
 import {useAuth} from "../../../context/auth-context";
 import {useEffect, useState} from "react";
-import {getProjectDetailsForEmployer} from "../../../services/project-service";
+import {deleteProject, getProjectDetailsForEmployer} from "../../../services/project-service";
 
 const ProjectDetailsEmployer = () => {
     const {token} = useAuth();
@@ -19,20 +19,32 @@ const ProjectDetailsEmployer = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log("!!!!!!!!!!!!!!!! " );
 
             const serverResponse = await getProjectDetailsForEmployer(projectId, token);
             if (serverResponse) {
                 setProject(serverResponse);
             }
-            console.log(project);
         }
         fetchData();
     }, []);
 
+
     const handleEditProject = () => {
-        navigate(`/project/edit/${project.id}`, {state: {project} });
+        navigate(`/project/edit/${project.id}`);
     };
+
+    const handleDeleteProject = async (e) => {
+        e.preventDefault();
+        await deleteProject(projectId, token);
+
+        navigate(`/projects`);
+    };
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString();
+    }
+
 
     if (!project) {
         return <div><h2>Wait a moment!</h2></div>
@@ -42,13 +54,19 @@ const ProjectDetailsEmployer = () => {
     return (
         <Container className="mt-4">
             {project && (
-                <Card className="shadow-lg" >
+                <Card className="shadow-lg">
                     <CardHeader>
                         <h5>{project.title}</h5>
-                        <hr className="my-2" />
+                        <hr className="my-2"/>
                         <small>Project ID: {project.id}</small>
                     </CardHeader>
                     <CardBody>
+                        <CardText>
+                            <strong>Project Type:</strong> {project.projectType.name}
+                        </CardText>
+                        <CardText>
+                            <strong>Subproject Type:</strong> {project.subprojectType.name}
+                        </CardText>
                         <CardText>
                             <strong>Description:</strong> {project.description}
                         </CardText>
@@ -56,7 +74,7 @@ const ProjectDetailsEmployer = () => {
                             <strong>Budget:</strong> {project.budget}
                         </CardText>
                         <CardText>
-                            <strong>Deadline:</strong> {project.deadline}
+                            <strong>Deadline:</strong> {formatDate(project.deadline)}
                         </CardText>
                         <CardText>
                             <strong>Freelancer:</strong> {project.freelancer ? project.freelancer.name : 'No freelancer assigned'}
@@ -65,12 +83,25 @@ const ProjectDetailsEmployer = () => {
                             <strong>Status:</strong> {project.status}
                         </CardText>
                         <CardText>
-                            <strong>Created At:</strong> {project.createdAt}
+                            <strong>Created At:</strong> {formatDate(project.createdAt)}
                         </CardText>
                         <CardText>
-                            <strong>Updated At:</strong> {project.updatedAt}
+                            <strong>Updated At:</strong> {formatDate(project.updatedAt)}
                         </CardText>
-                        <Button  onClick={handleEditProject} className="btn btn-info btn-lg text-body w-100 rounded-0 mt-3">Edit Project</Button>
+
+                        <Row>
+                            <hr/>
+
+                            <Col lg={6} xs={12}>
+                                <Button onClick={handleEditProject}
+                                        className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">Edit
+                                    Project</Button>
+                            </Col>
+                            <Col lg={6} xs={12}>
+                                <Button onClick={handleDeleteProject} variant="info"
+                                        className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">Delete</Button>
+                            </Col>
+                        </Row>
                     </CardBody>
                 </Card>
             )}

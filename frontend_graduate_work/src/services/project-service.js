@@ -1,4 +1,10 @@
-import {_api, _requestOptionsGET, _requestOptionsPATCH, _requestOptionsPOST} from "./apiRequestHelpers";
+import {
+    _api,
+    _requestOptionsDELETE,
+    _requestOptionsGET,
+    _requestOptionsPATCH,
+    _requestOptionsPOST
+} from "./apiRequestHelpers";
 
 const createProject = async (formData, token) => {
     return await fetch(`${_api}project/create`, _requestOptionsPOST(formData, token))
@@ -20,9 +26,30 @@ const editProject = async (formData, token) => {
         .then(response => response.json());
 }
 
+const deleteProject = async (projectId, token) => {
+    return await fetch(`${_api}project/delete/${projectId}`, _requestOptionsDELETE(token))
+        .then(response => response.json());
+}
+
+
+const getAllProjectTypes = async (token) => {
+    return await fetch(`${_api}project/getTypes`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+const getSubprojectsTypes = async (token, id) => {
+    return await fetch(`${_api}project/getSubprojectsTypes/${id}`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+
 export {
     createProject,
     getAllProjectsForEmployer,
     getProjectDetailsForEmployer,
-    editProject
+    editProject,
+    deleteProject,
+
+    getAllProjectTypes,
+    getSubprojectsTypes
 }

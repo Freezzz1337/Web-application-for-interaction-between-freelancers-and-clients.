@@ -29,16 +29,19 @@ const Header = () => {
         navigate("/projects");
     }
 
+    const handleFindJobs = () => {
+        navigate("/find-jobs")
+    }
+
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand>My Social Network</Navbar.Brand>
+                    <Navbar.Brand onClick={handleFindJobs}>FreelanceHub</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav className="ml-auto">
-                            <Nav.Link>Home</Nav.Link>
-                            <Nav.Link>Explore</Nav.Link>
+                            <Nav.Link onClick={handleFindJobs}>Find Jobs</Nav.Link>
                             <Nav.Link>Notifications</Nav.Link>
                             {userType === "EMPLOYER" &&
                                 <Nav.Link onClick={handleMyProjects}>My Projects</Nav.Link>

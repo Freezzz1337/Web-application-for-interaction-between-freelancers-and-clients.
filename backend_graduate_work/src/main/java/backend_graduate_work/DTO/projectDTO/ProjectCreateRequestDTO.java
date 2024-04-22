@@ -13,4 +13,6 @@ public class ProjectCreateRequestDTO {
     private String description;
     private BigDecimal budget;
     private Timestamp deadline;
+    private String projectType;
+    private String subprojectType;
 }

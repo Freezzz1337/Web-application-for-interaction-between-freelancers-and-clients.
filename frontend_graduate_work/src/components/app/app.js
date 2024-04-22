@@ -3,7 +3,7 @@ import Authorization from "../authorization";
 import {Route, Routes} from "react-router-dom";
 import Start from "../start";
 import {useAuth} from "../../context/auth-context";
-import Main from "../main";
+import FindJobsPage from "../find-jobs-page";
 import Header from "../header";
 import Footer from "../footer";
 import Profile from "../profile";
@@ -24,7 +24,7 @@ function App() {
             <Routes>
                 {token ? (
                     <>
-                        <Route path="/main" element={<Main/>}/>
+                        <Route path="/find-jobs" element={<FindJobsPage/>}/>
 
                         <Route path="/profile" element={<Profile/>}/>
                         <Route path="/profile/edit" element={<ProfileEdit/>}/>

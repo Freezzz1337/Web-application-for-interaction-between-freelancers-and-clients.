@@ -3,7 +3,7 @@ package backend_graduate_work.services;
 import backend_graduate_work.DTO.authDTO.LoginUserDto;
 import backend_graduate_work.DTO.authDTO.RegisterUserDto;
 import backend_graduate_work.models.User;
-import backend_graduate_work.models.UserTypeEnum;
+import backend_graduate_work.models.enums.UserTypeEnum;
 import backend_graduate_work.repositories.UserRepository;
 import backend_graduate_work.util.UserWithThisEmailAlreadyExistsException;
 import org.springframework.security.authentication.AuthenticationManager;

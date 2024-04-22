@@ -1,5 +1,7 @@
 package backend_graduate_work.models;
 
+import backend_graduate_work.models.enums.PaymentStatusProject;
+import backend_graduate_work.models.enums.StatusProject;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,6 +42,10 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "freelancer_id")
     private User freelancer;
+
+    @ManyToOne
+    @JoinColumn(name = "subtype_id")
+    private SubprojectType subprojectType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

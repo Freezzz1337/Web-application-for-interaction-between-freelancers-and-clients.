@@ -1,5 +1,8 @@
 package backend_graduate_work.DTO.projectDTO;
 
+import backend_graduate_work.models.Project;
+import backend_graduate_work.models.ProjectType;
+import backend_graduate_work.models.SubprojectType;
 import backend_graduate_work.models.User;
 import lombok.Getter;
 
@@ -15,4 +18,6 @@ public class ProjectEditRequestDTO {
     private Timestamp deadline;
     private User freelancer;
     private String status;
+    private ProjectType projectType;
+    private SubprojectType subprojectType;
 }

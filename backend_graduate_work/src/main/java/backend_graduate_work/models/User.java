@@ -1,5 +1,6 @@
 package backend_graduate_work.models;
 
+import backend_graduate_work.models.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,9 +24,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long id;
-
-//    @Column(name = "username")
-//    private String username;
 
     @Column(name = "email")
     private String email;

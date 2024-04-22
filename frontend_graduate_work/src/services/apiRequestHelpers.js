@@ -31,9 +31,21 @@ const _requestOptionsPATCH = (formData, token = "") => {
     }
 }
 
+
+const _requestOptionsDELETE = (token = "") => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    return {
+        method: "DELETE",
+        headers: myHeaders
+    };
+};
+
 export {
     _api,
     _requestOptionsGET,
     _requestOptionsPOST,
-    _requestOptionsPATCH
+    _requestOptionsPATCH,
+    _requestOptionsDELETE
 }

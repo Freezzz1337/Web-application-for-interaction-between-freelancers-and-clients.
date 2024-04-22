@@ -1,4 +1,4 @@
-package backend_graduate_work.models;
+package backend_graduate_work.models.enums;
 
 import lombok.Getter;
 
