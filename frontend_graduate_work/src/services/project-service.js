@@ -12,7 +12,7 @@ const createProject = async (formData, token) => {
 }
 
 const getAllProjectsForEmployer = async (token) => {
-    return await fetch(`${_api}project/getProjects`, _requestOptionsGET(token))
+    return await fetch(`${_api}project/getProjectsForEmployer`, _requestOptionsGET(token))
         .then(response => response.json());
 }
 
@@ -41,6 +41,15 @@ const getSubprojectsTypes = async (token, id) => {
     return await fetch(`${_api}project/getSubprojectsTypes/${id}`, _requestOptionsGET(token))
         .then(response => response.json());
 }
+const getAllProjectsForFreelancer = async (token) => {
+    return await fetch(`${_api}project/getProjectsForFreelancer`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+const getAllFilteredProjectsForFreelancer = async (formData, token) => {
+    return await fetch(`${_api}project/filter`, _requestOptionsPOST(formData, token))
+        .then(response => response.json());
+}
 
 
 export {
@@ -51,5 +60,8 @@ export {
     deleteProject,
 
     getAllProjectTypes,
-    getSubprojectsTypes
+    getSubprojectsTypes,
+
+    getAllProjectsForFreelancer,
+    getAllFilteredProjectsForFreelancer
 }

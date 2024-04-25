@@ -1,0 +1,25 @@
+.description-wrapper {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+.title-wrapper{
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.title-wrapper > span {
+    font-size: 14px;
+    font-weight: normal !important;
+    overflow: initial !important;
+    text-overflow: initial !important;
+    display: initial !important;
+    -webkit-line-clamp: initial !important;
+    -webkit-box-orient: initial !important;
+}

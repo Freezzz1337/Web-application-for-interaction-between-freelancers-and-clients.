@@ -1,5 +1,6 @@
 package backend_graduate_work.controllers;
 
+import backend_graduate_work.DTO.filterDTO.FilterDTO;
 import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.services.ProjectService;
 import backend_graduate_work.services.ProjectTypeService;
@@ -32,7 +33,7 @@ public class ProjectController {
         return ResponseEntity.ok(new ProjectCreateResponseDTO());
     }
 
-    @GetMapping("/getProjects")
+    @GetMapping("/getProjectsForEmployer")
     public ResponseEntity<List<ProjectGetAllForEmployerResponseDTO>> getAllForEmployer() {
         return ResponseEntity.ok(projectService.getAllForEmployer());
     }
@@ -49,7 +50,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/delete/{id}")
-      public ResponseEntity<ProjectDeleteResponseDTO> delete(@PathVariable long id){
+    public ResponseEntity<ProjectDeleteResponseDTO> delete(@PathVariable long id) {
         projectService.delete(id);
         return ResponseEntity.ok(new ProjectDeleteResponseDTO());
     }
@@ -60,12 +61,20 @@ public class ProjectController {
     }
 
     @GetMapping("/getSubprojectsTypes/{id}")
-    public ResponseEntity<List<ProjectGetAllSubprojectTypesResponseDTO>> getAllSubprojectsTypes(@PathVariable long id){
+    public ResponseEntity<List<ProjectGetAllSubprojectTypesResponseDTO>> getAllSubprojectsTypes(@PathVariable long id) {
         return ResponseEntity.ok(subprojectTypeService.getAll(id));
     }
 
-//    @GetMapping("/getSubprojects")
-//    public ResponseEntity<List<ProjectGetAllTypesResponseDTO>> getAllTypes() {
-//        return ResponseEntity.ok(projectTypeService.getAll());
-//    }
+    @GetMapping("/getProjectsForFreelancer")
+    public ResponseEntity<List<ProjectGetAllForFreelancerResponseDTO>> getProjectsForFreelancer(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(projectService.getAllForFreelancer(page, size));
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<ProjectGetAllForFreelancerResponseDTO>> getProjectsFiltered(@RequestBody FilterDTO filterDTO) {
+        return ResponseEntity.ok(projectService.getFilteredProjectsForFreelancer(filterDTO));
+    }
 }

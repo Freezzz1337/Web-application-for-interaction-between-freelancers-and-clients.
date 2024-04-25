@@ -1,22 +1,25 @@
 package backend_graduate_work.services;
 
-import backend_graduate_work.DTO.projectDTO.ProjectCreateRequestDTO;
-import backend_graduate_work.DTO.projectDTO.ProjectDetailsResponseDTO;
-import backend_graduate_work.DTO.projectDTO.ProjectEditRequestDTO;
-import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
+import backend_graduate_work.DTO.filterDTO.FilterDTO;
+import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
 import backend_graduate_work.repositories.ProjectRepository;
 import backend_graduate_work.repositories.SubprojectTypeRepository;
+import backend_graduate_work.util.SearchFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -104,5 +107,46 @@ public class ProjectService {
     @Transactional
     public void delete(long id) {
         projectRepository.deleteById(id);
+    }
+
+    public List<ProjectGetAllForFreelancerResponseDTO> getAllForFreelancer(int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+
+
+        return projectRepository.findAllByStatus(StatusProject.OPEN, pageable).stream()
+                .sorted(Comparator.comparing(Project::getCreatedAt).reversed())
+                .map(project -> ProjectGetAllForFreelancerResponseDTO.builder()
+                        .id(project.getId())
+                        .title(project.getTitle())
+                        .budget(project.getBudget())
+                        .description(project.getDescription())
+                        .deadline(project.getDeadline())
+                        .created_at(project.getCreatedAt())
+                        .build())
+                .toList();
+    }
+
+
+    public List<ProjectGetAllForFreelancerResponseDTO> getFilteredProjectsForFreelancer(FilterDTO filterDTO) {
+        List<Project> projects;
+
+//        if (!filterDTO.getSearchString().isEmpty()) {
+//            projects = projectRepository.findAllByStatusAndTitleContaining(StatusProject.OPEN, filterDTO.getSearchString());
+//        } else {
+//            projects = projectRepository.findAllByStatus(StatusProject.OPEN);
+//        }
+        projects = projectRepository.findAllByStatusAndTitleContaining(StatusProject.OPEN, filterDTO.getSearchString());
+
+
+        return SearchFilter.filterProjects(projects, filterDTO).stream()
+                .map(project -> ProjectGetAllForFreelancerResponseDTO.builder()
+                        .id(project.getId())
+                        .title(project.getTitle())
+                        .budget(project.getBudget())
+                        .description(project.getDescription())
+                        .deadline(project.getDeadline())
+                        .created_at(project.getCreatedAt())
+                        .build())
+                .toList();
     }
 }

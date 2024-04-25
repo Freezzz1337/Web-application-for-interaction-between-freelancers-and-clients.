@@ -52,6 +52,8 @@ const Registration = () => {
                 formRef.current.reset();
             }
         }
+
+        console.log(formData);
     }
 
     return (
