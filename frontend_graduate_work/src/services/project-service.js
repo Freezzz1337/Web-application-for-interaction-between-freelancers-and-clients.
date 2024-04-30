@@ -41,16 +41,15 @@ const getSubprojectsTypes = async (token, id) => {
     return await fetch(`${_api}project/getSubprojectsTypes/${id}`, _requestOptionsGET(token))
         .then(response => response.json());
 }
-const getAllProjectsForFreelancer = async (token) => {
-    return await fetch(`${_api}project/getProjectsForFreelancer`, _requestOptionsGET(token))
+const getAllProjectsForFreelancer = async (token, page = 0) => {
+    return await fetch(`${_api}project/getProjectsForFreelancer?page=${page}`, _requestOptionsGET(token))
         .then(response => response.json());
 }
 
-const getAllFilteredProjectsForFreelancer = async (formData, token) => {
-    return await fetch(`${_api}project/filter`, _requestOptionsPOST(formData, token))
+const getAllFilteredProjectsForFreelancer = async (formData, token, page = 0) => {
+    return await fetch(`${_api}project/filter?page=${page}`, _requestOptionsPOST(formData, token))
         .then(response => response.json());
 }
-
 
 export {
     createProject,

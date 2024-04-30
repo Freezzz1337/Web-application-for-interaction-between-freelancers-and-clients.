@@ -6,10 +6,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class FilterDTO {
-    String searchString;
-    String filterBy;
-    String maxBudget;
-    String minBudget;
-    String projectType;
-    String subprojectType;
+    private String searchString;
+    private String filterBy;
+    private String maxBudget;
+    private String minBudget;
+    private String projectType;
+    private String subprojectType;
+    private long numberOfPages;
 }

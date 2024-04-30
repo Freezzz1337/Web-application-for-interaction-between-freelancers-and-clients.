@@ -97,6 +97,5 @@ public class SearchFilter {
                     .sorted(Comparator.comparing(Project::getBudget))
                     .toList();
         }
-
     }
 }

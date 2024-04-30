@@ -1,6 +1,7 @@
 package backend_graduate_work.services;
 
 import backend_graduate_work.DTO.filterDTO.FilterDTO;
+import backend_graduate_work.DTO.filterDTO.ProjectPagesDTO;
 import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
@@ -15,11 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -109,11 +108,13 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-    public List<ProjectGetAllForFreelancerResponseDTO> getAllForFreelancer(int page, int size) {
+    public ProjectPagesDTO getAllForFreelancer(int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
 
+        List<Project> list = projectRepository.findAllByStatus(StatusProject.OPEN);
+        int numberOfProjects = list.size();
 
-        return projectRepository.findAllByStatus(StatusProject.OPEN, pageable).stream()
+        List<ProjectGetAllForFreelancerResponseDTO> projects = projectRepository.findAllByStatusOrderByCreatedAtDesc(StatusProject.OPEN, pageable).stream()
                 .sorted(Comparator.comparing(Project::getCreatedAt).reversed())
                 .map(project -> ProjectGetAllForFreelancerResponseDTO.builder()
                         .id(project.getId())
@@ -124,21 +125,21 @@ public class ProjectService {
                         .created_at(project.getCreatedAt())
                         .build())
                 .toList();
+
+        return new ProjectPagesDTO(projects, numberOfProjects);
     }
 
 
-    public List<ProjectGetAllForFreelancerResponseDTO> getFilteredProjectsForFreelancer(FilterDTO filterDTO) {
+    public ProjectPagesDTO getFilteredProjectsForFreelancer(FilterDTO filterDTO, int page, int size) {
         List<Project> projects;
 
-//        if (!filterDTO.getSearchString().isEmpty()) {
-//            projects = projectRepository.findAllByStatusAndTitleContaining(StatusProject.OPEN, filterDTO.getSearchString());
-//        } else {
-//            projects = projectRepository.findAllByStatus(StatusProject.OPEN);
-//        }
-        projects = projectRepository.findAllByStatusAndTitleContaining(StatusProject.OPEN, filterDTO.getSearchString());
+        if (!filterDTO.getSearchString().isEmpty()) {
+            projects = projectRepository.findAllByStatusAndTitleContaining(StatusProject.OPEN, filterDTO.getSearchString());
+        } else {
+            projects = projectRepository.findAllByStatus(StatusProject.OPEN);
+        }
 
-
-        return SearchFilter.filterProjects(projects, filterDTO).stream()
+        List<ProjectGetAllForFreelancerResponseDTO> responseDTOList = SearchFilter.filterProjects(projects, filterDTO).stream()
                 .map(project -> ProjectGetAllForFreelancerResponseDTO.builder()
                         .id(project.getId())
                         .title(project.getTitle())
@@ -148,5 +149,14 @@ public class ProjectService {
                         .created_at(project.getCreatedAt())
                         .build())
                 .toList();
+
+        int totalProjects = responseDTOList.size();
+
+        int startIndex = Math.max((page - 1) * size, 0);
+        int endIndex = Math.min(startIndex + size, totalProjects);
+
+        List<ProjectGetAllForFreelancerResponseDTO> pageResponseDTOList = responseDTOList.subList(startIndex, endIndex);
+
+        return new ProjectPagesDTO(pageResponseDTOList, totalProjects);
     }
 }

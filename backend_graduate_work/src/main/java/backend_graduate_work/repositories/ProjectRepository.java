@@ -11,7 +11,9 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findAllByEmployerId(long id);
-    List<Project> findAllByStatus(StatusProject status, Pageable pageable);
+    List<Project> findAllByStatus(StatusProject status);
+
+    List<Project> findAllByStatusOrderByCreatedAtDesc(StatusProject status, Pageable pageable);
 
     List<Project> findAllByStatusAndTitleContaining(StatusProject status, String title);
 

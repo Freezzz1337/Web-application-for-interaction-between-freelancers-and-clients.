@@ -1,4 +1,4 @@
-import {Button, Card, Col, Container, Form, FormControl, InputGroup, ListGroup, Pagination, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, FormControl, InputGroup, Row} from "react-bootstrap";
 import "./find-jobs-page.css";
 import {BiSearch} from "react-icons/bi";
 import {useEffect, useState} from "react";
@@ -11,6 +11,7 @@ import {
 import {useAuth} from "../../context/auth-context";
 import {Link} from "react-router-dom";
 import filterValidation from "../../util/validation/filter-validation";
+import FindJobPagePagination from "./find-job-page-pagination/find-job-page-pagination";
 
 const FindJobsPage = () => {
     const {token} = useAuth();
@@ -19,6 +20,12 @@ const FindJobsPage = () => {
     const [subprojectTypes, setSubprojectTypes] = useState(null);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [validErrors, setValidErrors] = useState({});
+
+    const [paginationValue, setPaginationValue] = useState({
+        numberOfProjects: 0,
+        numberOfPages: 0,
+        currentPage: 1
+    });
 
     const [formData, setFormData] = useState({
         searchString: "",
@@ -34,7 +41,13 @@ const FindJobsPage = () => {
             const serverResponseAllProjectsForFreelancer = await getAllProjectsForFreelancer(token);
             const serverResponseAllProjectTypes = await getAllProjectTypes(token);
 
-            setProjects(serverResponseAllProjectsForFreelancer);
+            setProjects(serverResponseAllProjectsForFreelancer.listOfProjects);
+            setPaginationValue({
+                ...paginationValue,
+                numberOfProjects: serverResponseAllProjectsForFreelancer.numberOfProjects,
+                numberOfPages: Math.ceil(serverResponseAllProjectsForFreelancer.numberOfProjects / 5)
+            });
+
             setProjectTypes(serverResponseAllProjectTypes);
         }
         fetchData();
@@ -113,8 +126,12 @@ const FindJobsPage = () => {
 
         if (Object.keys(newValidErrors).length === 0) {
             const serverResponse = await getAllFilteredProjectsForFreelancer(JSON.stringify(formData), token);
-            console.log(serverResponse);
-            setProjects(serverResponse);
+            setProjects(serverResponse.listOfProjects);
+            setPaginationValue({
+                ...paginationValue,
+                numberOfProjects: serverResponse.numberOfProjects,
+                numberOfPages: Math.ceil(serverResponse.numberOfProjects / 3)
+            });
         }
     }
 
@@ -177,10 +194,13 @@ const FindJobsPage = () => {
                                                 <Form.Control
                                                     type="text"
                                                     name="minBudget"
-                                                    className="rounded-0"
+                                                    className={`${validErrors.minBudget ? 'is-invalid' : ''} rounded-0`}
                                                     onChange={handleChange}
                                                     placeholder="min"
                                                 />
+                                                {validErrors.minBudget &&
+                                                    <Form.Control.Feedback
+                                                        type="invalid">{validErrors.minBudget}</Form.Control.Feedback>}
                                             </Form.Group>
                                         </Col>
                                         <Col>
@@ -188,9 +208,12 @@ const FindJobsPage = () => {
                                                 <Form.Control
                                                     type="text"
                                                     name="maxBudget"
-                                                    className="rounded-0"
+                                                    className={`${validErrors.maxBudget ? 'is-invalid' : ''} rounded-0`}
                                                     onChange={handleChange}
                                                     placeholder="max"/>
+                                                {validErrors.maxBudget &&
+                                                    <Form.Control.Feedback
+                                                        type="invalid">{validErrors.maxBudget}</Form.Control.Feedback>}
                                             </Form.Group>
                                         </Col>
                                     </Row>
@@ -281,17 +304,11 @@ const FindJobsPage = () => {
                                 </div>
                             ))}
 
-                            <nav aria-label="Page navigation example">
-                                <Pagination className="justify-content-center">
-                                    <Pagination.Prev disabled/>
-                                    <Pagination.Item>1</Pagination.Item>
-                                    <Pagination.Item>2</Pagination.Item>
-                                    <Pagination.Item>3</Pagination.Item>
-                                    <Pagination.Item>4</Pagination.Item>
-                                    <Pagination.Item>5</Pagination.Item>
-                                    <Pagination.Next/>
-                                </Pagination>
-                            </nav>
+                            <FindJobPagePagination paginationValue={paginationValue}
+                                                   setPaginationValue={setPaginationValue}
+                                                   setProjects={setProjects}
+                                                   token={token}
+                                                   formData={formData}/>
 
                         </Card.Body>
                     </Card>

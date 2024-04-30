@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Getter

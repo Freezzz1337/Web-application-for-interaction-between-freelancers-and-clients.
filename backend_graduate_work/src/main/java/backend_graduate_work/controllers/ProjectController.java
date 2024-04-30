@@ -1,12 +1,12 @@
 package backend_graduate_work.controllers;
 
 import backend_graduate_work.DTO.filterDTO.FilterDTO;
+import backend_graduate_work.DTO.filterDTO.ProjectPagesDTO;
 import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.services.ProjectService;
 import backend_graduate_work.services.ProjectTypeService;
 import backend_graduate_work.services.SubprojectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,15 +66,17 @@ public class ProjectController {
     }
 
     @GetMapping("/getProjectsForFreelancer")
-    public ResponseEntity<List<ProjectGetAllForFreelancerResponseDTO>> getProjectsForFreelancer(
+    public ResponseEntity<ProjectPagesDTO> getProjectsForFreelancer(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "5") int size
     ) {
         return ResponseEntity.ok(projectService.getAllForFreelancer(page, size));
     }
 
     @PostMapping("/filter")
-    public ResponseEntity<List<ProjectGetAllForFreelancerResponseDTO>> getProjectsFiltered(@RequestBody FilterDTO filterDTO) {
-        return ResponseEntity.ok(projectService.getFilteredProjectsForFreelancer(filterDTO));
+    public ResponseEntity<ProjectPagesDTO> getProjectsFiltered(@RequestBody FilterDTO filterDTO,
+                                                               @RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(projectService.getFilteredProjectsForFreelancer(filterDTO, page, size));
     }
 }
