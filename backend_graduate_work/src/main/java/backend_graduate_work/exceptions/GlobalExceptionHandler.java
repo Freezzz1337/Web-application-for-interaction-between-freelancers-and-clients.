@@ -1,5 +1,6 @@
 package backend_graduate_work.exceptions;
 
+import backend_graduate_work.util.ProjectCommentAlreadyLeftException;
 import backend_graduate_work.util.UserNotFoundException;
 import backend_graduate_work.util.UserWithThisEmailAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -53,6 +54,10 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(ProjectCommentAlreadyLeftException.class)
+    public ProblemDetail handleProjectCommentAlreadyLeftException(ProjectCommentAlreadyLeftException exception) {
+        return createProblemDetail(HttpStatus.BAD_REQUEST, exception.getMessage(), exception.getMessage());
+    }
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGenericException(Exception exception) {

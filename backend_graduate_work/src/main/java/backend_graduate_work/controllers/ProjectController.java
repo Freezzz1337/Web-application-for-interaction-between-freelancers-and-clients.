@@ -38,9 +38,14 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllForEmployer());
     }
 
-    @GetMapping("/projectDetails/{id}")
-    public ResponseEntity<ProjectDetailsResponseDTO> getProjectDetails(@PathVariable long id) {
-        return ResponseEntity.ok(projectService.getProjectDetails(id));
+    @GetMapping("/projectDetailsForEmployer/{id}")
+    public ResponseEntity<ProjectDetailsForEmployerResponseDTO> getProjectForEmployerDetails(@PathVariable long id) {
+        return ResponseEntity.ok(projectService.getProjectForEmployerDetails(id));
+    }
+
+    @GetMapping("/projectDetailsForFreelancer/{id}")
+    public ResponseEntity<ProjectDetailsForFreelancerResponseDTO> getProjectForFreelancerDetails(@PathVariable long id) {
+        return ResponseEntity.ok(projectService.getProjectDetailsForFreelancer(id));
     }
 
     @PatchMapping("/edit")
@@ -75,8 +80,7 @@ public class ProjectController {
 
     @PostMapping("/filter")
     public ResponseEntity<ProjectPagesDTO> getProjectsFiltered(@RequestBody FilterDTO filterDTO,
-                                                               @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "5") int size) {
+                                                               @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5") int size) {
         return ResponseEntity.ok(projectService.getFilteredProjectsForFreelancer(filterDTO, page, size));
     }
 }

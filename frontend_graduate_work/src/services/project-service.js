@@ -17,9 +17,15 @@ const getAllProjectsForEmployer = async (token) => {
 }
 
 const getProjectDetailsForEmployer = async (projectId, token) => {
-    return await fetch(`${_api}project/projectDetails/${projectId}`, _requestOptionsGET(token))
+    return await fetch(`${_api}project/projectDetailsForEmployer/${projectId}`, _requestOptionsGET(token))
         .then(response => response.json());
 }
+
+const getProjectDetailsForFreelancer = async (projectId, token) => {
+    return await fetch(`${_api}project/projectDetailsForFreelancer/${projectId}`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
 
 const editProject = async (formData, token) => {
     return await fetch(`${_api}project/edit`, _requestOptionsPATCH(formData, token))
@@ -61,6 +67,7 @@ export {
     getAllProjectTypes,
     getSubprojectsTypes,
 
+    getProjectDetailsForFreelancer,
     getAllProjectsForFreelancer,
     getAllFilteredProjectsForFreelancer
 }

@@ -1,0 +1,56 @@
+.square-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.title-wrapper{
+    font-size: 20px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.title-wrapper > span {
+    font-size: 14px;
+    font-weight: normal !important;
+    overflow: initial !important;
+    text-overflow: initial !important;
+    display: initial !important;
+    -webkit-line-clamp: initial !important;
+    -webkit-box-orient: initial !important;
+}
+
+@media screen and (max-width: 1400px) {
+    .square-image {
+        width: 170px;
+        height: 170px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .square-image {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .square-image {
+        width: 100px;
+        height: 100px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .square-image {
+        width: 80px;
+        height: 80px;
+    }
+}
+@media screen and (max-width: 576px) {
+    .square-image {
+        width: 60px;
+        height: 60px;
+    }
+}

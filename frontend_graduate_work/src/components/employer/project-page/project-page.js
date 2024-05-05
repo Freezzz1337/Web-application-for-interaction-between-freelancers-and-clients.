@@ -43,7 +43,7 @@ const ProjectPage = () => {
                                     Status: {project.status}
                                 </Card.Text>
 
-                                <Link to={`/project/details/${project.id}`}
+                                <Link to={`/project/details/employer/${project.id}`}
                                       className="btn btn-info"
                                       align="center">
                                     More details

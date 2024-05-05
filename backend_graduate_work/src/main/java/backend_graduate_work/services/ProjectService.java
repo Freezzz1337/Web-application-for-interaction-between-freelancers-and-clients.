@@ -2,10 +2,12 @@ package backend_graduate_work.services;
 
 import backend_graduate_work.DTO.filterDTO.FilterDTO;
 import backend_graduate_work.DTO.filterDTO.ProjectPagesDTO;
+import backend_graduate_work.DTO.projectCommentDTO.ProjectCommentGetAllForProjectDetails;
 import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
+import backend_graduate_work.repositories.ProjectCommentRepository;
 import backend_graduate_work.repositories.ProjectRepository;
 import backend_graduate_work.repositories.SubprojectTypeRepository;
 import backend_graduate_work.util.SearchFilter;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,11 +28,13 @@ import java.util.List;
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final SubprojectTypeRepository subprojectTypeRepository;
+    private final ProjectCommentRepository projectCommentRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository) {
+    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository) {
         this.projectRepository = projectRepository;
         this.subprojectTypeRepository = subprojectTypeRepository;
+        this.projectCommentRepository = projectCommentRepository;
     }
 
     public List<ProjectGetAllForEmployerResponseDTO> getAllForEmployer() {
@@ -62,10 +67,10 @@ public class ProjectService {
         projectRepository.save(newProject);
     }
 
-    public ProjectDetailsResponseDTO getProjectDetails(long id) {
+    public ProjectDetailsForEmployerResponseDTO getProjectForEmployerDetails(long id) {
         Project project = projectRepository.findById(id);
 
-        return ProjectDetailsResponseDTO.builder()
+        return ProjectDetailsForEmployerResponseDTO.builder()
                 .id(project.getId())
                 .title(project.getTitle())
                 .description(project.getDescription())
@@ -78,6 +83,38 @@ public class ProjectService {
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())
                 .build();
+    }
+
+
+    public ProjectDetailsForFreelancerResponseDTO getProjectDetailsForFreelancer(long id) {
+        Project project = projectRepository.findById(id);
+
+        ProjectDetailsForFreelancer projectDetailsForFreelancer = ProjectDetailsForFreelancer.builder()
+                .id(project.getId())
+                .title(project.getTitle())
+                .description(project.getDescription())
+                .budget(project.getBudget())
+                .deadline(project.getDeadline())
+                .status(project.getStatus().toString())
+                .projectType(project.getSubprojectType().getProjectType())
+                .subprojectType(project.getSubprojectType())
+                .createdAt(project.getCreatedAt())
+                .build();
+
+        List<ProjectCommentGetAllForProjectDetails> projectCommentGetAllForProjectDetails =
+                projectCommentRepository.findAllByProjectId(id)
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map(projectComment -> ProjectCommentGetAllForProjectDetails.builder()
+                                .commentText(projectComment.getCommentText())
+                                .budget(projectComment.getBudget())
+                                .createdAt(projectComment.getCreatedAt())
+                                .userName(projectComment.getUser().getFullName())
+                                .profilePicture(projectComment.getUser().getProfilePicture())
+                                .build())
+                        .toList();
+
+        return new ProjectDetailsForFreelancerResponseDTO(projectDetailsForFreelancer, projectCommentGetAllForProjectDetails);
     }
 
     @Transactional

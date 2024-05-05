@@ -34,8 +34,10 @@ const Profile = () => {
         <Container className="mt-3">
             <Row className="align-items-center profile-header-gradient rounded-top-5">
                 <Col lg={3} md={5} className="d-flex align-items-center justify-content-center">
-                    <Image src={`data:image/jpeg;base64,${userData.profilePicture}`} roundedCircle fluid
-                           className="rounded-circle" style={{width: '200px', height: '200px'}}/>
+                    <Image
+                        src={`data:image/jpeg;base64,${userData.profilePicture}`} roundedCircle fluid
+                        className="rounded-circle"
+                        style={{width: '200px', height: '200px', objectFit: "cover"}}/>
                 </Col>
                 <Col lg={9} md={7} className="text-center text-md-start">
                     <h3>{userData.fullName}</h3>

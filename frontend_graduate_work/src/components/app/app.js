@@ -12,10 +12,12 @@ import ProjectCreate from "../employer/project-create";
 import ProjectPage from "../employer/project-page";
 import ProjectDetailsEmployer from "../employer/project-details-employer/projectDetailsEmployer";
 import ProjectEdit from "../employer/project-edit";
+import ProjectDetails from "../project-details";
 
 function App() {
+
     const {token} = useAuth();
-    //  const token = true; //todo : Temporary stub!!!!!!!!!!!!!!
+    //   const token = true; //todo : Temporary stub!!!!!!!!!!!!!!
 
     return (
         <>
@@ -31,8 +33,10 @@ function App() {
 
                         <Route path="/projects" element={<ProjectPage/>}/>
                         <Route path="/project/create" element={<ProjectCreate/>}/>
-                        <Route path="/project/details/:projectId" element={<ProjectDetailsEmployer/>}/>
+                        <Route path="/project/details/employer/:projectId" element={<ProjectDetailsEmployer/>}/>
                         <Route path="/project/edit/:projectId" element={<ProjectEdit/>}/>
+
+                        <Route path="/project/details/:projectId" element={<ProjectDetails/>}/>
 
                     </>
                 ) : (

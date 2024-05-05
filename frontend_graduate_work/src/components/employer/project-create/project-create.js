@@ -56,7 +56,6 @@ const ProjectCreate = () => {
         setValidErrors(newValidErrors);
         if (Object.keys(newValidErrors).length === 0) {
             try {
-
                 const serverResponse = await createProject(JSON.stringify(formData), token);
                 if (serverResponse.response) {
                     navigate("/projects");

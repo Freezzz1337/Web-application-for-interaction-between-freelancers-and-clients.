@@ -12,6 +12,7 @@ import {useAuth} from "../../context/auth-context";
 import {Link} from "react-router-dom";
 import filterValidation from "../../util/validation/filter-validation";
 import FindJobPagePagination from "./find-job-page-pagination/find-job-page-pagination";
+import formatCreatedAtDate from "../../util/format-created-at-date";
 
 const FindJobsPage = () => {
     const {token} = useAuth();
@@ -83,32 +84,6 @@ const FindJobsPage = () => {
         const minutes = formattedDate.getMinutes().toString().padStart(2, '0');
 
         return `${day}/${month}/${year} ${hours}:${minutes}`;
-    }
-
-    const formatCreatedAtDate = (date) => {
-        const createdAt = new Date(date);
-        const now = new Date();
-
-        const diff = Math.floor((now - createdAt) / 1000);
-        let result;
-
-        switch (true) {
-            case diff < 60:
-                result = `${diff} seconds ago`;
-                break;
-            case diff < 3600:
-                const minutes = Math.floor(diff / 60);
-                result = `${minutes} minutes ago`;
-                break;
-            case diff < 86400:
-                const hours = Math.floor(diff / 3600);
-                result = `${hours} hours ago`;
-                break;
-            default:
-                const days = Math.floor(diff / 86400);
-                result = `${days} days ago`;
-        }
-        return result;
     }
 
     const toggleFrom = (e) => {
