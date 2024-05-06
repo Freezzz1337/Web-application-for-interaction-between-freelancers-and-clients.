@@ -15,6 +15,7 @@ public class ProjectCommentGetAllForProjectDetails {
     private Timestamp createdAt;
 
     private String userName;
+    private long userId;
     @Lob
     private byte[] profilePicture;
 }

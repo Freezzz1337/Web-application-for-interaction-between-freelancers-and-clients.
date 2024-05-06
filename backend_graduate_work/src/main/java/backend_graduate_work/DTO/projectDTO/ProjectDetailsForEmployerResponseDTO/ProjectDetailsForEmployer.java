@@ -1,4 +1,4 @@
-package backend_graduate_work.DTO.projectDTO;
+package backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO;
 
 import backend_graduate_work.models.ProjectType;
 import backend_graduate_work.models.SubprojectType;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 @Builder
 @Getter
-public class ProjectDetailsForEmployerResponseDTO {
+public class ProjectDetailsForEmployer {
     private long id;
     private String title;
     private String description;

@@ -4,6 +4,9 @@ import backend_graduate_work.DTO.filterDTO.FilterDTO;
 import backend_graduate_work.DTO.filterDTO.ProjectPagesDTO;
 import backend_graduate_work.DTO.projectCommentDTO.ProjectCommentGetAllForProjectDetails;
 import backend_graduate_work.DTO.projectDTO.*;
+import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployer;
+import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployerResponseDTO;
+import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
@@ -46,6 +49,7 @@ public class ProjectService {
                         .id(project.getId())
                         .title(project.getTitle())
                         .status(project.getStatus().toString())
+                        .amountOfComments(projectCommentRepository.findAllByProjectId(project.getId()).get().size())
                         .build()
                 )
                 .toList();
@@ -69,8 +73,7 @@ public class ProjectService {
 
     public ProjectDetailsForEmployerResponseDTO getProjectForEmployerDetails(long id) {
         Project project = projectRepository.findById(id);
-
-        return ProjectDetailsForEmployerResponseDTO.builder()
+        ProjectDetailsForEmployer projectDetailsForEmployer = ProjectDetailsForEmployer.builder()
                 .id(project.getId())
                 .title(project.getTitle())
                 .description(project.getDescription())
@@ -83,6 +86,22 @@ public class ProjectService {
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())
                 .build();
+
+        List<ProjectCommentGetAllForProjectDetails> projectCommentGetAllForProjectDetails =
+                projectCommentRepository.findAllByProjectId(id)
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map(projectComment -> ProjectCommentGetAllForProjectDetails.builder()
+                                .commentText(projectComment.getCommentText())
+                                .budget(projectComment.getBudget())
+                                .createdAt(projectComment.getCreatedAt())
+                                .userName(projectComment.getUser().getFullName())
+                                .userId(projectComment.getUser().getId())
+                                .profilePicture(projectComment.getUser().getProfilePicture())
+                                .build())
+                        .toList();
+
+        return new ProjectDetailsForEmployerResponseDTO(projectDetailsForEmployer, projectCommentGetAllForProjectDetails);
     }
 
 

@@ -1,1 +1,1 @@
-import ProjectDetailsEmployer from "./projectDetailsEmployer";
+import ProjectDetailsEmployer from "./project-details-employer";

@@ -1,8 +1,7 @@
 import {useAuth} from "../../context/auth-context";
-import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {useParams} from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
 import {
-    createProject,
     getProjectDetailsForFreelancer
 } from "../../services/project-service";
 import {
@@ -20,7 +19,7 @@ import {BiMoney, BiInfoCircle} from 'react-icons/bi';
 import formatCreatedAtDate from "../../util/format-created-at-date";
 import {createCommentValidation} from "../../util/validation/comment-validation";
 import {createProjectComment} from "../../services/project-comment-service";
-import ProjectDetailsComment from "./project-details-comment/ProjectDetailsComment";
+import ProjectDetailsComment from "../project-details-comment";
 
 const ProjectDetails = () => {
     const {token, userType} = useAuth();
@@ -214,7 +213,7 @@ const ProjectDetails = () => {
             )}
 
             {comments &&
-                <ProjectDetailsComment comments={comments}/>
+                <ProjectDetailsComment comments={comments} forEmployer={false}/>
             }
 
         </Container>

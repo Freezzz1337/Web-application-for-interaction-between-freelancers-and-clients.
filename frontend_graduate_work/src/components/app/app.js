@@ -10,7 +10,7 @@ import Profile from "../profile";
 import ProfileEdit from "../profile-edit";
 import ProjectCreate from "../employer/project-create";
 import ProjectPage from "../employer/project-page";
-import ProjectDetailsEmployer from "../employer/project-details-employer/projectDetailsEmployer";
+import ProjectDetailsEmployer from "../employer/project-details-employer/project-details-employer";
 import ProjectEdit from "../employer/project-edit";
 import ProjectDetails from "../project-details";
 

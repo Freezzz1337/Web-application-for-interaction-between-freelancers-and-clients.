@@ -39,10 +39,12 @@ const ProjectPage = () => {
                         <Card className="card-container">
                             <Card.Body>
                                 <Card.Title className="card-title">{project.title}</Card.Title>
-                                <Card.Text>
+                                <Card.Text className="mb-0">
                                     Status: {project.status}
                                 </Card.Text>
-
+                                <Card.Text className="mt-0">
+                                    Comments: {project.amountOfComments}
+                                </Card.Text>
                                 <Link to={`/project/details/employer/${project.id}`}
                                       className="btn btn-info"
                                       align="center">
@@ -56,4 +58,6 @@ const ProjectPage = () => {
         </Container>
     );
 }
+
+// amountOfComments
 export default ProjectPage;

@@ -8,21 +8,39 @@ import {
     Container, Row
 } from "react-bootstrap";
 import {useAuth} from "../../../context/auth-context";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {deleteProject, getProjectDetailsForEmployer} from "../../../services/project-service";
+import ProjectDetailsComment from "../../project-details-comment";
+import ModalProjectDetails from "./modal-project-details/modal-project-details";
 
 const ProjectDetailsEmployer = () => {
     const {token} = useAuth();
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
+    const [comments, setComments] = useState(null);
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+
+    const [selectedFreelancer, setSelectedFreelancer] = useState(null);
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleOpenModal = (freelancerId) => {
+        setSelectedFreelancer(freelancerId);
+        setShowModal(true);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
 
             const serverResponse = await getProjectDetailsForEmployer(projectId, token);
-            if (serverResponse) {
-                setProject(serverResponse);
+            if (serverResponse.projectCommentGetAllForProjectDetails.length > 0) {
+                setProject(serverResponse.projectDetailsForEmployer);
+                setComments(serverResponse.projectCommentGetAllForProjectDetails);
+            } else {
+                setProject(serverResponse.projectDetailsForEmployer);
             }
         }
         fetchData();
@@ -105,6 +123,20 @@ const ProjectDetailsEmployer = () => {
                     </CardBody>
                 </Card>
             )}
+
+            {comments &&
+                <>
+                    <ProjectDetailsComment comments={comments}
+                                           forEmployer={true}
+                                           handleOpenModal={handleOpenModal}
+                    />
+
+                    <ModalProjectDetails  show={showModal}
+                                          handleClose={handleCloseModal}
+                                          freelancerId={selectedFreelancer}
+                    />
+                </>
+            }
         </Container>
     );
 }
