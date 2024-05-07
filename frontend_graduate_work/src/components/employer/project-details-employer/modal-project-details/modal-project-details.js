@@ -1,26 +1,35 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {useAuth} from "../../../../context/auth-context";
+import {sentFirstMessage} from "../../../../services/chat-service";
 
-const ModalProjectDetails = ({show, handleClose, freelancerId}) => {
-
+const ModalProjectDetails = ({show, handleClose, freelancerId, projectId}) => {
+    const {token} = useAuth();
     const [formData, setFormData] = useState({
         freelancerId: freelancerId,
+        projectId: projectId,
         message: ""
     });
 
     useEffect(() => {
         setFormData({
             ...formData,
-            freelancerId: freelancerId
+            freelancerId: freelancerId,
         });
-    }, [freelancerId]);
-    const handleChange = (e) => {
-        setFormData({...formData, freelancerId: freelancerId});
-    };
+    }, [freelancerId, projectId]);
 
-    const handleFormSubmit = (e) => {
+    const handleChange = (e) => {
         e.preventDefault();
 
+        setFormData({...formData, message: e.target.value});
+    };
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        const serverResponse = await sentFirstMessage(JSON.stringify(formData), token);
+        if (serverResponse.response) {
+            handleClose();
+        }
     };
 
     return (

@@ -154,11 +154,6 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
-    }
-
     @Transactional
     public void delete(long id) {
         projectRepository.deleteById(id);
@@ -214,5 +209,10 @@ public class ProjectService {
         List<ProjectGetAllForFreelancerResponseDTO> pageResponseDTOList = responseDTOList.subList(startIndex, endIndex);
 
         return new ProjectPagesDTO(pageResponseDTOList, totalProjects);
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
     }
 }

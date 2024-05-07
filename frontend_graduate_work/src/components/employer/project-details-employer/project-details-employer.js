@@ -134,6 +134,7 @@ const ProjectDetailsEmployer = () => {
                     <ModalProjectDetails  show={showModal}
                                           handleClose={handleCloseModal}
                                           freelancerId={selectedFreelancer}
+                                          projectId={project.id}
                     />
                 </>
             }
