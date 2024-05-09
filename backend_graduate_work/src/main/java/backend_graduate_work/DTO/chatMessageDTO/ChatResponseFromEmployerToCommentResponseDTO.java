@@ -1,4 +1,4 @@
-package backend_graduate_work.DTO.chatDTO;
+package backend_graduate_work.DTO.chatMessageDTO;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -36,7 +36,7 @@ const ProjectDetailsEmployer = () => {
         const fetchData = async () => {
 
             const serverResponse = await getProjectDetailsForEmployer(projectId, token);
-            if (serverResponse.projectCommentGetAllForProjectDetails.length > 0) {
+            if (serverResponse?.projectCommentGetAllForProjectDetails?.length > 0) {
                 setProject(serverResponse.projectDetailsForEmployer);
                 setComments(serverResponse.projectCommentGetAllForProjectDetails);
             } else {
@@ -59,7 +59,7 @@ const ProjectDetailsEmployer = () => {
     };
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
+            const date = new Date(dateString);
         return date.toLocaleString();
     }
 

@@ -16,6 +16,7 @@ public class ProjectCommentGetAllForProjectDetails {
 
     private String userName;
     private long userId;
+    private boolean firstMessage;
     @Lob
     private byte[] profilePicture;
 }

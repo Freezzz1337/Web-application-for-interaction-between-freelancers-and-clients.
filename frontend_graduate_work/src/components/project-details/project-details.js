@@ -64,7 +64,6 @@ const ProjectDetails = () => {
         const newValidErrors = createCommentValidation(formData);
         setValidErrors(newValidErrors);
 
-        console.log(newValidErrors);
 
 
         if (Object.keys(newValidErrors).length === 0) {

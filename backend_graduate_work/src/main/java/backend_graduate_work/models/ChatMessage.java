@@ -19,18 +19,14 @@ public class ChatMessage {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @ManyToOne
-    @JoinColumn(name = "receiver_id")
-    private User receiver;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "message_text",columnDefinition = "LONGTEXT")
     private String messageText;
 
     @CreationTimestamp

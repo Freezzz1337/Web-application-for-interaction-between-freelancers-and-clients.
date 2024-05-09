@@ -10,6 +10,7 @@ import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
+import backend_graduate_work.repositories.ChatMessageRepository;
 import backend_graduate_work.repositories.ProjectCommentRepository;
 import backend_graduate_work.repositories.ProjectRepository;
 import backend_graduate_work.repositories.SubprojectTypeRepository;
@@ -32,12 +33,14 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final SubprojectTypeRepository subprojectTypeRepository;
     private final ProjectCommentRepository projectCommentRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository) {
+    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository, ChatMessageRepository chatMessageRepository) {
         this.projectRepository = projectRepository;
         this.subprojectTypeRepository = subprojectTypeRepository;
         this.projectCommentRepository = projectCommentRepository;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     public List<ProjectGetAllForEmployerResponseDTO> getAllForEmployer() {
@@ -97,6 +100,7 @@ public class ProjectService {
                                 .createdAt(projectComment.getCreatedAt())
                                 .userName(projectComment.getUser().getFullName())
                                 .userId(projectComment.getUser().getId())
+                                .firstMessage(chatMessageRepository.existsBySenderIdAndChatFreelancerId(getCurrentUser().getId(), projectComment.getUser().getId()))
                                 .profilePicture(projectComment.getUser().getProfilePicture())
                                 .build())
                         .toList();

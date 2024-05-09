@@ -1,0 +1,24 @@
+.for-container {
+    margin-top: -13px;
+}
+
+.project-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    height: 80px;
+}
+
+.project-col {
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.project-col:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.project-col hr {
+    margin: 0
+}

@@ -1,11 +1,12 @@
 import {Button, Card, Col, Row} from "react-bootstrap";
 import "./project-details-comment.css";
 import formatCreatedAtDate from "../../util/format-created-at-date";
+import {useEffect} from "react";
 
 const ProjectDetailsComment = ({comments, forEmployer, handleOpenModal}) => {
 
-    if (forEmployer) {
-    }
+    // useEffect(() => {
+    // }, [comments]);
 
     return (
         <div className="mt-5">
@@ -39,10 +40,19 @@ const ProjectDetailsComment = ({comments, forEmployer, handleOpenModal}) => {
 
                             {forEmployer &&
                                 <Col>
+                                    {/*{comment.firstMessage ?*/}
+                                    {/*    <div>*/}
+                                    {/*        <hr/>*/}
+                                    {/*        <h4 className="text-center">You have already messaged this user</h4>*/}
+                                    {/*    </div>*/}
+
+                                    {/*    :*/}
                                     <Button
                                         onClick={() => handleOpenModal(comment.userId)}
-                                        className="btn-info btn-lg text-body w-100 rounded-0 mt-3">Get in
-                                        touch</Button>
+                                        className="btn-info btn-lg text-body w-100 rounded-0 mt-3">
+                                        Get in touch
+                                    </Button>
+                                    {/*}*/}
                                 </Col>
                             }
                         </Row>
