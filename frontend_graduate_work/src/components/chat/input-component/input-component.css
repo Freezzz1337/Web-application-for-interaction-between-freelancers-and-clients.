@@ -1,0 +1,10 @@
+.input-bottom-fixed{
+    position: fixed;
+    bottom: 0;
+    width: 367px;
+}
+
+.word-wrap-break-word {
+    resize: vertical;
+    min-height: 100px;
+}

@@ -11,6 +11,7 @@ import backend_graduate_work.models.ChatMessage;
 import backend_graduate_work.models.User;
 import backend_graduate_work.repositories.ChatMessageRepository;
 import backend_graduate_work.repositories.ChatRepository;
+import backend_graduate_work.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,12 +25,14 @@ import java.util.List;
 public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final UserRepository userRepository;
 
 
     @Autowired
-    public ChatService(ChatRepository chatRepository, ChatMessageRepository chatMessageRepository) {
+    public ChatService(ChatRepository chatRepository, ChatMessageRepository chatMessageRepository, UserRepository userRepository) {
         this.chatRepository = chatRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.userRepository = userRepository;
     }
 
     public List<GetChatProjectResponseDTO> getAllProjectsWithChats() {
@@ -72,9 +75,11 @@ public class ChatService {
                 })
                 .toList();
     }
+
     public GetChatResponseDTO getChat(long userId, long projectId) {
         User currentUser = getCurrentUser();
         Chat chat;
+
 
         if (currentUser.getUserTypeEnum().getUserType().equals("EMPLOYER")) {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, currentUser.getId(), userId);
@@ -94,7 +99,7 @@ public class ChatService {
                                 .createdAt(message.getCreatedAt())
                                 .build())
                         .toList())
-                 .build();
+                .build();
     }
 
     public User getCurrentUser() {

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, Offcanvas} from "react-bootstrap";
+import {Button, Container, Offcanvas} from "react-bootstrap";
 import {useAuth} from "../../context/auth-context";
 import {getAllProjectsWithChats} from "../../services/chat-service";
 import ChatProjectList from "./chat-lists/chat-project-list";
@@ -47,27 +47,27 @@ const Chat = ({show, onHide}) => {
     };
 
     return (
-        <Offcanvas show={show} onHide={onHide} placement="end">
-            <Offcanvas.Header closeButton>
-                <Offcanvas.Title>
-                    {chatMode !== 'projectList' && (
-                        <Button className="btn btn-back" onClick={handleBack}>
-                            <BiChevronLeft size={24}/> Chat
-                        </Button>
+            <Offcanvas show={show} onHide={onHide} placement="end">
+                <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>
+                        {chatMode !== 'projectList' && (
+                            <Button className="btn btn-back" onClick={handleBack}>
+                                <BiChevronLeft size={24}/> Chat
+                            </Button>
+                        )}
+                    </Offcanvas.Title>
+                </Offcanvas.Header>
+                <hr style={{marginTop: '-1px'}}/>
+                <Offcanvas.Body>
+                    {selectedUserId ? (
+                        <ChatPerson userId={selectedUserId} projectId={selectedProjectId}/>
+                    ) : selectedProjectId ? (
+                        <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
+                    ) : (
+                        <ChatProjectList projects={projects} handleProject={handleProject}/>
                     )}
-                </Offcanvas.Title>
-            </Offcanvas.Header>
-            <hr style={{marginTop: '-1px'}}/>
-            <Offcanvas.Body>
-                {selectedUserId ? (
-                    <ChatPerson userId={selectedUserId} projectId={selectedProjectId}/>
-                ) : selectedProjectId ? (
-                    <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
-                ) : (
-                    <ChatProjectList projects={projects} handleProject={handleProject}/>
-                )}
-            </Offcanvas.Body>
-        </Offcanvas>
+                </Offcanvas.Body>
+            </Offcanvas>
     );
 };
 
