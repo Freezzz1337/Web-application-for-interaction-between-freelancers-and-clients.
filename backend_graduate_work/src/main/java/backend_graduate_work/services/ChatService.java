@@ -1,11 +1,11 @@
 package backend_graduate_work.services;
 
-
 import backend_graduate_work.DTO.chatDTO.GetChatProjectResponseDTO;
 import backend_graduate_work.DTO.chatDTO.GetChatResponseDTO.GetChatMessage;
 import backend_graduate_work.DTO.chatDTO.GetChatResponseDTO.GetChatResponseDTO;
 import backend_graduate_work.DTO.chatDTO.GetChatResponseDTO.Sender;
 import backend_graduate_work.DTO.chatDTO.GetChatUserResponseDTO;
+import backend_graduate_work.DTO.chatDTO.SendMessageRequestDTO;
 import backend_graduate_work.models.Chat;
 import backend_graduate_work.models.ChatMessage;
 import backend_graduate_work.models.User;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -67,7 +68,10 @@ public class ChatService {
                     ChatMessage lastMessage = chatMessageRepository.findFirstByChatIdOrderByCreatedAtDesc(chat.getId());
                     return GetChatUserResponseDTO.builder()
                             .fullName(isCurrentUserFreelancer ? chat.getEmployer().getFullName() : chat.getFreelancer().getFullName())
-                            .lastMessage(lastMessage != null ? lastMessage.getMessageText() : null)
+                            .lastMessage(
+                                    lastMessage.getMessageText() != null ? lastMessage.getMessageText() :
+                                            (lastMessage.getFileName() != null ? lastMessage.getFileName() : null)
+                            )
                             .lastMessageTime(lastMessage != null ? lastMessage.getCreatedAt() : null)
                             .userPicture(isCurrentUserFreelancer ? chat.getEmployer().getProfilePicture() : chat.getFreelancer().getProfilePicture())
                             .userId(isCurrentUserFreelancer ? chat.getEmployer().getId() : chat.getFreelancer().getId())
@@ -80,7 +84,6 @@ public class ChatService {
         User currentUser = getCurrentUser();
         Chat chat;
 
-
         if (currentUser.getUserTypeEnum().getUserType().equals("EMPLOYER")) {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, currentUser.getId(), userId);
         } else {
@@ -92,15 +95,19 @@ public class ChatService {
                         .map(message -> GetChatMessage.builder()
                                 .messageId(message.getId())
                                 .sender(Sender.builder()
+                                        .senderId(message.getSender().getId())
                                         .fullName(message.getSender().getFullName())
                                         .profilePicture(message.getSender().getProfilePicture())
                                         .build())
                                 .messageText(message.getMessageText())
+                                .fileName(message.getFileName())
+                                .file(message.getFileData())
                                 .createdAt(message.getCreatedAt())
                                 .build())
                         .toList())
                 .build();
     }
+
 
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

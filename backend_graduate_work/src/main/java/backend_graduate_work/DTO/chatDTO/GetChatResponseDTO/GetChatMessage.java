@@ -11,5 +11,9 @@ public class GetChatMessage {
     private long messageId;
     private Sender sender;
     private String messageText;
+
+    private String fileName;
+    private byte[] file;
+
     private Timestamp createdAt;
 }

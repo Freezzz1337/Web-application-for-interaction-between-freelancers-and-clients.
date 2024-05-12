@@ -19,6 +19,11 @@ const getChat = async (userId, projectId, token) => {
         .then(response => response.json());
 }
 
+const sendMessage = async (formData, token) => {
+    return await fetch(`${_api}chat/sendMessage`, _requestOptionsPOST(formData, token))
+        .then(response => response.json());
+}
+
 export {
     sentFirstMessage,
 
@@ -26,5 +31,6 @@ export {
 
     getAllUsersChats,
 
-    getChat
+    getChat,
+    sendMessage
 }

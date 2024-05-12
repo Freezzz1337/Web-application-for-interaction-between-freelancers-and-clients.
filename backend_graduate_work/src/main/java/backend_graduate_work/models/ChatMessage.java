@@ -26,8 +26,15 @@ public class ChatMessage {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @Column(name = "message_text",columnDefinition = "LONGTEXT")
+    @Column(name = "message_text", columnDefinition = "LONGTEXT")
     private String messageText;
+
+    @Lob
+    @Column(name = "file_data", columnDefinition = "longblob")
+    private byte[] fileData;
+
+    @Column(name = "file_name")
+    private String fileName;
 
     @CreationTimestamp
     @Column(name = "created_at")

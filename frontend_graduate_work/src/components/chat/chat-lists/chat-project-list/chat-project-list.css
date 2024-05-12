@@ -1,5 +1,6 @@
-.for-container {
-    margin-top: -13px;
+.chat-project-list-for-container{
+    margin-top: -16px;
+
 }
 
 .project-title {
@@ -16,7 +17,7 @@
 }
 
 .project-col:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .project-col hr {

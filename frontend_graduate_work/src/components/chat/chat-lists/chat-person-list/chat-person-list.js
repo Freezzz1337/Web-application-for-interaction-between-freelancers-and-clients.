@@ -13,15 +13,14 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
         const fetch = async () => {
             const serverResponse = await getAllUsersChats(projectId, token);
             setUsersChats(serverResponse);
-            console.log(serverResponse);
         };
         fetch();
     }, [projectId, token]);
 
     return (
-        <Row className="for-person-list-container ">
+        <Row className="for-person-list-container">
             {usersChats.map(userChat => (
-                <Col xs={12} key={userChat.userId} onClick={() => onSelectUser(userChat.userId)}
+                <Col xs={12} key={userChat.userId} onClick={() => onSelectUser(userChat.userId, userChat.fullName)}
                      className="fade-block align-items-center">
                     <Row className="mt-3">
                         <Col xs={2} className="mt-2">
@@ -31,7 +30,7 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
                         <Col xs={10} className="mt-1">
                             <div>
                                 <div className="name-date">
-                                    <strong className="text-size">{userChat.fullName}</strong>
+                                    <strong className="text-size chat-person-list-user-name">{userChat.fullName}</strong>
                                     <p className="date-text">{formatCreatedAtDate(userChat.lastMessageTime)}</p>
                                 </div>
                                 <p className="lastMessage-text">{userChat.lastMessage}</p>
@@ -46,25 +45,4 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
     );
 };
 
-// <div >
-//     <strong>{userChat.fullName}</strong>
-//     <p>Last Message: {userChat.lastMessage}</p>
-//     <p>Last Message Time: {userChat.lastMessageTime}</p>
-// </div>
-// <hr />
-// <Row key={userChat.userId} onClick={() => onSelectUser(userChat.userId)} >
-//     <Col md={2}>
-//         <Image src={`data:image/png;base64,${userChat.userPicture}`} alt="User" className="picture"/>
-//     </Col>
-//     <Col md={8}>
-//         <div className="user-details">
-//             <strong className="text-size">{userChat.fullName}</strong>
-//             <p>{userChat.lastMessage}</p>
-//         </div>
-//     </Col>
-//     <Col md={2}>
-//         <p className="date-text">{formatCreatedAtDate(userChat.lastMessageTime)}</p>
-//     </Col>
-//     <hr/>
-// </Row>
 export default ChatPersonList;

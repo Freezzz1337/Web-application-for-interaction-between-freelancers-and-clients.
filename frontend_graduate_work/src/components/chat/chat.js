@@ -1,16 +1,21 @@
 import {useEffect, useState} from "react";
-import {Button, Container, Offcanvas} from "react-bootstrap";
+import {Button, Col, Container, Offcanvas, Row} from "react-bootstrap";
 import {useAuth} from "../../context/auth-context";
 import {getAllProjectsWithChats} from "../../services/chat-service";
 import ChatProjectList from "./chat-lists/chat-project-list";
 import ChatPersonList from "./chat-lists/chat-person-list";
 import {BiChevronLeft} from "react-icons/bi";
 import ChatPerson from "./chat-person";
+import "./chat.css";
 
 const Chat = ({show, onHide}) => {
     const [projects, setProjects] = useState(null);
     const [selectedProjectId, setSelectedProjectId] = useState(null);
+    const [selectedProjectName, setSelectedProjectName] = useState(null);
+
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedUserName, setSelectedUserName] = useState(null);
+
     const [chatMode, setChatMode] = useState('projectList');
     const {token} = useAuth();
 
@@ -25,14 +30,16 @@ const Chat = ({show, onHide}) => {
         }
     }, [show, token]);
 
-    const handleProject = (projectId) => {
+    const handleProject = (projectId, projectName) => {
         setSelectedProjectId(projectId);
+        setSelectedProjectName(projectName);
         setSelectedUserId(null);
         setChatMode('userList');
     };
 
-    const handleUserSelect = (userId) => {
+    const handleUserSelect = (userId, fullName) => {
         setSelectedUserId(userId);
+        setSelectedUserName(fullName);
         setChatMode('chat');
     };
 
@@ -42,32 +49,38 @@ const Chat = ({show, onHide}) => {
             setChatMode('userList');
         } else if (chatMode === 'userList') {
             setSelectedProjectId(null);
+            setSelectedProjectName(null);
             setChatMode('projectList');
         }
     };
 
     return (
-            <Offcanvas show={show} onHide={onHide} placement="end">
-                <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>
-                        {chatMode !== 'projectList' && (
-                            <Button className="btn btn-back" onClick={handleBack}>
-                                <BiChevronLeft size={24}/> Chat
+        <Offcanvas show={show} onHide={onHide} placement="end">
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>
+                    <div className="chat-header-text">
+                        {chatMode !== 'projectList' ? (
+                            <Button variant="outline-secondary" onClick={handleBack}>
+                                <BiChevronLeft size={24}/>
                             </Button>
+                        ) : (
+                            <h4 className="mb-0">Chat list</h4>
                         )}
-                    </Offcanvas.Title>
-                </Offcanvas.Header>
-                <hr style={{marginTop: '-1px'}}/>
-                <Offcanvas.Body>
-                    {selectedUserId ? (
-                        <ChatPerson userId={selectedUserId} projectId={selectedProjectId}/>
-                    ) : selectedProjectId ? (
-                        <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
-                    ) : (
-                        <ChatProjectList projects={projects} handleProject={handleProject}/>
-                    )}
-                </Offcanvas.Body>
-            </Offcanvas>
+                        <span> {chatMode === "chat" ? selectedUserName: selectedProjectName}</span>
+                    </div>
+                </Offcanvas.Title>
+            </Offcanvas.Header>
+            <hr className="mb-0" style={{marginTop: '-1px'}}/>
+            <Offcanvas.Body>
+                {selectedUserId ? (
+                    <ChatPerson userId={selectedUserId} projectId={selectedProjectId}/>
+                ) : selectedProjectId ? (
+                    <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
+                ) : (
+                    <ChatProjectList projects={projects} handleProject={handleProject}/>
+                )}
+            </Offcanvas.Body>
+        </Offcanvas>
     );
 };
 

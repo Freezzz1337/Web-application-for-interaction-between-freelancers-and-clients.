@@ -1,5 +1,6 @@
 package backend_graduate_work.services;
 
+import backend_graduate_work.DTO.chatDTO.SendMessageRequestDTO;
 import backend_graduate_work.DTO.chatMessageDTO.ChatResponseFromEmployerToCommentRequestDTO;
 import backend_graduate_work.models.Chat;
 import backend_graduate_work.models.ChatMessage;
@@ -33,7 +34,7 @@ public class ChatMessageService {
         this.chatRepository = chatRepository;
     }
 
-    // TODO: 5/8/2024 method needs a reactor!!!!!!!!!
+    // TODO: 5/8/2024 method needs a refactor!!!!!!!!!
     @Transactional
     public void chatResponseFromEmployerToComment(ChatResponseFromEmployerToCommentRequestDTO chatDTO) {
         User employer = getCurrentUser();
@@ -50,7 +51,7 @@ public class ChatMessageService {
 
         ChatMessage message = new ChatMessage();
         message.setChat(chat);
-        message.setSender(employer); 
+        message.setSender(employer);
         message.setMessageText(chatDTO.getMessage());
         if (chat.getMessages() == null) {
             chat.setMessages(new ArrayList<>());
@@ -58,7 +59,17 @@ public class ChatMessageService {
         chat.getMessages().add(message);
 
         chatRepository.save(chat);
+    }
 
+    @Transactional
+    public void sendMessage(SendMessageRequestDTO requestDTO) {
+        chatMessageRepository.save(ChatMessage.builder()
+                .chat(chatRepository.findById(requestDTO.getChatId()))
+                .messageText(!requestDTO.getTextMessage().isEmpty() ? requestDTO.getTextMessage() : null)
+                .fileData(requestDTO.getFile() != null ? requestDTO.getFile() : null)
+                .fileName(!requestDTO.getFileName().isEmpty() ? requestDTO.getFileName() : null)
+                .sender(getCurrentUser())
+                .build());
     }
 
     public User getCurrentUser() {

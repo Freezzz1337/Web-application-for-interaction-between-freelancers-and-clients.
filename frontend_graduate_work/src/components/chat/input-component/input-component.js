@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {Button, Col, Container, Form, FormControl, InputGroup, Row} from "react-bootstrap";
+import {Button, Form, FormControl, InputGroup} from "react-bootstrap";
 import {MdAttachFile, MdClose, MdSend} from "react-icons/md";
 import {convertFileToBase64} from "../../../util/convert-file-to-base64";
 import "./input-component.css";
@@ -48,7 +48,7 @@ const InputComponent = ({onSubmit}) => {
         e.preventDefault();
 
         if (onSubmit) {
-            onSubmit(inputValue, file);
+            onSubmit(inputValue, file, fileName);
         }
         setInputValue('');
         setFile(null);

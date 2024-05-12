@@ -11,4 +11,5 @@ public class Sender {
     private String fullName;
     @Lob
     private byte[] profilePicture;
+    private long senderId;
 }
