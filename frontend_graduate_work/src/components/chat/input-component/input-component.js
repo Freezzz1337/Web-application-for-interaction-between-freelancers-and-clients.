@@ -1,10 +1,14 @@
 import {useEffect, useRef, useState} from "react";
-import {Button, Form, FormControl, InputGroup} from "react-bootstrap";
+import {Button, Dropdown, DropdownButton, Form, FormControl, InputGroup} from "react-bootstrap";
 import {MdAttachFile, MdClose, MdSend} from "react-icons/md";
 import {convertFileToBase64} from "../../../util/convert-file-to-base64";
 import "./input-component.css";
+import {useAuth} from "../../../context/auth-context";
+import CollaborationInvitation from "../../collaboration-invitation";
 
-const InputComponent = ({onSubmit}) => {
+const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) => {
+    const {userType} = useAuth();
+
     const [inputValue, setInputValue] = useState('');
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState('');
@@ -13,6 +17,12 @@ const InputComponent = ({onSubmit}) => {
     const [rows, setRows] = useState(1);
     const inputRef = useRef(null);
 
+    const [showModal, setShowModal] = useState(false);
+
+    const toggleModal = () => {
+        setShowModal(!showModal);
+    };
+
     useEffect(() => {
         if (inputRef.current) {
             const textarea = inputRef.current;
@@ -20,6 +30,8 @@ const InputComponent = ({onSubmit}) => {
             textarea.style.height = `${textarea.scrollHeight}px`;
             setRows(textarea.rows);
         }
+
+
     }, [inputValue]);
 
 
@@ -55,50 +67,70 @@ const InputComponent = ({onSubmit}) => {
         setFileName('');
     };
 
-    return (
-        <Form className="input-bottom-fixed">
-            <InputGroup className="mb-3 align-items-start">
-                {file ? (
-                    <Button variant="outline-secondary" onClick={handleClearFile}>
-                        <MdClose/>
-                    </Button>
-                ) : (
-                    <div>
-                        <label htmlFor="fileInput">
-                    <span className={`btn btn-outline-secondary ${!!inputValue ? 'disabled' : ''}`}>
-                        <MdAttachFile/>
-                    </span>
-                        </label>
-                        <FormControl
-                            id="fileInput"
-                            type="file"
-                            style={{display: 'none'}}
-                            onChange={handleFileChange}
-                            disabled={!!inputValue}
-                            ref={fileInputRef}
-                        />
-                    </div>
-                )}
 
-                <FormControl
-                    as="textarea"
-                    rows={rows}
-                    ref={inputRef}
-                    placeholder={fileName ? fileName : "Enter text..."}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    disabled={!!file}
-                    style={{resize: "none"}}
-                />
-                <Button variant="primary"
-                        onClick={handleSubmit}
-                        disabled={!inputValue && !file}>
-                    <MdSend/>
-                </Button>
-            </InputGroup>
-        </Form>
+    return (
+        <>
+            <Form className="input-bottom-fixed">
+                <InputGroup className="mb-3 align-items-start">
+                    {file ? (
+                        <Button variant="outline-secondary" onClick={handleClearFile}>
+                            <MdClose/>
+                        </Button>
+                    ) : (
+                        <DropdownButton
+                            variant="outline-secondary"
+                            title={<MdAttachFile/>}
+                            id="input-group-dropdown-1"
+                            disabled={!!inputValue}
+                        >
+                            <Dropdown.Item as="label" htmlFor="fileInput"
+                                           className={`btn ${!!inputValue ? 'disabled' : ''}`}>
+                                Upload File
+                                <input
+                                    id="fileInput"
+                                    type="file"
+                                    style={{display: 'none'}}
+                                    onChange={handleFileChange}
+                                    ref={fileInputRef}
+                                    disabled={!!inputValue}
+                                />
+                            </Dropdown.Item>
+
+                            {userType === "EMPLOYER" && (
+                                <>
+                                    {!collaborationIsActive && (
+                                        <Dropdown.Item onClick={toggleModal}>Collaborate</Dropdown.Item>
+                                    )}
+                                    <CollaborationInvitation showModal={showModal} toggleModal={toggleModal}
+                                                             userId={userId} projectId={projectId}/>
+
+                                    <Dropdown.Item>Approve Work</Dropdown.Item>
+                                    <Dropdown.Item>Edit Collaboration</Dropdown.Item>
+                                </>
+                            )}
+
+                        </DropdownButton>
+                    )}
+
+                    < FormControl
+                        as="textarea"
+                        rows={rows}
+                        ref={inputRef}
+                        placeholder={fileName ? fileName : "Enter text..."}
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        disabled={!!file}
+                        style={{resize: "none"}}
+                    />
+                    <Button variant="primary"
+                            onClick={handleSubmit}
+                            disabled={!inputValue && !file}>
+                        <MdSend/>
+                    </Button>
+                </InputGroup>
+            </Form>
+
+        </>
     );
 }
 export default InputComponent;
-
-

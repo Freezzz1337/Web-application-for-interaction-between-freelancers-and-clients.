@@ -215,6 +215,17 @@ public class ProjectService {
         return new ProjectPagesDTO(pageResponseDTOList, totalProjects);
     }
 
+
+
+    public ProjectGetFroCollaborationInvitationResponseDTO getProjectForCollaborationInvitation(String projectId) {
+        Project project = projectRepository.findById(Long.parseLong(projectId));
+        return ProjectGetFroCollaborationInvitationResponseDTO.builder()
+                .title(project.getTitle())
+                .budget(project.getBudget())
+                .deadline(project.getDeadline())
+                .build();
+    }
+
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();

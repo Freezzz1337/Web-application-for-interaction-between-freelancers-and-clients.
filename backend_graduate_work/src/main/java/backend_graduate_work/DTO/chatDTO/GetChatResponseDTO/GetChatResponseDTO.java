@@ -9,5 +9,6 @@ import java.util.List;
 @Builder
 public class GetChatResponseDTO {
     private long chatId;
+    private boolean collaborationIsActive;
     private List<GetChatMessage> chatMessageList;
 }

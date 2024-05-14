@@ -1,14 +1,16 @@
 import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../../../context/auth-context";
 import {getChat, sendMessage} from "../../../services/chat-service";
-import {Col, Image, ListGroup, Row} from "react-bootstrap";
+import {Button, Col, Image, ListGroup, Row} from "react-bootstrap";
 import "./chat-person.css";
 import formatCreatedAtDate from "../../../util/format-created-at-date";
 import InputComponent from "../input-component";
+import CollaborationInvitationMessage from "./collaboration-invitation-message";
 
 const ChatPerson = ({userId, projectId}) => {
-    const {token} = useAuth();
+    const {token, userType} = useAuth();
     const [chatMessages, setChatMessages] = useState(null);
+    const [collaborationIsActive, setCollaborationIsActive] = useState(false);
     const [formData, setFormData] = useState({
         chatId: 0,
         textMessage: "",
@@ -20,7 +22,9 @@ const ChatPerson = ({userId, projectId}) => {
     useEffect(() => {
         const fetchChatMessages = async () => {
             const serverResponse = await getChat(userId, projectId, token);
+            console.log(serverResponse);
             setChatMessages(serverResponse.chatMessageList);
+            setCollaborationIsActive(serverResponse.collaborationIsActive);
 
             setFormData({...formData, chatId: serverResponse.chatId});
         };
@@ -48,27 +52,35 @@ const ChatPerson = ({userId, projectId}) => {
         setChatMessages(updatedChatMessages.chatMessageList);
     };
 
-    if (!chatMessages) {
-        return <div><h2>Wait a moment!</h2></div>
-    }
+    const updateChat = async () => {
+        const updatedChatMessages = await getChat(userId, projectId, token);
+        setChatMessages(updatedChatMessages.chatMessageList);
+        setCollaborationIsActive(updatedChatMessages.collaborationIsActive);
+    };
 
-    function truncateText(text, maxLength) {
+    const truncateText = (text, maxLength) => {
         if (text.length > maxLength) {
             return text.substring(0, maxLength - 3) + '...';
         }
         return text;
     }
+
+    if (!chatMessages) {
+        return <div><h2>Wait a moment!</h2></div>
+    }
+
     return (
         <div>
             <ListGroup className="chat-person-listGroup" ref={chatListGroupRef}>
-                {chatMessages.map((message) => (
+                {chatMessages.map((message, index) => (
                     <ListGroup.Item key={message.messageId} className="mb-2 border rounded">
                         <Row>
                             <Col xs={2} className="mt-1">
                                 <Image
                                     src={`data:image/jpeg;base64,${message.sender.profilePicture}`}
                                     className="chat-person-picture"
-                                    roundedCircle/>
+                                    roundedCircle
+                                />
                             </Col>
                             <Col xs={10}>
                                 <div>
@@ -76,12 +88,25 @@ const ChatPerson = ({userId, projectId}) => {
                                     <span> {formatCreatedAtDate(message.createdAt)}</span>
                                     {message.fileName && message.file && (
                                         <div>
-                                            <p>File: <a href={`data:${message.fileType};base64,${message.file}`}
-                                                        download={message.fileName}>{truncateText(message.fileName, 27)}</a></p>
+                                            <p>
+                                                File:{" "}
+                                                <a
+                                                    href={`data:${message.fileType};base64,${message.file}`}
+                                                    download={message.fileName}
+                                                >
+                                                    {truncateText(message.fileName, 27)}
+                                                </a>
+                                            </p>
                                         </div>
                                     )}
-                                    {message.messageText && (
-                                        <p>{message.messageText}</p>
+                                    {message.messageText && <p>{message.messageText}</p>}
+                                    {message.collaborationInvitation && !message.fileName && !message.file && (
+                                        <CollaborationInvitationMessage
+                                            invitation={message.collaborationInvitation}
+                                            userType={userType}
+                                            updateChat={updateChat}
+
+                                        />
                                     )}
                                 </div>
                             </Col>
@@ -89,7 +114,7 @@ const ChatPerson = ({userId, projectId}) => {
                     </ListGroup.Item>
                 ))}
             </ListGroup>
-            <InputComponent onSubmit={handleSendMessage}/>
+            <InputComponent onSubmit={handleSendMessage} userId={userId} projectId={projectId} collaborationIsActive={collaborationIsActive}/>
         </div>
     );
 }

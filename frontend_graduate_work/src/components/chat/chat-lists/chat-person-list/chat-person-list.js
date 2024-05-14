@@ -13,6 +13,7 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
         const fetch = async () => {
             const serverResponse = await getAllUsersChats(projectId, token);
             setUsersChats(serverResponse);
+            console.log(serverResponse);
         };
         fetch();
     }, [projectId, token]);
@@ -21,7 +22,7 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
         <Row className="for-person-list-container">
             {usersChats.map(userChat => (
                 <Col xs={12} key={userChat.userId} onClick={() => onSelectUser(userChat.userId, userChat.fullName)}
-                     className="fade-block align-items-center">
+                     className={`fade-block align-items-center ${userChat.active ? '' : 'inactive'}`}>
                     <Row className="mt-3">
                         <Col xs={2} className="mt-2">
                             <Image src={`data:image/png;base64,${userChat.userPicture}`} alt="User"

@@ -15,4 +15,5 @@ public class GetChatUserResponseDTO {
     @Lob
     private byte[] userPicture;
     private long userId;
+    private boolean active;
 }

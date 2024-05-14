@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, Col, Container, Offcanvas, Row} from "react-bootstrap";
+import {Button, Offcanvas} from "react-bootstrap";
 import {useAuth} from "../../context/auth-context";
 import {getAllProjectsWithChats} from "../../services/chat-service";
 import ChatProjectList from "./chat-lists/chat-project-list";
@@ -66,14 +66,14 @@ const Chat = ({show, onHide}) => {
                         ) : (
                             <h4 className="mb-0">Chat list</h4>
                         )}
-                        <span> {chatMode === "chat" ? selectedUserName: selectedProjectName}</span>
+                        <span> {chatMode === "chat" ? selectedUserName : selectedProjectName}</span>
                     </div>
                 </Offcanvas.Title>
             </Offcanvas.Header>
             <hr className="mb-0" style={{marginTop: '-1px'}}/>
             <Offcanvas.Body>
                 {selectedUserId ? (
-                    <ChatPerson userId={selectedUserId} projectId={selectedProjectId}/>
+                    <ChatPerson userId={selectedUserId} projectId={selectedProjectId} />
                 ) : selectedProjectId ? (
                     <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
                 ) : (

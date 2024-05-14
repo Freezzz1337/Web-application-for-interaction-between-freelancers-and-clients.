@@ -31,6 +31,16 @@ const _requestOptionsPATCH = (formData, token = "") => {
     }
 }
 
+const _requestOptionsWithoutBodyPATCH = ( token = "") => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    return {
+        method: "PATCH",
+        headers: myHeaders,
+    }
+}
+
 
 const _requestOptionsDELETE = (token = "") => {
     const myHeaders = new Headers();
@@ -47,5 +57,6 @@ export {
     _requestOptionsGET,
     _requestOptionsPOST,
     _requestOptionsPATCH,
+    _requestOptionsWithoutBodyPATCH,
     _requestOptionsDELETE
 }

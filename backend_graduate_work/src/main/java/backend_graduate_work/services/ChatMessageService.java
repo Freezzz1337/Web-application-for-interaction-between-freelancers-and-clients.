@@ -34,7 +34,6 @@ public class ChatMessageService {
         this.chatRepository = chatRepository;
     }
 
-    // TODO: 5/8/2024 method needs a refactor!!!!!!!!!
     @Transactional
     public void chatResponseFromEmployerToComment(ChatResponseFromEmployerToCommentRequestDTO chatDTO) {
         User employer = getCurrentUser();

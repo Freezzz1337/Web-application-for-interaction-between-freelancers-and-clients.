@@ -86,4 +86,11 @@ public class ProjectController {
                                                                @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5") int size) {
         return ResponseEntity.ok(projectService.getFilteredProjectsForFreelancer(filterDTO, page, size));
     }
+
+    @GetMapping("/getProjectForCollaborationInvitation/{id}")
+    public ResponseEntity<ProjectGetFroCollaborationInvitationResponseDTO> getProjectForCollaborationInvitation(@PathVariable String id){
+        return ResponseEntity.ok(projectService.getProjectForCollaborationInvitation(id));
+    }
+
+
 }

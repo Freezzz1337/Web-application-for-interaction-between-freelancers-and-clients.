@@ -57,6 +57,11 @@ const getAllFilteredProjectsForFreelancer = async (formData, token, page = 0) =>
         .then(response => response.json());
 }
 
+const getProjectForCollaborationInvitation = async (projectId, token) => {
+    return await fetch(`${_api}project/getProjectForCollaborationInvitation/${projectId}`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
 export {
     createProject,
     getAllProjectsForEmployer,
@@ -69,5 +74,7 @@ export {
 
     getProjectDetailsForFreelancer,
     getAllProjectsForFreelancer,
-    getAllFilteredProjectsForFreelancer
+    getAllFilteredProjectsForFreelancer,
+
+    getProjectForCollaborationInvitation
 }

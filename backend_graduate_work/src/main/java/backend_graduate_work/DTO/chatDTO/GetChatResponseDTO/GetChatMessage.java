@@ -16,4 +16,6 @@ public class GetChatMessage {
     private byte[] file;
 
     private Timestamp createdAt;
+
+    private GetCollaborationInvitation collaborationInvitation;
 }

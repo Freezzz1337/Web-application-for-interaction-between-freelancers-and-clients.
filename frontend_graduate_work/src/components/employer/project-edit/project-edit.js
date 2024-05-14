@@ -18,6 +18,7 @@ import {
     getProjectDetailsForEmployer,
     getSubprojectsTypes
 } from "../../../services/project-service";
+import {convertToDateTimeLocal} from "../../../util/convert-to-date-time-local";
 
 const ProjectEdit = () => {
     const {projectId} = useParams();
@@ -42,8 +43,7 @@ const ProjectEdit = () => {
                 setProjectTypes(serverResponseAllProjectTypes);
                 setSubprojectTypes(serverResponseSubprojectsTypes);
 
-                setFormData(serverResponseProjectDetailsForEmployer);
-                console.log(serverResponseProjectDetailsForEmployer)
+                setFormData(serverResponseProjectDetailsForEmployer.projectDetailsForEmployer);
             }
         }
 
@@ -81,13 +81,6 @@ const ProjectEdit = () => {
             setFormData({...formData, [name]: value});
         }
     }
-
-    const convertToDateTimeLocal = (isoDateTimeString) => {
-        const date = new Date(isoDateTimeString);
-        const offset = date.getTimezoneOffset();
-        date.setMinutes(date.getMinutes() - offset);
-        return date.toISOString().slice(0, -1);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
