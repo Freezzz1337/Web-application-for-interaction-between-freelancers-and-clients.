@@ -33,4 +33,15 @@ public class CollaborationInvitationController {
         collaborationInvitationService.declineCollaborationInvitation(invitationId);
         return ResponseEntity.ok(new CollaborationInvitationDeclineResponseDTO());
     }
+
+    @GetMapping("/getCollaboration")
+    public ResponseEntity<CollaborationInvitationGetResponseDTO> getCollaboration(@RequestParam long projectId, @RequestParam long userId) {
+        return ResponseEntity.ok(collaborationInvitationService.getCollaboration(projectId, userId));
+    }
+
+    @PatchMapping("/edit")
+    public ResponseEntity<CollaborationInvitationEditResponseDTO> editCollaboration(@RequestBody CollaborationInvitationCreateRequestDTO requestDTO) {
+        collaborationInvitationService.edit(requestDTO);
+        return ResponseEntity.ok(new CollaborationInvitationEditResponseDTO());
+    }
 }

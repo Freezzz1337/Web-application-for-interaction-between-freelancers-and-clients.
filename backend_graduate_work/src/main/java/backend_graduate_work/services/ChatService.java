@@ -7,6 +7,8 @@ import backend_graduate_work.DTO.chatDTO.GetChatResponseDTO.GetCollaborationInvi
 import backend_graduate_work.DTO.chatDTO.GetChatResponseDTO.Sender;
 import backend_graduate_work.DTO.chatDTO.GetChatUserResponseDTO;
 import backend_graduate_work.models.*;
+import backend_graduate_work.models.enums.InvitationStatus;
+import backend_graduate_work.models.enums.UserTypeEnum;
 import backend_graduate_work.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -50,7 +52,7 @@ public class ChatService {
 
         User currentUser = getCurrentUser();
         long currentUserId = currentUser.getId();
-        boolean isCurrentUserFreelancer = currentUser.getUserTypeEnum().getUserType().equals("FREELANCER");
+        boolean isCurrentUserFreelancer = currentUser.getUserTypeEnum().getUserType().equals(UserTypeEnum.FREELANCER.getUserType());
 
         return chats.stream()
                 .filter(chat -> {
@@ -84,11 +86,10 @@ public class ChatService {
 
         Project project = projectRepository.findById(projectId);
 
-
-        if (currentUser.getUserTypeEnum().getUserType().equals("EMPLOYER")) {
+        if (currentUser.getUserTypeEnum().getUserType().equals(UserTypeEnum.EMPLOYER.getUserType())) {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, currentUser.getId(), userId);
 
-            collaborationIsActive = collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndAcceptedIsTrue(userId, currentUser.getId()) != null;
+            collaborationIsActive = collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndStatus(userId, currentUser.getId(), InvitationStatus.ACCEPTED) != null;
         } else {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, userId, currentUser.getId());
         }
@@ -104,27 +105,26 @@ public class ChatService {
                                         .fullName(message.getSender().getFullName())
                                         .profilePicture(message.getSender().getProfilePicture())
                                         .build())
-                                .messageText(message.getMessageText())
+                                .messageText(message.getCollaborationInvitation() == null ? message.getMessageText() : null)
                                 .fileName(message.getFileName())
                                 .file(message.getFileData())
                                 .createdAt(message.getCreatedAt())
                                 .collaborationInvitation(message.getCollaborationInvitation() != null ?
-                                        getCollaborationInvitation(message.getCollaborationInvitation().getId(), project) : null)
+                                        getCollaborationInvitation(message.getCollaborationInvitation()) : null)
                                 .build())
                         .toList())
                 .build();
     }
 
-    private GetCollaborationInvitation getCollaborationInvitation(long collaborationInvitationId, Project project) {
-        CollaborationInvitation invitation = collaborationInvitationRepository.findById(collaborationInvitationId);
+    private GetCollaborationInvitation getCollaborationInvitation(CollaborationInvitation collaborationInvitation) {
 
         return GetCollaborationInvitation.builder()
-                .id(invitation.getId())
-                .budget(project.getBudget())
-                .projectName(project.getTitle())
-                .accepted(invitation.isAccepted())
-                .declined(invitation.isDeclined())
-                .createdAt(invitation.getCreatedAt())
+                .id(collaborationInvitation.getId())
+                .budget(collaborationInvitation.getNewBudget())
+                .projectName(collaborationInvitation.getProject().getTitle())
+                .status(collaborationInvitation.getStatus().getStatus())
+                .createdAt(collaborationInvitation.getCreatedAt())
+                .status(collaborationInvitation.getStatus().getStatus())
                 .build();
     }
 

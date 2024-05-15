@@ -1,4 +1,10 @@
-import {_api, _requestOptionsPOST, _requestOptionsWithoutBodyPATCH} from "./apiRequestHelpers";
+import {
+    _api,
+    _requestOptionsGET,
+    _requestOptionsPATCH,
+    _requestOptionsPOST,
+    _requestOptionsWithoutBodyPATCH
+} from "./apiRequestHelpers";
 
 const createCollaborationInvitation = async (formData, token) => {
     return await fetch(`${_api}collaborationInvitation/create`, _requestOptionsPOST(formData, token))
@@ -14,8 +20,22 @@ const declineCollaborationInvitation = async (invitationId, token) => {
     return await fetch(`${_api}collaborationInvitation/decline/${invitationId}`, _requestOptionsWithoutBodyPATCH(token))
         .then(response => response.json());
 }
+
+const editCollaborationInvitation = async (formData, token) => {
+    return await fetch(`${_api}collaborationInvitation/edit`, _requestOptionsPATCH(formData, token))
+        .then(response => response.json());
+}
+
+const getCollaborationInvitation = async (projectId, userId, token) => {
+    return await fetch(`${_api}collaborationInvitation/getCollaboration?projectId=${projectId}&userId=${userId}`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+
 export {
     createCollaborationInvitation,
     acceptCollaborationInvitation,
-    declineCollaborationInvitation
+    declineCollaborationInvitation,
+    editCollaborationInvitation,
+    getCollaborationInvitation
 }

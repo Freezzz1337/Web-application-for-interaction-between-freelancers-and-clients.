@@ -105,7 +105,6 @@ const ChatPerson = ({userId, projectId}) => {
                                             invitation={message.collaborationInvitation}
                                             userType={userType}
                                             updateChat={updateChat}
-
                                         />
                                     )}
                                 </div>

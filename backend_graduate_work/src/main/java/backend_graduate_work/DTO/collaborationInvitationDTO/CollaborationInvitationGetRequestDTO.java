@@ -3,13 +3,9 @@ package backend_graduate_work.DTO.collaborationInvitationDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
 @Getter
 @Setter
-public class CollaborationInvitationCreateRequestDTO {
+public class CollaborationInvitationGetRequestDTO {
     private String freelancerId;
     private String projectId;
-    private String newBudget;
-    private Timestamp newDeadline;
 }

@@ -3,9 +3,12 @@ import {useEffect, useState} from "react";
 import {getProjectForCollaborationInvitation} from "../../services/project-service";
 import {useAuth} from "../../context/auth-context";
 import {convertToDateTimeLocal} from "../../util/convert-to-date-time-local";
-import {createCollaborationInvitation} from "../../services/collaboration-invitation-service";
+import {
+    createCollaborationInvitation,
+    editCollaborationInvitation, getCollaborationInvitation
+} from "../../services/collaboration-invitation-service";
 
-const CollaborationInvitation = ({showModal, toggleModal, userId, projectId}) => {
+const CollaborationInvitation = ({showModal, toggleModal, userId, projectId, collaborationAction}) => {
     const {token} = useAuth();
     const [projectName, setProjectName] = useState(null);
     const [formData, setFormData] = useState({
@@ -17,7 +20,13 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId}) =>
 
     useEffect(() => {
         const fetchProject = async () => {
-            const serverResponse = await getProjectForCollaborationInvitation(projectId, token);
+            let serverResponse
+
+            // if (collaborationAction === "collaborate") {
+            //     serverResponse = await getProjectForCollaborationInvitation(projectId, token);
+            // } else if (collaborationAction === "edit") {
+                serverResponse = await getCollaborationInvitation(projectId, userId, token);
+            // }
             setProjectName(serverResponse.title);
 
             setFormData({
@@ -40,7 +49,12 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId}) =>
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const serverResponse = await createCollaborationInvitation(JSON.stringify(formData), token);
+        let serverResponse;
+        if (collaborationAction === "collaborate") {
+            serverResponse = await createCollaborationInvitation(JSON.stringify(formData), token);
+        } else if (collaborationAction === "edit") {
+            serverResponse = await editCollaborationInvitation(JSON.stringify(formData), token);
+        }
         if (serverResponse) {
             toggleModal();
         }
@@ -53,7 +67,7 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId}) =>
     return (
         <Modal show={showModal} onHide={toggleModal} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Collaboration Agreement</Modal.Title>
+                <Modal.Title>{collaborationAction === "collaborate" ? "Collaboration Agreement" : "Edit Collaboration Agreement"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h6 className="text-center mb-1">{projectName}</h6>
@@ -62,7 +76,7 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId}) =>
                         <Form.Label className="mb-0 mt-3">Budget</Form.Label>
                         <Form.Control type="text" name="newBudget" value={formData.newBudget} onChange={handleChange}/>
                     </Form.Group>
-                    <Form.Group controlId="newDeadline">
+                    <Form.Group controlId="newDeadыline">
                         <Form.Label className="mb-0 mt-3">Deadline</Form.Label>
                         <Form.Control type="datetime-local" name="newDeadline"
                                       value={convertToDateTimeLocal(formData.newDeadline)} onChange={handleChange}/>

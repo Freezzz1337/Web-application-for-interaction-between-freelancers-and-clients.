@@ -41,6 +41,6 @@ public class ChatMessage {
     private Timestamp createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "collaboration_invitation")
+    @JoinColumn(name = "collaboration_invitation_id")
     private CollaborationInvitation collaborationInvitation;
 }

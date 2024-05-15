@@ -13,7 +13,6 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
         const fetch = async () => {
             const serverResponse = await getAllUsersChats(projectId, token);
             setUsersChats(serverResponse);
-            console.log(serverResponse);
         };
         fetch();
     }, [projectId, token]);

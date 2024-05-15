@@ -13,7 +13,7 @@ public class GetCollaborationInvitation {
     private BigDecimal budget;
     private String projectName;
 
-    private boolean accepted;
-    private boolean declined;
     private Timestamp createdAt;
+
+    private String status;
 }

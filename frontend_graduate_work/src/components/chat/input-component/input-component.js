@@ -4,7 +4,7 @@ import {MdAttachFile, MdClose, MdSend} from "react-icons/md";
 import {convertFileToBase64} from "../../../util/convert-file-to-base64";
 import "./input-component.css";
 import {useAuth} from "../../../context/auth-context";
-import CollaborationInvitation from "../../collaboration-invitation";
+import CollaborationInvitationModal from "../../collaboration-invitation";
 
 const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) => {
     const {userType} = useAuth();
@@ -18,6 +18,8 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
     const inputRef = useRef(null);
 
     const [showModal, setShowModal] = useState(false);
+    const [collaborationAction, setCollaborationAction] = useState(null);
+
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -34,9 +36,17 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
 
     }, [inputValue]);
 
-
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
+    };
+    const handleCollaborate = () => {
+        setCollaborationAction('collaborate');
+        toggleModal();
+    };
+
+    const handleEditCollaboration = () => {
+        setCollaborationAction('edit');
+        toggleModal();
     };
 
     const handleFileChange = (e) => {
@@ -99,13 +109,21 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
                             {userType === "EMPLOYER" && (
                                 <>
                                     {!collaborationIsActive && (
-                                        <Dropdown.Item onClick={toggleModal}>Collaborate</Dropdown.Item>
+                                        <Dropdown.Item onClick={handleCollaborate}>Collaborate</Dropdown.Item>
                                     )}
-                                    <CollaborationInvitation showModal={showModal} toggleModal={toggleModal}
-                                                             userId={userId} projectId={projectId}/>
 
-                                    <Dropdown.Item>Approve Work</Dropdown.Item>
-                                    <Dropdown.Item>Edit Collaboration</Dropdown.Item>
+                                    {collaborationIsActive && (
+                                        <>
+                                            <Dropdown.Item>Approve Work</Dropdown.Item>
+                                            <Dropdown.Item onClick={handleEditCollaboration}>Edit
+                                                Collaboration</Dropdown.Item>
+                                        </>
+                                    )}
+
+                                    <CollaborationInvitationModal showModal={showModal} toggleModal={toggleModal}
+                                                                  userId={userId}
+                                                                  projectId={projectId}
+                                                                  collaborationAction={collaborationAction}/>
                                 </>
                             )}
 
