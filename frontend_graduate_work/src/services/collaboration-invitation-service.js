@@ -16,8 +16,8 @@ const acceptCollaborationInvitation = async (invitationId, token) => {
         .then(response => response.json());
 }
 
-const declineCollaborationInvitation = async (invitationId, token) => {
-    return await fetch(`${_api}collaborationInvitation/decline/${invitationId}`, _requestOptionsWithoutBodyPATCH(token))
+const declineCollaborationInvitation = async (formData, token) => {
+    return await fetch(`${_api}collaborationInvitation/decline`, _requestOptionsPATCH(formData,token))
         .then(response => response.json());
 }
 
@@ -32,10 +32,23 @@ const getCollaborationInvitation = async (projectId, userId, token) => {
 }
 
 
+const declineInvitation = async (invitationId, token) => {
+    return await fetch(`${_api}collaborationInvitation/declineInvitation/${invitationId}`, _requestOptionsWithoutBodyPATCH(token))
+        .then(response => response.json());
+}
+
+const completedCollaborationInvitation = async (formData, token) => {
+    return await fetch(`${_api}collaborationInvitation/complete`, _requestOptionsPOST(formData, token))
+        .then(response => response.json());
+}
+
 export {
     createCollaborationInvitation,
     acceptCollaborationInvitation,
     declineCollaborationInvitation,
     editCollaborationInvitation,
-    getCollaborationInvitation
+    getCollaborationInvitation,
+
+    declineInvitation,
+    completedCollaborationInvitation
 }

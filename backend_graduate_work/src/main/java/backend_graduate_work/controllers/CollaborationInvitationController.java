@@ -1,6 +1,7 @@
 package backend_graduate_work.controllers;
 
 import backend_graduate_work.DTO.collaborationInvitationDTO.*;
+import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCompletedRequestDTO.CollaborationInvitationCompletedRequestDTO;
 import backend_graduate_work.services.CollaborationInvitationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CollaborationInvitationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CollaborationInvitationCreateResponseDTO> create(@RequestBody CollaborationInvitationCreateRequestDTO createRequestDTO) {
+    public ResponseEntity<CollaborationInvitationCreateResponseDTO> createCollaborationInvitation(@RequestBody CollaborationInvitationCreateRequestDTO createRequestDTO) {
         collaborationInvitationService.create(createRequestDTO);
         return ResponseEntity.ok(new CollaborationInvitationCreateResponseDTO());
     }
@@ -28,20 +29,32 @@ public class CollaborationInvitationController {
         return ResponseEntity.ok(new CollaborationInvitationAcceptResponseDTO());
     }
 
-    @PatchMapping("/decline/{invitationId}")
-    public ResponseEntity<CollaborationInvitationDeclineResponseDTO> declineResponseDTOResponseEntity(@PathVariable String invitationId) {
-        collaborationInvitationService.declineCollaborationInvitation(invitationId);
-        return ResponseEntity.ok(new CollaborationInvitationDeclineResponseDTO());
-    }
-
     @GetMapping("/getCollaboration")
-    public ResponseEntity<CollaborationInvitationGetResponseDTO> getCollaboration(@RequestParam long projectId, @RequestParam long userId) {
+    public ResponseEntity<CollaborationInvitationGetResponseDTO> getCollaborationInvitation(@RequestParam long projectId, @RequestParam long userId) {
         return ResponseEntity.ok(collaborationInvitationService.getCollaboration(projectId, userId));
     }
 
     @PatchMapping("/edit")
-    public ResponseEntity<CollaborationInvitationEditResponseDTO> editCollaboration(@RequestBody CollaborationInvitationCreateRequestDTO requestDTO) {
+    public ResponseEntity<CollaborationInvitationEditResponseDTO> editCollaborationInvitation(@RequestBody CollaborationInvitationCreateRequestDTO requestDTO) {
         collaborationInvitationService.edit(requestDTO);
         return ResponseEntity.ok(new CollaborationInvitationEditResponseDTO());
+    }
+
+    @PatchMapping("/decline")
+    public ResponseEntity<CollaborationInvitationDeclineResponseDTO> declineCollaborationInvitation(@RequestBody CollaborationInvitationCreateRequestDTO requestDTO) {
+        collaborationInvitationService.declineCollaborationInvitation(requestDTO);
+        return ResponseEntity.ok(new CollaborationInvitationDeclineResponseDTO());
+    }
+
+    @PatchMapping("/declineInvitation/{id}")
+    public ResponseEntity<CollaborationInvitationDeclineResponseDTO> declineCollaborationInvitation(@PathVariable String id) {
+        collaborationInvitationService.declineInvitation(id);
+        return ResponseEntity.ok(new CollaborationInvitationDeclineResponseDTO());
+    }
+
+    @PostMapping("/complete")
+    private ResponseEntity<CollaborationInvitationCompletedResponseDTO> completeCollaborationInvitation(@RequestBody CollaborationInvitationCompletedRequestDTO requestDTO) {
+        collaborationInvitationService.completedCollaborationInvitation(requestDTO);
+        return ResponseEntity.ok(new CollaborationInvitationCompletedResponseDTO());
     }
 }

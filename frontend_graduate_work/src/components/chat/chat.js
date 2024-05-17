@@ -28,6 +28,7 @@ const Chat = ({show, onHide}) => {
         if (show) {
             fetchProjects();
         }
+
     }, [show, token]);
 
     const handleProject = (projectId, projectName) => {
@@ -55,32 +56,38 @@ const Chat = ({show, onHide}) => {
     };
 
     return (
-        <Offcanvas show={show} onHide={onHide} placement="end">
-            <Offcanvas.Header closeButton>
-                <Offcanvas.Title>
-                    <div className="chat-header-text">
-                        {chatMode !== 'projectList' ? (
-                            <Button variant="outline-secondary" onClick={handleBack}>
-                                <BiChevronLeft size={24}/>
-                            </Button>
+
+                <Offcanvas show={show} onHide={onHide} placement="end">
+                    <Offcanvas.Header closeButton>
+                        <Offcanvas.Title>
+                            <div className="chat-header-text">
+                                {chatMode !== 'projectList' ? (
+                                    <Button variant="outline-secondary" onClick={handleBack}>
+                                        <BiChevronLeft size={24}/>
+                                    </Button>
+                                ) : (
+                                    <h4 className="mb-0">Chat list</h4>
+                                )}
+                                <span> {chatMode === "chat" ? selectedUserName : selectedProjectName}</span>
+                            </div>
+                        </Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <hr className="mb-0" style={{marginTop: '-1px'}}/>
+                    <Offcanvas.Body>
+                        {selectedUserId ? (
+                            <ChatPerson userId={selectedUserId} projectId={selectedProjectId}/>
+                        ) : selectedProjectId ? (
+                            <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
                         ) : (
-                            <h4 className="mb-0">Chat list</h4>
+                            <ChatProjectList projects={projects} handleProject={handleProject}/>
                         )}
-                        <span> {chatMode === "chat" ? selectedUserName : selectedProjectName}</span>
-                    </div>
-                </Offcanvas.Title>
-            </Offcanvas.Header>
-            <hr className="mb-0" style={{marginTop: '-1px'}}/>
-            <Offcanvas.Body>
-                {selectedUserId ? (
-                    <ChatPerson userId={selectedUserId} projectId={selectedProjectId} />
-                ) : selectedProjectId ? (
-                    <ChatPersonList projectId={selectedProjectId} onSelectUser={handleUserSelect}/>
-                ) : (
-                    <ChatProjectList projects={projects} handleProject={handleProject}/>
-                )}
-            </Offcanvas.Body>
-        </Offcanvas>
+
+                        {projects.length <= 0 &&(
+                            <h4 className="text-center">No chat has been created yet =(</h4>
+                        )}
+                    </Offcanvas.Body>
+                </Offcanvas>
+
     );
 };
 

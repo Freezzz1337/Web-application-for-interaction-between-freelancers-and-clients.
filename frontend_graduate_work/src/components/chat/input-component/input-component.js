@@ -6,7 +6,7 @@ import "./input-component.css";
 import {useAuth} from "../../../context/auth-context";
 import CollaborationInvitationModal from "../../collaboration-invitation";
 
-const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) => {
+const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive, updateChat}) => {
     const {userType} = useAuth();
 
     const [inputValue, setInputValue] = useState('');
@@ -20,7 +20,6 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
     const [showModal, setShowModal] = useState(false);
     const [collaborationAction, setCollaborationAction] = useState(null);
 
-
     const toggleModal = () => {
         setShowModal(!showModal);
     };
@@ -32,8 +31,6 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
             textarea.style.height = `${textarea.scrollHeight}px`;
             setRows(textarea.rows);
         }
-
-
     }, [inputValue]);
 
     const handleInputChange = (e) => {
@@ -49,6 +46,15 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
         toggleModal();
     };
 
+    const handleDeclineCollaboration = () => {
+        setCollaborationAction('decline');
+        toggleModal();
+    }
+
+    const handleApproveCollaboration = () => {
+        setCollaborationAction('approve');
+        toggleModal();
+    };
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
 
@@ -114,7 +120,10 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
 
                                     {collaborationIsActive && (
                                         <>
-                                            <Dropdown.Item>Approve Work</Dropdown.Item>
+                                            <Dropdown.Item onClick={handleApproveCollaboration}>Approve
+                                                Work</Dropdown.Item>
+                                            <Dropdown.Item onClick={handleDeclineCollaboration}>Decline
+                                                Work</Dropdown.Item>
                                             <Dropdown.Item onClick={handleEditCollaboration}>Edit
                                                 Collaboration</Dropdown.Item>
                                         </>
@@ -123,7 +132,9 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive}) =>
                                     <CollaborationInvitationModal showModal={showModal} toggleModal={toggleModal}
                                                                   userId={userId}
                                                                   projectId={projectId}
-                                                                  collaborationAction={collaborationAction}/>
+                                                                  collaborationAction={collaborationAction}
+                                                                  updateChat={updateChat}
+                                    />
                                 </>
                             )}
 

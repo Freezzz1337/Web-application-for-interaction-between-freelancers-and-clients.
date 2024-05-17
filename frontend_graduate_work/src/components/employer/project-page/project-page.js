@@ -1,6 +1,6 @@
 import {Card, Col, Container, Row} from "react-bootstrap";
 import "./project-page.css";
-import {Link} from "react-router-dom";
+import {Link, useHref} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getAllProjectsForEmployer} from "../../../services/project-service";
 import {useAuth} from "../../../context/auth-context";
@@ -27,7 +27,7 @@ const ProjectPage = () => {
         <Container className="mt-5">
             <Row className="justify-content-center">
                 <Col className="text-center">
-                    <Link className="btn btn-info btn-lg text-body w-100 rounded-0" to="/project/create" >Create
+                    <Link className="btn btn-info btn-lg text-body w-100 rounded-0" to="/project/create">Create
                         new project</Link>
                 </Col>
             </Row>
@@ -59,5 +59,4 @@ const ProjectPage = () => {
     );
 }
 
-// amountOfComments
 export default ProjectPage;

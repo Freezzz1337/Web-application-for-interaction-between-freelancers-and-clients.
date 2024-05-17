@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../../../context/auth-context";
 import {getChat, sendMessage} from "../../../services/chat-service";
-import {Button, Col, Image, ListGroup, Row} from "react-bootstrap";
+import {Col, Image, ListGroup, Row} from "react-bootstrap";
 import "./chat-person.css";
 import formatCreatedAtDate from "../../../util/format-created-at-date";
 import InputComponent from "../input-component";
@@ -113,7 +113,8 @@ const ChatPerson = ({userId, projectId}) => {
                     </ListGroup.Item>
                 ))}
             </ListGroup>
-            <InputComponent onSubmit={handleSendMessage} userId={userId} projectId={projectId} collaborationIsActive={collaborationIsActive}/>
+            <InputComponent onSubmit={handleSendMessage} userId={userId} projectId={projectId}
+                            collaborationIsActive={collaborationIsActive} updateChat={updateChat}/>
         </div>
     );
 }

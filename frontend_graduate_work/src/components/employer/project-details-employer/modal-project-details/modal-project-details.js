@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useAuth} from "../../../../context/auth-context";
 import {sentFirstMessage} from "../../../../services/chat-service";
 
-const ModalProjectDetails = ({show, handleClose, freelancerId, projectId}) => {
+const ModalProjectDetails = ({show, handleClose, freelancerId, projectId, updateProjectDetailsEmployer}) => {
     const {token} = useAuth();
     const [formData, setFormData] = useState({
         freelancerId: freelancerId,
@@ -28,6 +28,7 @@ const ModalProjectDetails = ({show, handleClose, freelancerId, projectId}) => {
         e.preventDefault();
         const serverResponse = await sentFirstMessage(JSON.stringify(formData), token);
         if (serverResponse.response) {
+            updateProjectDetailsEmployer();
             handleClose();
         }
     };

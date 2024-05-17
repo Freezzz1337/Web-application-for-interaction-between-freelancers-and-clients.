@@ -30,7 +30,8 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
                         <Col xs={10} className="mt-1">
                             <div>
                                 <div className="name-date">
-                                    <strong className="text-size chat-person-list-user-name">{userChat.fullName}</strong>
+                                    <strong
+                                        className="text-size chat-person-list-user-name">{userChat.fullName}</strong>
                                     <p className="date-text">{formatCreatedAtDate(userChat.lastMessageTime)}</p>
                                 </div>
                                 <p className="lastMessage-text">{userChat.lastMessage}</p>

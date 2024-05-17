@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 @Builder
 public class CollaborationInvitationGetResponseDTO {
     private String title;
-    private String projectName;
     private BigDecimal budget;
     private Timestamp deadline;
 }

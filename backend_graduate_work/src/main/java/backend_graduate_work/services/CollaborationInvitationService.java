@@ -1,7 +1,7 @@
 package backend_graduate_work.services;
 
+import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCompletedRequestDTO.CollaborationInvitationCompletedRequestDTO;
 import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCreateRequestDTO;
-import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationGetRequestDTO;
 import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationGetResponseDTO;
 import backend_graduate_work.models.*;
 import backend_graduate_work.models.enums.InvitationStatus;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,14 +25,16 @@ public class CollaborationInvitationService {
     private final UserRepository userRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRepository chatRepository;
+    private final ReviewService reviewService;
 
     @Autowired
-    public CollaborationInvitationService(CollaborationInvitationRepository collaborationInvitationRepository, ProjectRepository projectRepository, UserRepository userRepository, ChatMessageRepository chatMessageRepository, ChatRepository chatRepository) {
+    public CollaborationInvitationService(CollaborationInvitationRepository collaborationInvitationRepository, ProjectRepository projectRepository, UserRepository userRepository, ChatMessageRepository chatMessageRepository, ChatRepository chatRepository, ReviewService reviewService) {
         this.collaborationInvitationRepository = collaborationInvitationRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.chatRepository = chatRepository;
+        this.reviewService = reviewService;
     }
 
     @Transactional
@@ -75,6 +76,7 @@ public class CollaborationInvitationService {
         chats.forEach(chat -> chat.setActive(chat.getId() == currentChatId));
 
         Project project = projectRepository.findById(invitation.getProject().getId());
+        project.setFreelancer(invitation.getFreelancer());
         project.setStatus(StatusProject.IN_PROGRESS);
 
         projectRepository.save(project);
@@ -83,26 +85,72 @@ public class CollaborationInvitationService {
     }
 
     @Transactional
-    public void declineCollaborationInvitation(String invitationId) {
-        CollaborationInvitation invitation = collaborationInvitationRepository.findById(Long.parseLong(invitationId));
-        invitation.setStatus(InvitationStatus.DECLINED);
+    public void declineInvitation(String id) {
+        CollaborationInvitation collaborationInvitation = collaborationInvitationRepository.findById(Long.parseLong(id));
+        collaborationInvitation.setStatus(InvitationStatus.DECLINED);
 
-        collaborationInvitationRepository.save(invitation);
+        collaborationInvitationRepository.save(collaborationInvitation);
+    }
+
+    @Transactional
+    public void declineCollaborationInvitation(CollaborationInvitationCreateRequestDTO requestDTO) {
+        CollaborationInvitation latestCollaborationInvitation = getLatestInvitation(collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndProjectId(Long.parseLong(requestDTO.getFreelancerId()), getCurrentUser().getId(), Long.parseLong(requestDTO.getProjectId())));
+        CollaborationInvitation newCollaborationInvitation = CollaborationInvitation.builder()
+                .employer(latestCollaborationInvitation.getEmployer())
+                .freelancer(latestCollaborationInvitation.getFreelancer())
+                .project(latestCollaborationInvitation.getProject())
+                .originalBudget(latestCollaborationInvitation.getOriginalBudget())
+                .originalDeadline(latestCollaborationInvitation.getOriginalDeadline())
+                .newBudget(latestCollaborationInvitation.getNewBudget())
+                .newDeadline(latestCollaborationInvitation.getNewDeadline())
+                .status(InvitationStatus.DECLINED)
+                .chat(latestCollaborationInvitation.getChat())
+                .build();
+
+        List<Chat> chats = chatRepository.findAllByProjectId(latestCollaborationInvitation.getProject().getId());
+        chats.forEach(chat -> chat.setActive(true));
+
+        Project project = projectRepository.findById(latestCollaborationInvitation.getProject().getId());
+        project.setFreelancer(null);
+        project.setStatus(StatusProject.OPEN);
+
+        chatMessageRepository.save(ChatMessage.builder()
+                .chat(chatRepository.findById(latestCollaborationInvitation.getChat().getId()))
+                .sender(getCurrentUser())
+                .messageText("Declined")
+                .collaborationInvitation(newCollaborationInvitation)
+                .build());
+
+        projectRepository.save(project);
+        chatRepository.saveAll(chats);
+        collaborationInvitationRepository.save(newCollaborationInvitation);
     }
 
     public CollaborationInvitationGetResponseDTO getCollaboration(long projectId, long userId) {
-        List<CollaborationInvitation> collaborationInvitationList = collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndProjectId(userId, getCurrentUser().getId(), projectId).stream()
-                .sorted(Comparator.comparing(CollaborationInvitation::getCreatedAt).reversed())
-                .toList();
+        List<CollaborationInvitation> collaborationInvitationList = collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndProjectId(userId, getCurrentUser().getId(), projectId);
 
-        CollaborationInvitation latestCollaborationInvitation = collaborationInvitationList.isEmpty() ? null : collaborationInvitationList.get(0);
+        if (collaborationInvitationList.isEmpty()) {
+            Project project = projectRepository.findById(projectId);
 
-        return CollaborationInvitationGetResponseDTO.builder()
-                .title(latestCollaborationInvitation.getProject().getTitle())
-                .projectName(latestCollaborationInvitation.getProject().getTitle())
-                .budget(latestCollaborationInvitation.getNewBudget())
-                .deadline(latestCollaborationInvitation.getProject().getDeadline())
-                .build();
+            return CollaborationInvitationGetResponseDTO.builder()
+                    .title(project.getTitle())
+                    .budget(project.getBudget())
+                    .deadline(project.getDeadline())
+                    .build();
+        } else {
+            collaborationInvitationList = collaborationInvitationList.stream()
+                    .sorted(Comparator.comparing(CollaborationInvitation::getCreatedAt).reversed())
+                    .toList();
+
+
+            CollaborationInvitation latestCollaborationInvitation = collaborationInvitationList.isEmpty() ? null : collaborationInvitationList.get(0);
+
+            return CollaborationInvitationGetResponseDTO.builder()
+                    .title(latestCollaborationInvitation.getProject().getTitle())
+                    .budget(latestCollaborationInvitation.getNewBudget())
+                    .deadline(latestCollaborationInvitation.getProject().getDeadline())
+                    .build();
+        }
     }
 
     @Transactional
@@ -135,7 +183,48 @@ public class CollaborationInvitationService {
     }
 
 
-    public User getCurrentUser() {
+    @Transactional
+    public void completedCollaborationInvitation(CollaborationInvitationCompletedRequestDTO requestDTO) {
+        CollaborationInvitation latestCollaborationInvitation = getLatestInvitation(collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndProjectId(Long.parseLong(requestDTO.getFreelancerId()), getCurrentUser().getId(), Long.parseLong(requestDTO.getProjectId())));
+
+        CollaborationInvitation completedCollaborationInvitation = CollaborationInvitation.builder()
+                .employer(latestCollaborationInvitation.getEmployer())
+                .freelancer(latestCollaborationInvitation.getFreelancer())
+                .project(latestCollaborationInvitation.getProject())
+                .originalBudget(latestCollaborationInvitation.getOriginalBudget())
+                .originalDeadline(latestCollaborationInvitation.getOriginalDeadline())
+                .newBudget(latestCollaborationInvitation.getNewBudget())
+                .newDeadline(latestCollaborationInvitation.getNewDeadline())
+                .status(InvitationStatus.COMPLETED)
+                .chat(latestCollaborationInvitation.getChat())
+                .build();
+
+        collaborationInvitationRepository.save(completedCollaborationInvitation);
+
+
+        chatMessageRepository.save(ChatMessage.builder()
+                .chat(chatRepository.findById(latestCollaborationInvitation.getChat().getId()))
+                .sender(getCurrentUser())
+                .messageText("Completed")
+                .collaborationInvitation(completedCollaborationInvitation)
+                .build());
+
+        Project project = projectRepository.findById(latestCollaborationInvitation.getProject().getId());
+        project.setStatus(StatusProject.COMPLETED);
+
+        reviewService.save(requestDTO.getFreelancerId(), getCurrentUser(), requestDTO.getProjectId(), requestDTO.getReview().getComment(), requestDTO.getReview().getRating());
+        projectRepository.save(project);
+        collaborationInvitationRepository.save(completedCollaborationInvitation);
+    }
+
+    private CollaborationInvitation getLatestInvitation(List<CollaborationInvitation> list) {
+        return list.stream()
+                .sorted(Comparator.comparing(CollaborationInvitation::getCreatedAt).reversed())
+                .toList()
+                .get(0);
+    }
+
+    private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }

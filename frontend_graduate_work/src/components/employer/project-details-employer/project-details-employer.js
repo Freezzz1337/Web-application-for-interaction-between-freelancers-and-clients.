@@ -23,6 +23,7 @@ const ProjectDetailsEmployer = () => {
 
     const [selectedFreelancer, setSelectedFreelancer] = useState(null);
 
+
     const handleCloseModal = () => {
         setShowModal(false);
     };
@@ -33,19 +34,23 @@ const ProjectDetailsEmployer = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-
-            const serverResponse = await getProjectDetailsForEmployer(projectId, token);
-            if (serverResponse?.projectCommentGetAllForProjectDetails?.length > 0) {
-                setProject(serverResponse.projectDetailsForEmployer);
-                setComments(serverResponse.projectCommentGetAllForProjectDetails);
-            } else {
-                setProject(serverResponse.projectDetailsForEmployer);
-            }
-        }
         fetchData();
     }, []);
 
+    const updateProjectDetailsEmployer = () => {
+        fetchData();
+    }
+
+    const fetchData = async () => {
+        const serverResponse = await getProjectDetailsForEmployer(projectId, token);
+        console.log(serverResponse);
+        if (serverResponse?.projectCommentGetAllForProjectDetails?.length > 0) {
+            setProject(serverResponse.projectDetailsForEmployer);
+            setComments(serverResponse.projectCommentGetAllForProjectDetails);
+        } else {
+            setProject(serverResponse.projectDetailsForEmployer);
+        }
+    }
 
     const handleEditProject = () => {
         navigate(`/project/edit/${project.id}`);
@@ -59,7 +64,7 @@ const ProjectDetailsEmployer = () => {
     };
 
     function formatDate(dateString) {
-            const date = new Date(dateString);
+        const date = new Date(dateString);
         return date.toLocaleString();
     }
 
@@ -95,7 +100,7 @@ const ProjectDetailsEmployer = () => {
                             <strong>Deadline:</strong> {formatDate(project.deadline)}
                         </CardText>
                         <CardText>
-                            <strong>Freelancer:</strong> {project.freelancer ? project.freelancer.name : 'No freelancer assigned'}
+                            <strong>Freelancer:</strong> {project.freelancer ? project.freelancer.fullName : 'No freelancer assigned'}
                         </CardText>
                         <CardText>
                             <strong>Status:</strong> {project.status}
@@ -131,10 +136,11 @@ const ProjectDetailsEmployer = () => {
                                            handleOpenModal={handleOpenModal}
                     />
 
-                    <ModalProjectDetails  show={showModal}
-                                          handleClose={handleCloseModal}
-                                          freelancerId={selectedFreelancer}
-                                          projectId={project.id}
+                    <ModalProjectDetails show={showModal}
+                                         handleClose={handleCloseModal}
+                                         freelancerId={selectedFreelancer}
+                                         projectId={project.id}
+                                         updateProjectDetailsEmployer={updateProjectDetailsEmployer}
                     />
                 </>
             }

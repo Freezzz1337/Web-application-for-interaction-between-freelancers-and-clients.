@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -79,17 +80,29 @@ public class ChatService {
                 .toList();
     }
 
+    private boolean collaborationIsActive(List<CollaborationInvitation> list) {
+        list.sort(Comparator.comparing(CollaborationInvitation::getCreatedAt).reversed());
+
+        for (CollaborationInvitation c : list) {
+            if (c.getStatus().getStatus().equals("ACCEPTED")) {
+                return true;
+            }
+            if (c.getStatus().getStatus().equals("DECLINED")) {
+                return false;
+            }
+        }
+        return false;
+    }
+
     public GetChatResponseDTO getChat(long userId, long projectId) {
         User currentUser = getCurrentUser();
         Chat chat;
         boolean collaborationIsActive = false;
 
-        Project project = projectRepository.findById(projectId);
-
         if (currentUser.getUserTypeEnum().getUserType().equals(UserTypeEnum.EMPLOYER.getUserType())) {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, currentUser.getId(), userId);
 
-            collaborationIsActive = collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndStatus(userId, currentUser.getId(), InvitationStatus.ACCEPTED) != null;
+            collaborationIsActive = collaborationIsActive(collaborationInvitationRepository.findByFreelancerIdAndEmployerId(userId, currentUser.getId()));
         } else {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, userId, currentUser.getId());
         }
@@ -117,14 +130,12 @@ public class ChatService {
     }
 
     private GetCollaborationInvitation getCollaborationInvitation(CollaborationInvitation collaborationInvitation) {
-
         return GetCollaborationInvitation.builder()
                 .id(collaborationInvitation.getId())
                 .budget(collaborationInvitation.getNewBudget())
                 .projectName(collaborationInvitation.getProject().getTitle())
                 .status(collaborationInvitation.getStatus().getStatus())
                 .createdAt(collaborationInvitation.getCreatedAt())
-                .status(collaborationInvitation.getStatus().getStatus())
                 .build();
     }
 

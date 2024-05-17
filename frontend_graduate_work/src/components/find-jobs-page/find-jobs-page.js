@@ -111,185 +111,187 @@ const FindJobsPage = () => {
     }
 
     return (
-        <Container>
-            <Row>
-                <Col xs={12} md={12} className="mt-4">
-                    <InputGroup className="input-group-lg">
-                        <FormControl
-                            className="border rounded-pill shadow "
-                            name="searchString"
-                            type="search"
-                            placeholder="Search by name"
-                            onChange={handleChange}
-                        />
-                        <Button
-                            onClick={handleSearchFilter}
-                            variant="outline-secondary"
-                            className="bg-white border rounded-pill shadow"
-                            type="submit"
-                        >
-                            Search <BiSearch/>
-                        </Button>
-                    </InputGroup>
-                </Col>
-            </Row>
+        <div >
+            <Container>
+                <Row>
+                    <Col xs={12} md={12} className="mt-4">
+                        <InputGroup className="input-group-lg">
+                            <FormControl
+                                className="border rounded-pill shadow "
+                                name="searchString"
+                                type="search"
+                                placeholder="Search by name"
+                                onChange={handleChange}
+                            />
+                            <Button
+                                onClick={handleSearchFilter}
+                                variant="outline-secondary"
+                                className="bg-white border rounded-pill shadow"
+                                type="submit"
+                            >
+                                Search <BiSearch/>
+                            </Button>
+                        </InputGroup>
+                    </Col>
+                </Row>
 
-            <Row className="mt-4">
-                <Col xs={12} lg={3}>
-                    <Card className="mt-3">
-                        <Card.Body>
-                            <Card.Title onClick={toggleFrom} className="text-center mb-0 mb-lg-3 ">Search
-                                filter</Card.Title>
+                <Row className="mt-4">
+                    <Col xs={12} lg={3}>
+                        <Card className="mt-3">
+                            <Card.Body>
+                                <Card.Title onClick={toggleFrom} className="text-center mb-0 mb-lg-3 ">Search
+                                    filter</Card.Title>
 
-                            <div className={`mt-2 ${isOpenForm ? '' : 'd-none'} d-lg-block`}>
-                                <hr/>
-
-                                <Form className="mt-2">
-                                    <Form.Label><h6>Filter by:</h6></Form.Label>
-                                    <Form.Select
-                                        as="select"
-                                        name="filterBy"
-                                        className="rounded-0"
-                                        onChange={handleChange}
-                                    >
-                                        <option value="newest">Newest first</option>
-                                        <option value="oldest">Oldest first</option>
-                                        <option value="higherBudget">Higher budget first</option>
-                                        <option value="lowerBudget">Lower budget first</option>
-                                        <option value="nearestDeadline">Nearest deadline first</option>
-                                        <option value="farthestDeadline">Farthest deadline first</option>
-                                    </Form.Select>
-
+                                <div className={`mt-2 ${isOpenForm ? '' : 'd-none'} d-lg-block`}>
                                     <hr/>
 
-                                    <Row>
-                                        <h6>Budget</h6>
-                                        <Col>
-                                            <Form.Group className="rounded-0">
-                                                <Form.Control
-                                                    type="text"
-                                                    name="minBudget"
-                                                    className={`${validErrors.minBudget ? 'is-invalid' : ''} rounded-0`}
-                                                    onChange={handleChange}
-                                                    placeholder="min"
-                                                />
-                                                {validErrors.minBudget &&
-                                                    <Form.Control.Feedback
-                                                        type="invalid">{validErrors.minBudget}</Form.Control.Feedback>}
-                                            </Form.Group>
-                                        </Col>
-                                        <Col>
-                                            <Form.Group>
-                                                <Form.Control
-                                                    type="text"
-                                                    name="maxBudget"
-                                                    className={`${validErrors.maxBudget ? 'is-invalid' : ''} rounded-0`}
-                                                    onChange={handleChange}
-                                                    placeholder="max"/>
-                                                {validErrors.maxBudget &&
-                                                    <Form.Control.Feedback
-                                                        type="invalid">{validErrors.maxBudget}</Form.Control.Feedback>}
-                                            </Form.Group>
-                                        </Col>
-                                    </Row>
+                                    <Form className="mt-2">
+                                        <Form.Label><h6>Filter by:</h6></Form.Label>
+                                        <Form.Select
+                                            as="select"
+                                            name="filterBy"
+                                            className="rounded-0"
+                                            onChange={handleChange}
+                                        >
+                                            <option value="newest">Newest first</option>
+                                            <option value="oldest">Oldest first</option>
+                                            <option value="higherBudget">Higher budget first</option>
+                                            <option value="lowerBudget">Lower budget first</option>
+                                            <option value="nearestDeadline">Nearest deadline first</option>
+                                            <option value="farthestDeadline">Farthest deadline first</option>
+                                        </Form.Select>
 
-                                    <hr/>
+                                        <hr/>
 
-
-                                    <Row>
-                                        <Form.Group className="mb-4">
-                                            <Form.Label><h6>Project Type</h6></Form.Label>
-                                            <Form.Select
-                                                as="select"
-                                                name="projectType"
-                                                className="rounded-0"
-                                                onChange={handleChange}>
-                                                <option value="0">Select a project</option>
-                                                {projectTypes && projectTypes.map(projectType => (
-                                                    <option key={projectType.id} value={projectType.id}>
-                                                        {projectType.name}
-                                                    </option>
-                                                ))}
-                                            </Form.Select>
-                                        </Form.Group>
-
-                                        <Form.Group className="mb-4">
-                                            <Form.Label><h6>Subproject Type</h6></Form.Label>
-                                            <Form.Select
-                                                as="select"
-                                                name="subprojectType"
-                                                className="rounded-0"
-                                                onChange={handleChange}
-                                                disabled={formData.projectType === "" || formData.projectType === "0"}>
-                                                <option value="0">Select a subproject</option>
-                                                {subprojectTypes && subprojectTypes.map(subprojectType => (
-                                                    <option key={subprojectType.id} value={subprojectType.id}>
-                                                        {subprojectType.name}
-                                                    </option>))}
-                                            </Form.Select>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Button variant="primary"
-                                            className="w-100 rounded-0"
-                                            onClick={handleSearchFilter}
-                                            type="submit">
-                                        Apply Filters
-                                    </Button>
-                                </Form>
-
-                            </div>
-                        </Card.Body>
-                    </Card>
-
-
-                </Col>
-
-
-                <Col xs={12} lg={9}>
-                    <Card className="mt-3 ">
-                        <Card.Body>
-                            {projects && projects.map(project => (
-                                <div key={project.id}>
-                                    <Row>
-                                        <Col sm={10}>
-                                            <p className="title-wrapper">{project.title}
-                                                <span> {formatCreatedAtDate(project.created_at)}</span>
-                                            </p>
-                                            <Col sm={12}>
-                                                <p className="description-wrapper">{project.description}</p>
+                                        <Row>
+                                            <h6>Budget</h6>
+                                            <Col>
+                                                <Form.Group className="rounded-0">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name="minBudget"
+                                                        className={`${validErrors.minBudget ? 'is-invalid' : ''} rounded-0`}
+                                                        onChange={handleChange}
+                                                        placeholder="min"
+                                                    />
+                                                    {validErrors.minBudget &&
+                                                        <Form.Control.Feedback
+                                                            type="invalid">{validErrors.minBudget}</Form.Control.Feedback>}
+                                                </Form.Group>
                                             </Col>
-                                            <h6>Deadline: <span
-                                                style={{fontWeight: "normal"}}>{formatDeadlineDate(project.deadline)}</span>
-                                            </h6>
-                                        </Col>
+                                            <Col>
+                                                <Form.Group>
+                                                    <Form.Control
+                                                        type="text"
+                                                        name="maxBudget"
+                                                        className={`${validErrors.maxBudget ? 'is-invalid' : ''} rounded-0`}
+                                                        onChange={handleChange}
+                                                        placeholder="max"/>
+                                                    {validErrors.maxBudget &&
+                                                        <Form.Control.Feedback
+                                                            type="invalid">{validErrors.maxBudget}</Form.Control.Feedback>}
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
 
-                                        <Col sm={2}>
-                                            <h6>${project.budget}</h6>
+                                        <hr/>
 
-                                            <Link to={`/project/details/${project.id}`}
-                                                  className="btn btn-success text-center"
-                                                  align="center">
-                                                Details
-                                            </Link>
-                                        </Col>
-                                    </Row>
 
-                                    <hr/>
+                                        <Row>
+                                            <Form.Group className="mb-4">
+                                                <Form.Label><h6>Project Type</h6></Form.Label>
+                                                <Form.Select
+                                                    as="select"
+                                                    name="projectType"
+                                                    className="rounded-0"
+                                                    onChange={handleChange}>
+                                                    <option value="0">Select a project</option>
+                                                    {projectTypes && projectTypes.map(projectType => (
+                                                        <option key={projectType.id} value={projectType.id}>
+                                                            {projectType.name}
+                                                        </option>
+                                                    ))}
+                                                </Form.Select>
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-4">
+                                                <Form.Label><h6>Subproject Type</h6></Form.Label>
+                                                <Form.Select
+                                                    as="select"
+                                                    name="subprojectType"
+                                                    className="rounded-0"
+                                                    onChange={handleChange}
+                                                    disabled={formData.projectType === "" || formData.projectType === "0"}>
+                                                    <option value="0">Select a subproject</option>
+                                                    {subprojectTypes && subprojectTypes.map(subprojectType => (
+                                                        <option key={subprojectType.id} value={subprojectType.id}>
+                                                            {subprojectType.name}
+                                                        </option>))}
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Button variant="primary"
+                                                className="w-100 rounded-0"
+                                                onClick={handleSearchFilter}
+                                                type="submit">
+                                            Apply Filters
+                                        </Button>
+                                    </Form>
+
                                 </div>
-                            ))}
+                            </Card.Body>
+                        </Card>
 
-                            <FindJobPagePagination paginationValue={paginationValue}
-                                                   setPaginationValue={setPaginationValue}
-                                                   setProjects={setProjects}
-                                                   token={token}
-                                                   formData={formData}/>
 
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+                    </Col>
+
+
+                    <Col xs={12} lg={9}>
+                        <Card className="mt-3 ">
+                            <Card.Body>
+                                {projects && projects.map(project => (
+                                    <div key={project.id}>
+                                        <Row>
+                                            <Col sm={10}>
+                                                <p className="title-wrapper">{project.title}
+                                                    <span> {formatCreatedAtDate(project.created_at)}</span>
+                                                </p>
+                                                <Col sm={12}>
+                                                    <p className="description-wrapper">{project.description}</p>
+                                                </Col>
+                                                <h6>Deadline: <span
+                                                    style={{fontWeight: "normal"}}>{formatDeadlineDate(project.deadline)}</span>
+                                                </h6>
+                                            </Col>
+
+                                            <Col sm={2}>
+                                                <h6>${project.budget}</h6>
+
+                                                <Link to={`/project/details/${project.id}`}
+                                                      className="btn btn-success text-center"
+                                                      align="center">
+                                                    Details
+                                                </Link>
+                                            </Col>
+                                        </Row>
+
+                                        <hr/>
+                                    </div>
+                                ))}
+
+                                <FindJobPagePagination paginationValue={paginationValue}
+                                                       setPaginationValue={setPaginationValue}
+                                                       setProjects={setProjects}
+                                                       token={token}
+                                                       formData={formData}/>
+
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
 }
 

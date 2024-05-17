@@ -48,7 +48,6 @@ const Header = () => {
                         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                             <Nav className="ml-auto">
                                 <Nav.Link onClick={handleFindJobs}>Find Jobs</Nav.Link>
-                                <Nav.Link>Notifications</Nav.Link>
                                 <Nav.Link onClick={handleChatButtonClick}>Chat</Nav.Link>
                                 {userType === "EMPLOYER" &&
                                     <Nav.Link onClick={handleMyProjects}>My Projects</Nav.Link>
