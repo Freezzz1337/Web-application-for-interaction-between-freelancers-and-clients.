@@ -1,0 +1,15 @@
+.freelancer-info {
+    cursor: pointer;
+    color: #007bff;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.freelancer-info:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.freelancer-info:active {
+    color: #004085;
+}

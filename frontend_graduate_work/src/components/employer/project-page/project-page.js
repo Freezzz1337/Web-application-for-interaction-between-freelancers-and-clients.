@@ -1,6 +1,6 @@
 import {Card, Col, Container, Row} from "react-bootstrap";
 import "./project-page.css";
-import {Link, useHref} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getAllProjectsForEmployer} from "../../../services/project-service";
 import {useAuth} from "../../../context/auth-context";

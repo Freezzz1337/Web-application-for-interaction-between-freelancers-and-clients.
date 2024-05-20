@@ -12,6 +12,8 @@ import React, {useEffect, useState} from "react";
 import {deleteProject, getProjectDetailsForEmployer} from "../../../services/project-service";
 import ProjectDetailsComment from "../../project-details-comment";
 import ModalProjectDetails from "./modal-project-details/modal-project-details";
+import Chat from "../../chat";
+import "./project-details-employer.css";
 
 const ProjectDetailsEmployer = () => {
     const {token} = useAuth();
@@ -19,10 +21,16 @@ const ProjectDetailsEmployer = () => {
     const [project, setProject] = useState(null);
     const [comments, setComments] = useState(null);
     const navigate = useNavigate();
+
     const [showModal, setShowModal] = useState(false);
+    const [showChat, setShowChat] = useState(false);
 
     const [selectedFreelancer, setSelectedFreelancer] = useState(null);
 
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedUserName, setSelectedUserName] = useState(null);
+
+    const [freelancerCollaborated, setFreelancerCollaborated] = useState(null);
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -31,6 +39,17 @@ const ProjectDetailsEmployer = () => {
     const handleOpenModal = (freelancerId) => {
         setSelectedFreelancer(freelancerId);
         setShowModal(true);
+    };
+
+    const handleOpenChat = (userId, userName) => {
+        setSelectedUserId(userId);
+        setSelectedUserName(userName);
+        setShowChat(true);
+    };
+
+    const handleCloseChat = () => {
+        setShowChat(false);
+        setSelectedUserId(null);
     };
 
     useEffect(() => {
@@ -47,6 +66,7 @@ const ProjectDetailsEmployer = () => {
         if (serverResponse?.projectCommentGetAllForProjectDetails?.length > 0) {
             setProject(serverResponse.projectDetailsForEmployer);
             setComments(serverResponse.projectCommentGetAllForProjectDetails);
+            setFreelancerCollaborated(serverResponse.projectDetailsForEmployer.freelancer)
         } else {
             setProject(serverResponse.projectDetailsForEmployer);
         }
@@ -59,7 +79,6 @@ const ProjectDetailsEmployer = () => {
     const handleDeleteProject = async (e) => {
         e.preventDefault();
         await deleteProject(projectId, token);
-
         navigate(`/projects`);
     };
 
@@ -68,11 +87,9 @@ const ProjectDetailsEmployer = () => {
         return date.toLocaleString();
     }
 
-
     if (!project) {
         return <div><h2>Wait a moment!</h2></div>
     }
-
 
     return (
         <Container className="mt-4">
@@ -100,7 +117,16 @@ const ProjectDetailsEmployer = () => {
                             <strong>Deadline:</strong> {formatDate(project.deadline)}
                         </CardText>
                         <CardText>
-                            <strong>Freelancer:</strong> {project.freelancer ? project.freelancer.fullName : 'No freelancer assigned'}
+                            <strong>Freelancer:</strong> {project.freelancer ? (
+                            <span
+                                onClick={() => handleOpenChat(project.freelancer.id, project.freelancer.fullName)}
+                                className="freelancer-info"
+                            >
+                                    {project.freelancer.fullName}
+                                </span>
+                        ) : (
+                            'No freelancer assigned'
+                        )}
                         </CardText>
                         <CardText>
                             <strong>Status:</strong> {project.status}
@@ -114,7 +140,6 @@ const ProjectDetailsEmployer = () => {
 
                         <Row>
                             <hr/>
-
                             <Col lg={6} xs={12}>
                                 <Button onClick={handleEditProject}
                                         className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">Edit
@@ -129,11 +154,14 @@ const ProjectDetailsEmployer = () => {
                 </Card>
             )}
 
-            {comments &&
+            {comments && (
                 <>
+
                     <ProjectDetailsComment comments={comments}
                                            forEmployer={true}
                                            handleOpenModal={handleOpenModal}
+                                           handleOpenChat={handleOpenChat}
+                                           freelancerCollaborated={freelancerCollaborated}
                     />
 
                     <ModalProjectDetails show={showModal}
@@ -142,11 +170,18 @@ const ProjectDetailsEmployer = () => {
                                          projectId={project.id}
                                          updateProjectDetailsEmployer={updateProjectDetailsEmployer}
                     />
+
+                    <Chat show={showChat}
+                          onHide={handleCloseChat}
+                          userId={selectedUserId}
+                          userName={selectedUserName}
+                          projectId={project.id}
+                          projectName={project.title}
+                    />
                 </>
-            }
+            )}
         </Container>
-    );
-}
+    )
+};
+
 export default ProjectDetailsEmployer;
-
-

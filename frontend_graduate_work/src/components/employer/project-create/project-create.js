@@ -30,7 +30,7 @@ const ProjectCreate = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         if (formData.projectType !== "" && formData.projectType !== "0") {
@@ -42,7 +42,7 @@ const ProjectCreate = () => {
         } else {
             setFormData({...formData, "subprojectType": ""});
         }
-    }, [formData.projectType]);
+    }, [formData, formData.projectType, token]);
 
     const handleChange = async (e) => {
         e.preventDefault();

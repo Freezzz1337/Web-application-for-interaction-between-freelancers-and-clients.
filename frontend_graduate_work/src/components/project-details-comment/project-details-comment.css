@@ -23,6 +23,28 @@
     -webkit-box-orient: initial !important;
 }
 
+.project-details-comment-clickable{
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.project-details-comment-clickable:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-details-comment-clickable h4 {
+    margin: 0;
+    text-align: center;
+}
+
+.project-details-comment-clickable hr {
+    margin-top: 0;
+}
+
 @media screen and (max-width: 1400px) {
     .square-image {
         width: 170px;
