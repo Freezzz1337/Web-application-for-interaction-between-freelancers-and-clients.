@@ -3,7 +3,6 @@ package backend_graduate_work.controllers;
 import backend_graduate_work.DTO.filterDTO.FilterDTO;
 import backend_graduate_work.DTO.filterDTO.ProjectPagesDTO;
 import backend_graduate_work.DTO.projectDTO.*;
-import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployer;
 import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployerResponseDTO;
 import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
 import backend_graduate_work.services.ProjectService;

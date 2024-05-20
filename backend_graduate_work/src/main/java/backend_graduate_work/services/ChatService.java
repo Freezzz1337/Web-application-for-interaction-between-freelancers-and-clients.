@@ -102,7 +102,7 @@ public class ChatService {
         if (currentUser.getUserTypeEnum().getUserType().equals(UserTypeEnum.EMPLOYER.getUserType())) {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, currentUser.getId(), userId);
 
-            collaborationIsActive = collaborationIsActive(collaborationInvitationRepository.findByFreelancerIdAndEmployerId(userId, currentUser.getId()));
+            collaborationIsActive = collaborationIsActive(collaborationInvitationRepository.findByFreelancerIdAndEmployerIdAndProjectId(userId, currentUser.getId(), projectId));
         } else {
             chat = chatRepository.findByProjectIdAndEmployerIdAndFreelancerId(projectId, userId, currentUser.getId());
         }

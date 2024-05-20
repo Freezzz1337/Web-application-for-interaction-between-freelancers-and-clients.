@@ -1,0 +1,9 @@
+.for-freelancer-shadow-sides {
+    position: absolute;
+    left: -10px; /* Расстояние для левой тени */
+    right: -10px; /* Расстояние для правой тени */
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.15); /* Цвет тени */
+    z-index: -1;
+}

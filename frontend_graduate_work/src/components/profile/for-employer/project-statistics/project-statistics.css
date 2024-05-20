@@ -1,0 +1,35 @@
+.project-statistics-card-size{
+    height: 200px;
+}
+
+.project-statistics-number-font{
+    font-size: 25px;
+    font-weight: normal;
+}
+
+@media screen and (max-width: 1400px) {
+    .project-statistics-card-size{
+        height: 230px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .project-statistics-card-size{
+        height: 250px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .project-statistics-card-size{
+        height: 270px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .project-statistics-card-size{
+        height: 100%;
+    }
+}
+@media screen and (max-width: 576px) {
+    .project-statistics-card-size{
+        height: 100%;
+    }
+}

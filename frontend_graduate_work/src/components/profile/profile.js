@@ -4,18 +4,28 @@ import {Col, Container, Row, Image, Button} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {getUserData} from "../../services/profile-service";
 import {useNavigate} from "react-router-dom";
+import ProjectStatistics from "./for-employer/project-statistics";
+import Reviews from "./for-freelancer";
 
 const Profile = () => {
-    const {token} = useAuth();
-    const [userData, setUserData] = useState(null);
+    const {token, userType} = useAuth();
     const navigate = useNavigate();
+
+    const [userData, setUserData] = useState(null);
+    const [projectStatistics, setProjectStatistics] = useState(null);
+    const [reviews, setReviews] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const serverResponse = await getUserData(token);
-            if (serverResponse) {
-                setUserData(serverResponse);
+            if (serverResponse.projectStatistics) {
+                setProjectStatistics(serverResponse.projectStatistics)
             }
+            if (serverResponse.reviewList) {
+                setReviews(serverResponse.reviewList);
+            }
+            setUserData(serverResponse.userProfileData);
+            console.log(serverResponse);
         };
         fetchData();
     }, [token]);
@@ -59,6 +69,14 @@ const Profile = () => {
                     <p>{userData.bio}</p>
                 </Col>
             </Row>
+
+            {projectStatistics && (
+                <ProjectStatistics projectStatistics={projectStatistics}/>
+            )}
+
+            {reviews && (
+                <Reviews reviews={reviews}/>
+            )}
         </Container>
     )
 }

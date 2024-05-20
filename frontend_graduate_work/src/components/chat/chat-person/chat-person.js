@@ -22,7 +22,6 @@ const ChatPerson = ({userId, projectId}) => {
     useEffect(() => {
         const fetchChatMessages = async () => {
             const serverResponse = await getChat(userId, projectId, token);
-            console.log(serverResponse);
             setChatMessages(serverResponse.chatMessageList);
             setCollaborationIsActive(serverResponse.collaborationIsActive);
 

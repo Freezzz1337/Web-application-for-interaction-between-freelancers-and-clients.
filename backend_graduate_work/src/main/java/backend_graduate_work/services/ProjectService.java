@@ -7,13 +7,11 @@ import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployer;
 import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployerResponseDTO;
 import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
+import backend_graduate_work.models.ChatMessage;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
-import backend_graduate_work.repositories.ChatMessageRepository;
-import backend_graduate_work.repositories.ProjectCommentRepository;
-import backend_graduate_work.repositories.ProjectRepository;
-import backend_graduate_work.repositories.SubprojectTypeRepository;
+import backend_graduate_work.repositories.*;
 import backend_graduate_work.util.SearchFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -34,13 +32,15 @@ public class ProjectService {
     private final SubprojectTypeRepository subprojectTypeRepository;
     private final ProjectCommentRepository projectCommentRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatRepository chatRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository, ChatMessageRepository chatMessageRepository) {
+    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository, ChatMessageRepository chatMessageRepository, ChatRepository chatRepository) {
         this.projectRepository = projectRepository;
         this.subprojectTypeRepository = subprojectTypeRepository;
         this.projectCommentRepository = projectCommentRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.chatRepository = chatRepository;
     }
 
     public List<ProjectGetAllForEmployerResponseDTO> getAllForEmployer() {
@@ -100,14 +100,13 @@ public class ProjectService {
                                 .createdAt(projectComment.getCreatedAt())
                                 .userName(projectComment.getUser().getFullName())
                                 .userId(projectComment.getUser().getId())
-                                .firstMessage(chatMessageRepository.existsBySenderIdAndChatFreelancerId(getCurrentUser().getId(), projectComment.getUser().getId()))
+                                .firstMessage(chatRepository.existsByEmployerIdAndFreelancerIdAndProjectId(getCurrentUser().getId(), projectComment.getUser().getId(), projectComment.getProject().getId()))
                                 .profilePicture(projectComment.getUser().getProfilePicture())
                                 .build())
                         .toList();
 
         return new ProjectDetailsForEmployerResponseDTO(projectDetailsForEmployer, projectCommentGetAllForProjectDetails);
     }
-
 
     public ProjectDetailsForFreelancerResponseDTO getProjectDetailsForFreelancer(long id) {
         Project project = projectRepository.findById(id);
@@ -214,7 +213,6 @@ public class ProjectService {
 
         return new ProjectPagesDTO(pageResponseDTOList, totalProjects);
     }
-
 
 
     public ProjectGetFroCollaborationInvitationResponseDTO getProjectForCollaborationInvitation(String projectId) {

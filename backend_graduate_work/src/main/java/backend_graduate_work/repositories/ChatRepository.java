@@ -15,5 +15,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     Chat findByProjectIdAndEmployerIdAndFreelancerId(long projectId, long employerId, long freelancerId);
 
+    boolean existsByEmployerIdAndFreelancerIdAndProjectId(long employerId, long freelancerId, long projectId);
+
     Chat findById(long id);
 }
