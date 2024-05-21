@@ -2,7 +2,7 @@ import {Alert, Button, Container, Form} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {useRef, useState} from "react";
 import {authorization} from "../../services/auth-service";
-import icon from "../../icon/icon.png";
+import icon from "../../assets/icon/icon.png";
 import {useAuth} from "../../context/auth-context";
 import {authorizationValidation} from "../../util/validation/auth-validation";
 

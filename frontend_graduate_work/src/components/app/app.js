@@ -1,6 +1,6 @@
 import Registration from "../registration";
 import Authorization from "../authorization";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Start from "../start";
 import {useAuth} from "../../context/auth-context";
 import FindJobsPage from "../find-jobs-page";
@@ -15,13 +15,16 @@ import ProjectEdit from "../employer/project-edit";
 import ProjectDetails from "../project-details";
 
 function App() {
-
     const {token} = useAuth();
+    const location = useLocation();
     //   const token = true; //todo : Temporary stub!!!!!!!!!!!!!!
+    const noHeaderFooterPaths = ["/authorization", "/registration"];
+
+    const showHeaderFooter = !noHeaderFooterPaths.includes(location.pathname);
 
     return (
         <>
-            {token && <Header/>}
+            {showHeaderFooter && <Header token={token}/>}
 
             <Routes>
                 {token ? (
@@ -48,7 +51,7 @@ function App() {
                 )}
             </Routes>
 
-            {token && <Footer/>}
+            {showHeaderFooter && <Footer />}
         </>
     )
 }

@@ -1,6 +1,5 @@
 package backend_graduate_work.models;
 
-import backend_graduate_work.models.enums.PaymentStatusProject;
 import backend_graduate_work.models.enums.StatusProject;
 import jakarta.persistence.*;
 import lombok.*;
@@ -50,10 +49,6 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusProject status = StatusProject.OPEN;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
-    private PaymentStatusProject paymentStatus = PaymentStatusProject.PENDING;
 
     @CreationTimestamp
     @Column(name = "created_at")

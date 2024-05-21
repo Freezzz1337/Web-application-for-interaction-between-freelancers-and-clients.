@@ -1,13 +1,13 @@
 import {Button, Container, Modal, Nav, Navbar} from "react-bootstrap";
 import {useAuth} from "../../context/auth-context";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Chat from "../chat";
 
-const Header = () => {
+const Header = ({token}) => {
     const [show, setShow] = useState(false);
     const [showChat, setShowChat] = useState(false);
-    const { logout, userType } = useAuth();
+    const {logout, userType} = useAuth();
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
@@ -21,6 +21,7 @@ const Header = () => {
     const handleLogout = () => {
         logout();
         navigate("/");
+        setShow(false);
     }
 
     const handleProfile = () => {
@@ -39,8 +40,35 @@ const Header = () => {
         setShowChat(!showChat);
     }
 
-        return (
-            <>
+
+    const handleMainPage = () =>{
+        navigate("/");
+    }
+    const handleLogIn = () => {
+        navigate("/authorization");
+    }
+
+    const handleRegister = () => {
+        navigate("/registration");
+    }
+    return (
+        <>
+            {!token && (
+                <Navbar bg="dark" variant="dark" expand="lg">
+                    <Container>
+                        <Navbar.Brand onClick={handleMainPage}>FreelanceHub</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                            <Nav className="ml-auto">
+                                <Nav.Link onClick={handleLogIn}>Log in</Nav.Link>
+                                <Nav.Link onClick={handleRegister}>Register</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+            )}
+
+            {token && (
                 <Navbar bg="dark" variant="dark" expand="lg">
                     <Container>
                         <Navbar.Brand onClick={handleFindJobs}>FreelanceHub</Navbar.Brand>
@@ -58,8 +86,9 @@ const Header = () => {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
+            )}
 
-                <Chat show={showChat} onHide={() => setShowChat(false)} />
+            <Chat show={showChat} onHide={() => setShowChat(false)}/>
 
             <Modal show={show} onHide={handleCloseLogoutModal}>
                 <Modal.Header closeButton>
@@ -80,3 +109,4 @@ const Header = () => {
 }
 
 export default Header;
+

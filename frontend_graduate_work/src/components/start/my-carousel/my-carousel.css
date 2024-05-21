@@ -1,0 +1,9 @@
+.my-carousel-img{
+    max-height: 600px;
+    object-fit: cover;
+}
+
+.my-carousel-carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}

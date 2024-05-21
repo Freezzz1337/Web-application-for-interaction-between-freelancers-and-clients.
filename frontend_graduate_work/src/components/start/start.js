@@ -1,30 +1,22 @@
-import {Col, Container, Row} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import "./start.css";
-import {Link} from "react-router-dom";
+import MyCarousel from "./my-carousel";
+import AboutUs from "./about-us";
+import GetStart from "./get-start";
+import Testimonials from "./testimonials";
+import OurServices from "./our-services";
 
 const Start = () => {
     return (
-        <Container className="text-center main-container">
-            <Row>
-                <Col xs={12} md={6}>
-                    <Link to="/authorization" className="no-underline">
-                        <div
-                            className="rectangle  p-3 mb-5 bg-white rounded d-flex align-items-center justify-content-center">
-                            <h1>Log in</h1>
-                        </div>
-                    </Link>
-
-                </Col>
-                <Col xs={12} md={6}>
-                    <Link to="/registration" className="no-underline">
-                        <div
-                            className="rectangle  p-3 mb-5 bg-white rounded d-flex align-items-center justify-content-center">
-                            <h1>Registration</h1>
-                        </div>
-                    </Link>
-                </Col>
-            </Row>
-        </Container>
+        <>
+            <MyCarousel/>
+            <Container className="mb-3">
+                <OurServices/>
+                <AboutUs/>
+                <Testimonials/>
+                <GetStart/>
+            </Container>
+        </>
     );
 }
 

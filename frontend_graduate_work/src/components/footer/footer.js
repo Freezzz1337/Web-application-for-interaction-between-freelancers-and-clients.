@@ -1,8 +1,9 @@
-import {Container} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
+import "./footer.css"
 
 const Footer = () => {
     return (
-        <footer className="text-muted py-5">
+        <footer className="footer mt-auto py-3 bg-light">
             <Container>
                 <p className="float-end mb-1">
                     <a href="#">Back to top</a>
@@ -11,5 +12,7 @@ const Footer = () => {
             </Container>
         </footer>
     );
-}
+};
+
 export default Footer;
+

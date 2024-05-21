@@ -14,7 +14,6 @@ h1{
     color: white;
 }
 
-
 .rectangle {
     padding: 40px;
     margin: 20px;
@@ -32,6 +31,14 @@ h1{
 .rectangle:hover {
     transform: scale(1.1);
     filter: brightness(1);
+}
+
+.start-bg {
+    background: rgb(148, 119, 99, 0.08);
+}
+
+.font-for-start{
+    font-family: "Comic Sans MS", serif;
 }
 
 
