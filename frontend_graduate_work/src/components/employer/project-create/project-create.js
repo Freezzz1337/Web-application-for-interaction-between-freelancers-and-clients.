@@ -73,10 +73,9 @@ const ProjectCreate = () => {
 
 
     return (
-        <section className="mt-5">
-            <Container>
-                <Row className="d-flex justify-content-center align-items-center ">
-                    <Col xs={12} md={9} lg={7} xl={6}>
+            <Container className="mt-5">
+                <Row className="d-flex justify-content-center align-items-center">
+                    <Col xs={12} md={9} lg={9} xl={8}>
                         <Card className="shadow-lg p-3 mb-5  rounded">
                             <Card.Body className="p-5">
                                 <h2 className="text-uppercase text-center mb-5">Create New Project</h2>
@@ -136,7 +135,7 @@ const ProjectCreate = () => {
                                         <Form.Control
                                             as="textarea"
                                             className={`form-control-lg ${validErrors.description ? 'is-invalid' : ''}`}
-                                            rows={3}
+                                            rows={7}
                                             name="description"
                                             onChange={handleChange}
                                         />
@@ -191,7 +190,6 @@ const ProjectCreate = () => {
                     </Col>
                 </Row>
             </Container>
-        </section>
     )
 }
 export default ProjectCreate;

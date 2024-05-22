@@ -41,6 +41,7 @@ public class ChatService {
         return chats.stream()
                 .map(Chat::getProject)
                 .distinct()
+                .sorted(Comparator.comparing(Project::getUpdatedAt).reversed())
                 .map(project -> GetChatProjectResponseDTO.builder()
                         .projectId(project.getId())
                         .projectName(project.getTitle())
@@ -71,12 +72,13 @@ public class ChatService {
                                     lastMessage.getMessageText() != null ? lastMessage.getMessageText() :
                                             (lastMessage.getFileName() != null ? lastMessage.getFileName() : "Collaboration Invitation")
                             )
-                            .lastMessageTime(lastMessage != null ? lastMessage.getCreatedAt() : null)
+                            .lastMessageTime(lastMessage.getCreatedAt())
                             .userPicture(isCurrentUserFreelancer ? chat.getEmployer().getProfilePicture() : chat.getFreelancer().getProfilePicture())
                             .userId(isCurrentUserFreelancer ? chat.getEmployer().getId() : chat.getFreelancer().getId())
                             .active(chat.isActive())
                             .build();
                 })
+                .sorted(Comparator.comparing(GetChatUserResponseDTO::getLastMessageTime).reversed())
                 .toList();
     }
 

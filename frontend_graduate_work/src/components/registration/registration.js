@@ -57,12 +57,10 @@ const Registration = () => {
     }
 
     return (
-        <section className="vh-100 bg-image mt-5">
-            <div className="mask d-flex align-items-center h-100 gradient-custom-3 ">
-                <Container className="h-100 ">
+                <Container className="mt-5">
                     <Row className="d-flex justify-content-center align-items-center h-100">
-                        <Col xs={12} md={9} lg={7} xl={6}>
-                            <Card className="shadow-lg p-3 mb-5 bg-white rounded">
+                        <Col xs={12} md={9} lg={9} xl={7}>
+                        <Card className="shadow-lg p-3 mb-5 bg-white rounded">
                                 <Card.Body className="p-5">
                                     <h2 className="text-uppercase text-center mb-5">Create an account</h2>
                                     <Form ref={formRef} onSubmit={handleSubmit}>
@@ -121,7 +119,7 @@ const Registration = () => {
                                             <Form.Label>Bio</Form.Label>
                                             <Form.Control
                                                 as="textarea"
-                                                rows={3}
+                                                rows={5}
                                                 name="bio"
                                                 onChange={handleChange}
                                             />
@@ -160,8 +158,6 @@ const Registration = () => {
                         </Col>
                     </Row>
                 </Container>
-            </div>
-        </section>
     );
 }
 

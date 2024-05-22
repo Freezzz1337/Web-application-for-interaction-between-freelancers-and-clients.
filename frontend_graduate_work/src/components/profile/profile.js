@@ -40,7 +40,6 @@ const Profile = () => {
     }
 
     return (
-
         <Container className="mt-3">
             <Row className="align-items-center profile-header-gradient rounded-top-5">
                 <Col lg={3} md={5} className="d-flex align-items-center justify-content-center">

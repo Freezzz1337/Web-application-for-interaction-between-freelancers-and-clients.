@@ -108,10 +108,9 @@ const ProjectEdit = () => {
     }
 
     return (
-        <section className="mt-5">
-            <Container>
+            <Container className="mt-5">
                 <Row className="d-flex justify-content-center align-items-center ">
-                    <Col xs={12} md={9} lg={7} xl={6}>
+                    <Col xs={12} md={9} lg={8} xl={9}>
                         <Card className="shadow-lg p-3 mb-5  rounded">
                             <Card.Body className="p-5">
                                 <h2 className="text-uppercase text-center mb-5">Edit Project</h2>
@@ -171,7 +170,7 @@ const ProjectEdit = () => {
                                         <Form.Control
                                             as="textarea"
                                             className={`form-control-lg ${validErrors.description ? 'is-invalid' : ''}`}
-                                            rows={3}
+                                            rows={7}
                                             value={formData.description}
                                             name="description"
                                             onChange={handleChange}
@@ -230,7 +229,6 @@ const ProjectEdit = () => {
                     </Col>
                 </Row>
             </Container>
-        </section>
     );
 }
 export default ProjectEdit;
