@@ -90,17 +90,17 @@ const Header = ({token}) => {
 
             <Chat show={showChat} onHide={() => setShowChat(false)}/>
 
-            <Modal show={show} onHide={handleCloseLogoutModal}>
+            <Modal show={show} onHide={handleCloseLogoutModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Logout</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to log out?</Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={handleCloseLogoutModal} variant="secondary">
-                        Cancel
-                    </Button>
                     <Button onClick={handleLogout} variant="primary">
                         Logout
+                    </Button>
+                    <Button onClick={handleCloseLogoutModal} variant="secondary">
+                        Cancel
                     </Button>
                 </Modal.Footer>
             </Modal>

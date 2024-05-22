@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {Button, Dropdown, DropdownButton, Form, FormControl, InputGroup} from "react-bootstrap";
-import {MdAttachFile, MdClose, MdSend} from "react-icons/md";
+import {MdClose, MdSend} from "react-icons/md";
+import {AiOutlineMenu} from "react-icons/ai";
 import {convertFileToBase64} from "../../../util/convert-file-to-base64";
 import "./input-component.css";
 import {useAuth} from "../../../context/auth-context";
@@ -95,7 +96,7 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive, upd
                     ) : (
                         <DropdownButton
                             variant="outline-secondary"
-                            title={<MdAttachFile/>}
+                            title={<AiOutlineMenu/>}
                             id="input-group-dropdown-1"
                             disabled={!!inputValue}
                         >
@@ -111,7 +112,7 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive, upd
                                     disabled={!!inputValue}
                                 />
                             </Dropdown.Item>
-
+                            <Dropdown.Divider />
                             {userType === "EMPLOYER" && (
                                 <>
                                     {!collaborationIsActive && (

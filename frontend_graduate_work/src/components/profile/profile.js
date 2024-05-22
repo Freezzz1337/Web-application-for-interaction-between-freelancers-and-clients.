@@ -6,6 +6,7 @@ import {getUserData} from "../../services/profile-service";
 import {useNavigate} from "react-router-dom";
 import ProjectStatistics from "./for-employer/project-statistics";
 import Reviews from "./for-freelancer";
+import Spinner from "../spinner";
 
 const Profile = () => {
     const {token, userType} = useAuth();
@@ -36,7 +37,11 @@ const Profile = () => {
 
 
     if (!userData) {
-        return <div><h2>Wait a moment!</h2></div>
+        return (
+            <div style={{height: "100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
     }
 
     return (

@@ -7,6 +7,7 @@ import ChatPersonList from "./chat-lists/chat-person-list";
 import {BiChevronLeft} from "react-icons/bi";
 import ChatPerson from "./chat-person";
 import "./chat.css";
+import Spinner from "../spinner";
 
 const Chat = ({show, onHide, userId, userName, projectId, projectName}) => {
     const [projects, setProjects] = useState(null);
@@ -90,6 +91,11 @@ const Chat = ({show, onHide, userId, userName, projectId, projectName}) => {
                     <ChatProjectList projects={projects} handleProject={handleProject}/>
                 )}
 
+                {!projects && (
+                    <div style={{height:"100%"}} className="d-flex justify-content-center align-items-center">
+                        <Spinner size="7rem"/>
+                    </div>
+                )}
                 {projects && projects.length <= 0 && (
                     <h4 className="text-center">No chat has been created yet =(</h4>
                 )}

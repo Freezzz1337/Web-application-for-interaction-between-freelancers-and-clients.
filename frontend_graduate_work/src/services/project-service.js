@@ -11,11 +11,6 @@ const createProject = async (formData, token) => {
         .then(response => response.json());
 }
 
-const getAllProjectsForEmployer = async (token) => {
-    return await fetch(`${_api}project/getProjectsForEmployer`, _requestOptionsGET(token))
-        .then(response => response.json());
-}
-
 const getProjectDetailsForEmployer = async (projectId, token) => {
     return await fetch(`${_api}project/projectDetailsForEmployer/${projectId}`, _requestOptionsGET(token))
         .then(response => response.json());
@@ -62,12 +57,37 @@ const getProjectForCollaborationInvitation = async (projectId, token) => {
         .then(response => response.json());
 }
 
+
+const getAllProjectsForEmployer = async (token) => {
+    return await fetch(`${_api}project/getProjectsForEmployer`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+const getAllOpenProjectsForEmployer = async (token) => {
+    return await fetch(`${_api}project/getOpenProjectsForEmployer`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+const getAllInProgressProjectsForEmployer = async (token) => {
+    return await fetch(`${_api}project/getInProgressProjectsForEmployer`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
+const getAllCompletedProjectsForEmployer = async (token) => {
+    return await fetch(`${_api}project/getCompletedProjectsForEmployer`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
 export {
     createProject,
-    getAllProjectsForEmployer,
     getProjectDetailsForEmployer,
     editProject,
     deleteProject,
+
+    getAllProjectsForEmployer,
+    getAllOpenProjectsForEmployer,
+    getAllInProgressProjectsForEmployer,
+    getAllCompletedProjectsForEmployer,
 
     getAllProjectTypes,
     getSubprojectsTypes,

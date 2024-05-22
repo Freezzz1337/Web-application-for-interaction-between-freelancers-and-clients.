@@ -7,7 +7,6 @@ import backend_graduate_work.DTO.projectDTO.*;
 import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployer;
 import backend_graduate_work.DTO.projectDTO.ProjectDetailsForEmployerResponseDTO.ProjectDetailsForEmployerResponseDTO;
 import backend_graduate_work.DTO.projectDTO.ProjectGetAllForEmployerResponseDTO;
-import backend_graduate_work.models.ChatMessage;
 import backend_graduate_work.models.Project;
 import backend_graduate_work.models.enums.StatusProject;
 import backend_graduate_work.models.User;
@@ -31,23 +30,44 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final SubprojectTypeRepository subprojectTypeRepository;
     private final ProjectCommentRepository projectCommentRepository;
-    private final ChatMessageRepository chatMessageRepository;
     private final ChatRepository chatRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository, ChatMessageRepository chatMessageRepository, ChatRepository chatRepository) {
+    public ProjectService(ProjectRepository projectRepository, SubprojectTypeRepository subprojectTypeRepository, ProjectCommentRepository projectCommentRepository, ChatRepository chatRepository) {
         this.projectRepository = projectRepository;
         this.subprojectTypeRepository = subprojectTypeRepository;
         this.projectCommentRepository = projectCommentRepository;
-        this.chatMessageRepository = chatMessageRepository;
         this.chatRepository = chatRepository;
     }
 
     public List<ProjectGetAllForEmployerResponseDTO> getAllForEmployer() {
-        User currentUser = getCurrentUser();
+        return mappingToProjectsList(null);
+    }
 
-        return projectRepository.findAllByEmployerId(currentUser.getId())
-                .stream()
+    public List<ProjectGetAllForEmployerResponseDTO> getAllOpenForEmployer() {
+        return mappingToProjectsList(StatusProject.OPEN);
+    }
+
+    public List<ProjectGetAllForEmployerResponseDTO> getAllInProgressForEmployer() {
+        return mappingToProjectsList(StatusProject.IN_PROGRESS);
+    }
+
+    public List<ProjectGetAllForEmployerResponseDTO> getAllCompletedForEmployer() {
+        return mappingToProjectsList(StatusProject.COMPLETED);
+    }
+
+    private List<ProjectGetAllForEmployerResponseDTO> mappingToProjectsList(StatusProject filterBy) {
+        User currentUser = getCurrentUser();
+        List<Project> projects;
+
+        if (filterBy == null) {
+            projects = projectRepository.findAllByEmployerId(currentUser.getId());
+        } else {
+            projects = projectRepository.findAllByEmployerIdAndStatus(currentUser.getId(), filterBy);
+        }
+
+        return projects.stream()
+                .sorted(Comparator.comparing(Project::getUpdatedAt).reversed())
                 .map(project -> ProjectGetAllForEmployerResponseDTO.builder()
                         .id(project.getId())
                         .title(project.getTitle())

@@ -14,6 +14,7 @@ import ProjectDetailsComment from "../../project-details-comment";
 import ModalProjectDetails from "./modal-project-details/modal-project-details";
 import Chat from "../../chat";
 import "./project-details-employer.css";
+import Spinner from "../../spinner";
 
 const ProjectDetailsEmployer = () => {
     const {token} = useAuth();
@@ -88,7 +89,11 @@ const ProjectDetailsEmployer = () => {
     }
 
     if (!project) {
-        return <div><h2>Wait a moment!</h2></div>
+        return (
+            <div style={{height: "100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
     }
 
     return (

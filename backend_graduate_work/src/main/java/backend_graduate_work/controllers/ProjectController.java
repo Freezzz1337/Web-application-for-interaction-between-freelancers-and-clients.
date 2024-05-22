@@ -35,11 +35,6 @@ public class ProjectController {
         return ResponseEntity.ok(new ProjectCreateResponseDTO());
     }
 
-    @GetMapping("/getProjectsForEmployer")
-    public ResponseEntity<List<ProjectGetAllForEmployerResponseDTO>> getAllForEmployer() {
-        return ResponseEntity.ok(projectService.getAllForEmployer());
-    }
-
     @GetMapping("/projectDetailsForEmployer/{id}")
     public ResponseEntity<ProjectDetailsForEmployerResponseDTO> getProjectForEmployerDetails(@PathVariable long id) {
         return ResponseEntity.ok(projectService.getProjectForEmployerDetails(id));
@@ -91,5 +86,23 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjectForCollaborationInvitation(id));
     }
 
+    @GetMapping("/getProjectsForEmployer")
+    public ResponseEntity<List<ProjectGetAllForEmployerResponseDTO>> getAllForEmployer() {
+        return ResponseEntity.ok(projectService.getAllForEmployer());
+    }
 
+    @GetMapping("/getOpenProjectsForEmployer")
+    public ResponseEntity<List<ProjectGetAllForEmployerResponseDTO>> getAllOpenForEmployer() {
+        return ResponseEntity.ok(projectService.getAllOpenForEmployer());
+    }
+
+    @GetMapping("/getInProgressProjectsForEmployer")
+    public ResponseEntity<List<ProjectGetAllForEmployerResponseDTO>> getAllInProgressForEmployer() {
+        return ResponseEntity.ok(projectService.getAllInProgressForEmployer());
+    }
+
+    @GetMapping("/getCompletedProjectsForEmployer")
+    public ResponseEntity<List<ProjectGetAllForEmployerResponseDTO>> getAllCompletedForEmployer() {
+        return ResponseEntity.ok(projectService.getAllCompletedForEmployer());
+    }
 }

@@ -7,6 +7,7 @@ import {
     editCollaborationInvitation, getCollaborationInvitation
 } from "../../services/collaboration-invitation-service";
 import CollaborationInvitationReview from "../collaboration-invitation-review";
+import Spinner from "../spinner";
 
 const CollaborationInvitation = ({showModal, toggleModal, userId, projectId, collaborationAction, updateChat}) => {
     const {token} = useAuth();
@@ -79,7 +80,7 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId, col
     };
 
     if (!formData.newBudget && !projectName) {
-        return <div><h2>Wait a moment!</h2></div>
+        return <Spinner/>;
     }
 
     return (

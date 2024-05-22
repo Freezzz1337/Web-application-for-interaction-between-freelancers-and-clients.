@@ -6,6 +6,7 @@ import "./chat-person.css";
 import formatCreatedAtDate from "../../../util/format-created-at-date";
 import InputComponent from "../input-component";
 import CollaborationInvitationMessage from "./collaboration-invitation-message";
+import Spinner from "../../spinner";
 
 const ChatPerson = ({userId, projectId}) => {
     const {token, userType} = useAuth();
@@ -65,8 +66,13 @@ const ChatPerson = ({userId, projectId}) => {
     }
 
     if (!chatMessages) {
-        return <div><h2>Wait a moment!</h2></div>
+        return (
+            <div style={{height: "100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="7rem"/>
+            </div>
+        );
     }
+
 
     return (
         <div>

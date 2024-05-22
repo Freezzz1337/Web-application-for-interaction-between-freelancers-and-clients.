@@ -1,10 +1,11 @@
 import {useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Row, Form, Card, Alert} from "react-bootstrap";
 import {editProfileValidation} from "../../util/validation/profile-validation";
 import {editProfile} from "../../services/profile-service";
 import {useAuth} from "../../context/auth-context";
 import {convertFileToBase64} from "../../util/convert-file-to-base64";
+import Spinner from "../spinner";
 
 const ProfileEdit = () => {
     const location = useLocation();
@@ -55,7 +56,11 @@ const ProfileEdit = () => {
     }
 
     if (!formData) {
-        return <div><h2>Wait a moment!</h2></div>
+        return (
+            <div style={{height:"100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
     }
 
     return (

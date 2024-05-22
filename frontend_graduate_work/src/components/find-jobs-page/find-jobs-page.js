@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
 import filterValidation from "../../util/validation/filter-validation";
 import FindJobPagePagination from "./find-job-page-pagination/find-job-page-pagination";
 import formatCreatedAtDate from "../../util/format-created-at-date";
+import Spinner from "../spinner";
 
 const FindJobsPage = () => {
     const {token} = useAuth();
@@ -110,8 +111,16 @@ const FindJobsPage = () => {
         }
     }
 
+    if (!projects) {
+        return (
+            <div style={{height:"100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
+    }
+
     return (
-        <div >
+        <div>
             <Container>
                 <Row>
                     <Col xs={12} md={12} className="mt-4">
@@ -248,51 +257,51 @@ const FindJobsPage = () => {
 
 
                     <Col xs={12} lg={9}>
-                        <Card className="mt-3 ">
-                            <Card.Body>
-                                {projects && projects.map(project => (
-                                    <div key={project.id}>
-                                        <Row>
-                                            <Col sm={10}>
-                                                <p className="title-wrapper">{project.title}
-                                                    <span> {formatCreatedAtDate(project.created_at)}</span>
-                                                </p>
-                                                <Col sm={12}>
-                                                    <p className="description-wrapper">{project.description}</p>
+                            <Card className="mt-3 ">
+                                <Card.Body>
+                                    {projects && projects.map(project => (
+                                        <div key={project.id}>
+                                            <Row>
+                                                <Col sm={10}>
+                                                    <p className="title-wrapper">{project.title}
+                                                        <span> {formatCreatedAtDate(project.created_at)}</span>
+                                                    </p>
+                                                    <Col sm={12}>
+                                                        <p className="description-wrapper">{project.description}</p>
+                                                    </Col>
+                                                    <h6>Deadline: <span
+                                                        style={{fontWeight: "normal"}}>{formatDeadlineDate(project.deadline)}</span>
+                                                    </h6>
                                                 </Col>
-                                                <h6>Deadline: <span
-                                                    style={{fontWeight: "normal"}}>{formatDeadlineDate(project.deadline)}</span>
-                                                </h6>
-                                            </Col>
 
-                                            <Col sm={2}>
-                                                <h6>${project.budget}</h6>
+                                                <Col sm={2}>
+                                                    <h6>${project.budget}</h6>
 
-                                                <Link to={`/project/details/${project.id}`}
-                                                      className="btn btn-success text-center"
-                                                      align="center">
-                                                    Details
-                                                </Link>
-                                            </Col>
-                                        </Row>
+                                                    <Link to={`/project/details/${project.id}`}
+                                                          className="btn btn-success text-center"
+                                                          align="center">
+                                                        Details
+                                                    </Link>
+                                                </Col>
+                                            </Row>
 
-                                        <hr/>
-                                    </div>
-                                ))}
+                                            <hr/>
+                                        </div>
+                                    ))}
 
-                                <FindJobPagePagination paginationValue={paginationValue}
-                                                       setPaginationValue={setPaginationValue}
-                                                       setProjects={setProjects}
-                                                       token={token}
-                                                       formData={formData}/>
+                                    <FindJobPagePagination paginationValue={paginationValue}
+                                                           setPaginationValue={setPaginationValue}
+                                                           setProjects={setProjects}
+                                                           token={token}
+                                                           formData={formData}/>
 
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
-    );
-}
+                                </Card.Body>
+                            </Card>
+                            </Col>
+                            </Row>
+                            </Container>
+                            </div>
+                            );
+                        }
 
-export default FindJobsPage;
+                        export default FindJobsPage;

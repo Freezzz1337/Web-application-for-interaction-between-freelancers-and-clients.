@@ -4,10 +4,11 @@ import {useAuth} from "../../../../context/auth-context";
 import {getAllUsersChats} from "../../../../services/chat-service";
 import "./chat-person-list.css";
 import formatCreatedAtDate from "../../../../util/format-created-at-date";
+import Spinner from "../../../spinner";
 
 const ChatPersonList = ({projectId, onSelectUser}) => {
     const {token} = useAuth();
-    const [usersChats, setUsersChats] = useState([]);
+    const [usersChats, setUsersChats] = useState(null);
 
     useEffect(() => {
         const fetch = async () => {
@@ -16,6 +17,14 @@ const ChatPersonList = ({projectId, onSelectUser}) => {
         };
         fetch();
     }, [projectId, token]);
+
+    if (!usersChats) {
+        return (
+            <div style={{height: "100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="7rem"/>
+            </div>
+        );
+    }
 
     return (
         <Row className="for-person-list-container">

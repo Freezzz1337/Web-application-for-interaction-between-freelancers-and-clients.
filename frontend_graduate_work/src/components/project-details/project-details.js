@@ -20,6 +20,7 @@ import formatCreatedAtDate from "../../util/format-created-at-date";
 import {createCommentValidation} from "../../util/validation/comment-validation";
 import {createProjectComment} from "../../services/project-comment-service";
 import ProjectDetailsComment from "../project-details-comment";
+import Spinner from "../spinner";
 
 const ProjectDetails = () => {
     const {token, userType} = useAuth();
@@ -83,7 +84,11 @@ const ProjectDetails = () => {
     }
 
     if (!project) {
-        return <div><h2>Wait a moment!</h2></div>
+        return (
+            <div style={{height:"100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
     }
 
     return (

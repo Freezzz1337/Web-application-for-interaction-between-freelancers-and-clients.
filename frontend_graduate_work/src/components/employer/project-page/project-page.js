@@ -1,60 +1,85 @@
-import {Card, Col, Container, Row} from "react-bootstrap";
+import {Card, Col, Container, Row, Tab, Tabs} from "react-bootstrap";
 import "./project-page.css";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getAllProjectsForEmployer} from "../../../services/project-service";
+import {
+    getAllCompletedProjectsForEmployer,
+    getAllInProgressProjectsForEmployer,
+    getAllOpenProjectsForEmployer,
+    getAllProjectsForEmployer
+} from "../../../services/project-service";
 import {useAuth} from "../../../context/auth-context";
+import ProjectList from "./project-list";
+import {FaCheckCircle, FaFolderOpen, FaList, FaSpinner} from "react-icons/fa";
+import Spinner from "../../spinner";
 
 const ProjectPage = () => {
     const {token} = useAuth();
     const [projects, setProjects] = useState(null);
+    const [activeTab, setActiveTab] = useState('all');
 
     useEffect(() => {
         const fetchData = async () => {
-            const serverResponse = await getAllProjectsForEmployer(token);
+            let serverResponse;
+            switch (activeTab) {
+                case 'all':
+                    serverResponse = await getAllProjectsForEmployer(token);
+                    break;
+                case 'open':
+                    serverResponse = await getAllOpenProjectsForEmployer(token);
+                    break;
+                case 'in-progress':
+                    serverResponse = await getAllInProgressProjectsForEmployer(token);
+                    break;
+                case 'completed':
+                    serverResponse = await getAllCompletedProjectsForEmployer(token);
+                    break;
+                default:
+                    serverResponse = await getAllProjectsForEmployer(token);
+            }
+
             if (serverResponse) {
                 setProjects(serverResponse);
             }
-        }
+        };
+
         fetchData();
-    }, []);
+    }, [activeTab, token]);
 
     if (!projects) {
-        return <div><h2>Wait a moment!</h2></div>
+        return (
+            <div style={{height: "100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
     }
 
     return (
-        <Container className="mt-5">
+        <Container >
             <Row className="justify-content-center">
-                <Col className="text-center">
-                    <Link className="btn btn-info btn-lg text-body w-100 rounded-0" to="/project/create">Create
-                        new project</Link>
+                <Col className="text-center mt-5 mb-5">
+                    <Link className="btn btn-info btn-lg text-body w-100 rounded-0" to="/project/create">
+                        Create new project
+                    </Link>
                 </Col>
             </Row>
-            <hr/>
-            <h2>My projects</h2>
-            <Row className="mt-3">
-                {projects.map(project => (
-                    <Col key={project.id} md={4} className="mb-3">
-                        <Card className="card-container">
-                            <Card.Body>
-                                <Card.Title className="card-title">{project.title}</Card.Title>
-                                <Card.Text className="mb-0">
-                                    Status: {project.status}
-                                </Card.Text>
-                                <Card.Text className="mt-0">
-                                    Comments: {project.amountOfComments}
-                                </Card.Text>
-                                <Link to={`/project/details/employer/${project.id}`}
-                                      className="btn btn-info"
-                                      align="center">
-                                    More details
-                                </Link>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
+            <hr className="mt-0"/>
+            <h2 className="text-center">My projects</h2>
+
+            <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-4">
+                <Tab eventKey="all" title={<span><FaList className="me-2"/> All</span>}>
+                    <ProjectList projects={projects}/>
+                </Tab>
+                <Tab eventKey="open" title={<span><FaFolderOpen className="me-2"/> Open</span>}>
+                    <ProjectList projects={projects}/>
+                </Tab>
+                <Tab eventKey="in-progress" title={<span><FaSpinner className="me-2"/> In Progress</span>}>
+                    <ProjectList projects={projects}/>
+                </Tab>
+                <Tab eventKey="completed" title={<span><FaCheckCircle className="me-2"/> Completed</span>}>
+                    <ProjectList projects={projects}/>
+                </Tab>
+            </Tabs>
         </Container>
     );
 }

@@ -1,4 +1,4 @@
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../context/auth-context";
 import {
@@ -19,6 +19,7 @@ import {
     getSubprojectsTypes
 } from "../../../services/project-service";
 import {convertToDateTimeLocal} from "../../../util/convert-to-date-time-local";
+import Spinner from "../../spinner";
 
 const ProjectEdit = () => {
     const {projectId} = useParams();
@@ -32,6 +33,7 @@ const ProjectEdit = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+
             const serverResponseProjectDetailsForEmployer = await getProjectDetailsForEmployer(projectId, token);
             const serverResponseAllProjectTypes = await getAllProjectTypes(token);
             const serverResponseSubprojectsTypes = await getSubprojectsTypes(token, projectId);
@@ -103,8 +105,12 @@ const ProjectEdit = () => {
         }
     }
 
-    if (!formData) {
-        return <div><h2>Wait a moment!</h2></div>
+    if (formData && Object.keys(formData).length === 0) {
+        return (
+            <div style={{height:"100%"}} className="d-flex justify-content-center align-items-center">
+                <Spinner size="10rem"/>
+            </div>
+        );
     }
 
     return (
