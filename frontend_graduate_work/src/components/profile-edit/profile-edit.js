@@ -39,7 +39,6 @@ const ProfileEdit = () => {
 
         const newValidErrors = editProfileValidation(formData);
         setValidErrors(newValidErrors);
-        console.log(formData);
         if (Object.keys(newValidErrors).length === 0) {
             try {
                 const serverResponse = await editProfile(JSON.stringify(formData), token);

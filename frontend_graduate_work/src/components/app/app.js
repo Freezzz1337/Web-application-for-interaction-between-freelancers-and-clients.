@@ -13,22 +13,46 @@ import ProjectPage from "../employer/project-page";
 import ProjectDetailsEmployer from "../employer/project-details-employer/project-details-employer";
 import ProjectEdit from "../employer/project-edit";
 import ProjectDetails from "../project-details";
+import {useEffect, useState} from "react";
+import {getCheckDeadline} from "../../services/collaboration-invitation-service";
+import DeadlineAlert from "../deadline-alert";
 
 function App() {
     const {token} = useAuth();
     const location = useLocation();
-    //   const token = true; //todo : Temporary stub!!!!!!!!!!!!!!
     const noHeaderFooterPaths = ["/authorization", "/registration"];
-
     const showHeaderFooter = !noHeaderFooterPaths.includes(location.pathname);
+
+    const [checkDeadline, setCheckDeadline] = useState(null);
+
+    useEffect(() => {
+        const fetch = async () => {
+            if (!token) {
+                return;
+            }
+
+            try {
+                const serverResponse = await getCheckDeadline(token);
+                setCheckDeadline(serverResponse.checkDeadlines);
+            } catch (error) {
+                console.error("Error fetching deadline:", error);
+            }
+        }
+
+        fetch();
+    }, [token]);
 
     return (
         <>
             {showHeaderFooter && <Header token={token}/>}
 
+            {checkDeadline && <DeadlineAlert checkDeadlines={checkDeadline} />}
+
             <Routes>
                 {token ? (
                     <>
+
+
                         <Route path="/find-jobs" element={<FindJobsPage/>}/>
 
                         <Route path="/profile" element={<Profile/>}/>
@@ -49,9 +73,10 @@ function App() {
                         <Route path="/registration" element={<Registration/>}/>
                     </>
                 )}
+
             </Routes>
 
-            {showHeaderFooter && <Footer />}
+            {showHeaderFooter && <Footer/>}
         </>
     )
 }

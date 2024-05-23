@@ -3,9 +3,12 @@ import {
     acceptCollaborationInvitation, declineInvitation
 } from "../../../../services/collaboration-invitation-service";
 import {useAuth} from "../../../../context/auth-context";
+import {format} from "date-fns";
 
 const CollaborationInvitationMessage = ({invitation, userType, updateChat}) => {
     const {token} = useAuth();
+    const deadlineDate = new Date(invitation.deadline);
+    const formattedDate = format(deadlineDate, 'dd.MM.yyyy HH:mm');
     const handleAcceptInvitation = async (e) => {
         e.preventDefault();
 
@@ -24,28 +27,31 @@ const CollaborationInvitationMessage = ({invitation, userType, updateChat}) => {
     }
 
     return (
-        <Row>
+        <Row className="mt-3">
             <Col xs={12} className="text-center">
                 <h5>Collaboration Invitation</h5>
             </Col>
-            <Col xs={12} >
+            <Col xs={12}>
                 <p><strong>Project:</strong> {invitation.projectName}</p>
             </Col>
-            <Col xs={12} >
+            <Col xs={12}>
                 <p><strong>Budget:</strong> ${invitation.budget}</p>
             </Col>
-            <Col xs={12} >
+            <Col xs={12}>
+                <p><strong>Deadline:</strong> {formattedDate}</p>
+            </Col>
+            <Col xs={12}>
                 {invitation.status === 'ACCEPTED' && (
-                    <h5 style={{ color: "green" }} className="text-center">Invitation accepted!</h5>
+                    <h5 style={{color: "green"}} className="text-center">Invitation accepted!</h5>
                 )}
                 {invitation.status === 'DECLINED' && (
-                    <h5 style={{ color: "red" }} className="text-center">Invitation declined!</h5>
+                    <h5 style={{color: "red"}} className="text-center">Invitation declined!</h5>
                 )}
                 {invitation.status === 'UPDATED' && (
-                    <h5 style={{ color: "orange" }} className="text-center">Invitation updated!</h5>
+                    <h5 style={{color: "orange"}} className="text-center">Invitation updated!</h5>
                 )}
                 {invitation.status === 'COMPLETED' && (
-                    <h5 style={{ color: "green" }} className="text-center">Invitation completed!</h5>
+                    <h5 style={{color: "green"}} className="text-center">Invitation completed!</h5>
                 )}
                 {userType === "FREELANCER" && invitation.status === 'PENDING' && (
                     <Row>

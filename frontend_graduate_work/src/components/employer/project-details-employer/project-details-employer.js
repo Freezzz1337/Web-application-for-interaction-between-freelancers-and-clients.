@@ -63,7 +63,6 @@ const ProjectDetailsEmployer = () => {
 
     const fetchData = async () => {
         const serverResponse = await getProjectDetailsForEmployer(projectId, token);
-        console.log(serverResponse);
         if (serverResponse?.projectCommentGetAllForProjectDetails?.length > 0) {
             setProject(serverResponse.projectDetailsForEmployer);
             setComments(serverResponse.projectCommentGetAllForProjectDetails);

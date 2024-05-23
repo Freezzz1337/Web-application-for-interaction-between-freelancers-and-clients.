@@ -14,6 +14,6 @@ public class GetCollaborationInvitation {
     private String projectName;
 
     private Timestamp createdAt;
-
+    private Timestamp deadline;
     private String status;
 }

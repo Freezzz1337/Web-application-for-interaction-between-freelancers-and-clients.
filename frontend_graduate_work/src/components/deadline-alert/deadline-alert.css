@@ -1,0 +1,15 @@
+.deadline-alert{
+    position: fixed;
+    right: 20px;
+    z-index: 1000;
+    height: 100px;
+    width: 300px;
+}
+
+.project-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}

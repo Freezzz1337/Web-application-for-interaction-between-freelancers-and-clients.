@@ -1,7 +1,8 @@
 package backend_graduate_work.controllers;
 
 import backend_graduate_work.DTO.collaborationInvitationDTO.*;
-import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCompletedRequestDTO.CollaborationInvitationCompletedRequestDTO;
+import backend_graduate_work.DTO.collaborationInvitationDTO.checkDeadlinDTO.CheckDeadlineDTO;
+import backend_graduate_work.DTO.collaborationInvitationDTO.collaborationInvitationCompletedRequestDTO.CollaborationInvitationCompletedRequestDTO;
 import backend_graduate_work.services.CollaborationInvitationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,4 +58,10 @@ public class CollaborationInvitationController {
         collaborationInvitationService.completedCollaborationInvitation(requestDTO);
         return ResponseEntity.ok(new CollaborationInvitationCompletedResponseDTO());
     }
+
+    @GetMapping("/checkDeadline")
+    private ResponseEntity<CheckDeadlineDTO> checkDeadline() {
+        return ResponseEntity.ok(collaborationInvitationService.checkDeadline());
+    }
+
 }

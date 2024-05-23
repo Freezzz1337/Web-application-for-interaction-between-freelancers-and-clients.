@@ -42,6 +42,11 @@ const completedCollaborationInvitation = async (formData, token) => {
         .then(response => response.json());
 }
 
+const getCheckDeadline = async (token) => {
+    return await fetch(`${_api}collaborationInvitation/checkDeadline`, _requestOptionsGET(token))
+        .then(response => response.json());
+}
+
 export {
     createCollaborationInvitation,
     acceptCollaborationInvitation,
@@ -50,5 +55,7 @@ export {
     getCollaborationInvitation,
 
     declineInvitation,
-    completedCollaborationInvitation
+    completedCollaborationInvitation,
+
+    getCheckDeadline
 }

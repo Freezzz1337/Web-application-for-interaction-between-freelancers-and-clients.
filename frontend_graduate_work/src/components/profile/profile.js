@@ -26,7 +26,6 @@ const Profile = () => {
                 setReviews(serverResponse.reviewList);
             }
             setUserData(serverResponse.userProfileData);
-            console.log(serverResponse);
         };
         fetchData();
     }, [token]);

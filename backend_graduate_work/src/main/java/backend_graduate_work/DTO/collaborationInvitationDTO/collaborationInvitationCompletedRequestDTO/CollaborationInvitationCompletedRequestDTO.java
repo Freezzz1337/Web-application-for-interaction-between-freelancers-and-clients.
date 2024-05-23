@@ -1,4 +1,4 @@
-package backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCompletedRequestDTO;
+package backend_graduate_work.DTO.collaborationInvitationDTO.collaborationInvitationCompletedRequestDTO;
 
 import lombok.Getter;
 import lombok.Setter;

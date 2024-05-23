@@ -11,4 +11,9 @@ public interface CollaborationInvitationRepository extends JpaRepository<Collabo
     CollaborationInvitation findById(long id);
     List<CollaborationInvitation> findByFreelancerIdAndEmployerId(long freelancerId, long employerId);
     List<CollaborationInvitation> findByFreelancerIdAndEmployerIdAndProjectId(long freelancerId, long employerId, long projectId);
+
+    List<CollaborationInvitation> findByFreelancerId(long id);
+    List<CollaborationInvitation> findByEmployerId(long id);
+
+
 }

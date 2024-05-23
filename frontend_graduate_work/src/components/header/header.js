@@ -1,27 +1,45 @@
-import {Button, Container, Modal, Nav, Navbar} from "react-bootstrap";
+import {Alert, Button, Container, Modal, Nav, Navbar} from "react-bootstrap";
 import {useAuth} from "../../context/auth-context";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Chat from "../chat";
+import SupportModal from "../support-modal";
 
 const Header = ({token}) => {
-    const [show, setShow] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showSupportModal, setShowSupportModal] = useState(false);
     const [showChat, setShowChat] = useState(false);
     const {logout, userType} = useAuth();
     const navigate = useNavigate();
 
+    const [showAlert, setShowAlert] = useState(false);
+
+    const handleSendMessage = () => {
+        setShowAlert(true);
+        handleCloseSupportModal();
+        setTimeout(() => setShowAlert(false), 3000);
+    };
+
+
+    const handleSupportClick = () => {
+        setShowSupportModal(true);
+    }
+
+    const handleCloseSupportModal = () => {
+        setShowSupportModal(false);
+    }
     const handleLogoutClick = () => {
-        setShow(true);
+        setShowLogoutModal(true);
     }
 
     const handleCloseLogoutModal = () => {
-        setShow(false);
+        setShowLogoutModal(false);
     }
 
     const handleLogout = () => {
         logout();
         navigate("/");
-        setShow(false);
+        setShowLogoutModal(false);
     }
 
     const handleProfile = () => {
@@ -41,7 +59,7 @@ const Header = ({token}) => {
     }
 
 
-    const handleMainPage = () =>{
+    const handleMainPage = () => {
         navigate("/");
     }
     const handleLogIn = () => {
@@ -81,6 +99,7 @@ const Header = ({token}) => {
                                     <Nav.Link onClick={handleMyProjects}>My Projects</Nav.Link>
                                 }
                                 <Nav.Link onClick={handleProfile}>Profile</Nav.Link>
+                                <Nav.Link onClick={handleSupportClick}>Support</Nav.Link>
                                 <Nav.Link onClick={handleLogoutClick}>Log out</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
@@ -90,7 +109,7 @@ const Header = ({token}) => {
 
             <Chat show={showChat} onHide={() => setShowChat(false)}/>
 
-            <Modal show={show} onHide={handleCloseLogoutModal} centered>
+            <Modal show={showLogoutModal} onHide={handleCloseLogoutModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Logout</Modal.Title>
                 </Modal.Header>
@@ -104,6 +123,17 @@ const Header = ({token}) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            <SupportModal show={showSupportModal} handleClose={handleCloseSupportModal}
+                          handleSendMessage={handleSendMessage}/>
+            {showAlert && (
+                <div className="mt-3">
+                    <Alert variant="success" className="text-center mt-3">
+                        Thank you for contacting us, we will get back to you soon.
+                    </Alert>
+                </div>
+            )}
+
         </>
     );
 }

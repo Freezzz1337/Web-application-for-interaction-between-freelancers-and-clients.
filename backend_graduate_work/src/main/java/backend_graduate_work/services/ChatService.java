@@ -138,6 +138,7 @@ public class ChatService {
                 .projectName(collaborationInvitation.getProject().getTitle())
                 .status(collaborationInvitation.getStatus().getStatus())
                 .createdAt(collaborationInvitation.getCreatedAt())
+                .deadline(collaborationInvitation.getNewDeadline())
                 .build();
     }
 

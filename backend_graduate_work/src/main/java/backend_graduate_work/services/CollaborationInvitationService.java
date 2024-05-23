@@ -1,11 +1,14 @@
 package backend_graduate_work.services;
 
-import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCompletedRequestDTO.CollaborationInvitationCompletedRequestDTO;
+import backend_graduate_work.DTO.collaborationInvitationDTO.checkDeadlinDTO.CheckDeadline;
+import backend_graduate_work.DTO.collaborationInvitationDTO.checkDeadlinDTO.CheckDeadlineDTO;
+import backend_graduate_work.DTO.collaborationInvitationDTO.collaborationInvitationCompletedRequestDTO.CollaborationInvitationCompletedRequestDTO;
 import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationCreateRequestDTO;
 import backend_graduate_work.DTO.collaborationInvitationDTO.CollaborationInvitationGetResponseDTO;
 import backend_graduate_work.models.*;
 import backend_graduate_work.models.enums.InvitationStatus;
 import backend_graduate_work.models.enums.StatusProject;
+import backend_graduate_work.models.enums.UserTypeEnum;
 import backend_graduate_work.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,8 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -224,9 +227,40 @@ public class CollaborationInvitationService {
                 .get(0);
     }
 
+    public CheckDeadlineDTO checkDeadline() {
+        User currentUser = getCurrentUser();
+        List<CollaborationInvitation> invitationList;
+
+        if (currentUser.getUserTypeEnum().equals(UserTypeEnum.EMPLOYER)) {
+            invitationList = collaborationInvitationRepository.findByEmployerId(currentUser.getId());
+        } else {
+            invitationList = collaborationInvitationRepository.findByFreelancerId(currentUser.getId());
+        }
+
+        Map<Long, Optional<CollaborationInvitation>> latestInvitationsByProjectId = invitationList.stream()
+                .collect(Collectors.groupingBy(
+                        invitation -> invitation.getProject().getId(),
+                        Collectors.maxBy(Comparator.comparing(CollaborationInvitation::getCreatedAt))
+                ));
+
+        List<CheckDeadline> checkDeadlines = latestInvitationsByProjectId.values().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(invitation -> !Arrays.asList(InvitationStatus.PENDING, InvitationStatus.DECLINED, InvitationStatus.COMPLETED).contains(invitation.getStatus()))
+                .map(invitation -> CheckDeadline.builder()
+                        .deadline(invitation.getNewDeadline())
+                        .projectName(invitation.getProject().getTitle())
+                        .build())
+                .toList();
+
+
+        return CheckDeadlineDTO.builder()
+                .checkDeadlines(checkDeadlines)
+                .build();
+    }
+
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
-
 }
