@@ -7,9 +7,11 @@ import {useNavigate} from "react-router-dom";
 import ProjectStatistics from "./for-employer/project-statistics";
 import Reviews from "./for-freelancer";
 import Spinner from "../spinner";
+import {useTranslation} from "react-i18next";
 
 const Profile = () => {
-    const {token, userType} = useAuth();
+    const {t} = useTranslation();
+    const {token} = useAuth();
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState(null);
@@ -56,7 +58,7 @@ const Profile = () => {
                     <h3>{userData.fullName}</h3>
                     <p>{userData.userType === 'FREELANCER' ? 'Freelancer' : 'Employer'}</p>
                     <Button variant="btn btn-outline-light" onClick={handleEditProfile}>
-                        Edit profile
+                        {t("buttons.editProfile")}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              className="bi bi-pencil" viewBox="0 0 16 16">
                             <path
@@ -68,7 +70,7 @@ const Profile = () => {
             </Row>
             <Row className="shadow-lg">
                 <Col>
-                    <h2 className="mt-2">About me</h2>
+                    <h2 className="mt-2">{t("profile.aboutMe")}</h2>
                     <p>{userData.bio}</p>
                 </Col>
             </Row>

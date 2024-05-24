@@ -4,8 +4,10 @@ import {convertFileToBase64} from "../../util/convert-file-to-base64";
 import {Link, useNavigate} from "react-router-dom";
 import {registration} from "../../services/auth-service";
 import {registrationValidation} from "../../util/validation/auth-validation";
+import {useTranslation} from "react-i18next";
 
 const Registration = () => {
+    const {t} = useTranslation();
     const [formData, setFormData] = useState({
         fullName: "",
         userType: "freelancer",
@@ -60,11 +62,11 @@ const Registration = () => {
                         <Col xs={12} md={9} lg={9} xl={7}>
                         <Card className="shadow-lg p-3 mb-5 bg-white rounded">
                                 <Card.Body className="p-5">
-                                    <h2 className="text-uppercase text-center mb-5">Create an account</h2>
+                                    <h2 className="text-uppercase text-center mb-5">{t("registration.title")}</h2>
                                     <Form ref={formRef} onSubmit={handleSubmit}>
 
                                         <Form.Group className="mb-4">
-                                            <Form.Label>Your First Name and Last Name</Form.Label>
+                                            <Form.Label>{t("registration.fullName")}</Form.Label>
 
                                             <Form.Control type="text"
                                                  className={`form-control-lg ${validErrors.fullName ? 'is-invalid' : ''}`}
@@ -77,7 +79,7 @@ const Registration = () => {
                                         </Form.Group>
 
                                         <Form.Group className="mb-4">
-                                            <Form.Label>User Type</Form.Label>
+                                            <Form.Label>{t("registration.userType")}</Form.Label>
                                             <Form.Control
                                                 as="select"
                                                 name="userType"
@@ -89,7 +91,7 @@ const Registration = () => {
                                         </Form.Group>
 
                                         <Form.Group className="mb-4">
-                                            <Form.Label>Your Email</Form.Label>
+                                            <Form.Label>{t("registration.email")}</Form.Label>
                                             <Form.Control type="email"
                                                  className={`form-control-lg ${validErrors.email ? 'is-invalid' : ''}`}
                                                           name="email"
@@ -102,7 +104,7 @@ const Registration = () => {
                                         </Form.Group>
 
                                         <Form.Group className="mb-4">
-                                            <Form.Label>Password</Form.Label>
+                                            <Form.Label>{t("registration.password")}</Form.Label>
                                             <Form.Control type="password"
                                                  className={`form-control-lg ${validErrors.password ? 'is-invalid' : ''}`}
                                                           name="password"
@@ -114,7 +116,7 @@ const Registration = () => {
                                         </Form.Group>
 
                                         <Form.Group className="mb-4">
-                                            <Form.Label>Bio</Form.Label>
+                                            <Form.Label>{t("registration.bio")}</Form.Label>
                                             <Form.Control
                                                 as="textarea"
                                                 rows={5}
@@ -124,7 +126,7 @@ const Registration = () => {
                                         </Form.Group>
 
                                         <Form.Group className="mb-4">
-                                            <Form.Label>Choose your avatar</Form.Label>
+                                            <Form.Label>{t("registration.profilePicture")}</Form.Label>
                                             <Form.Control type="file"
                                                           accept="image/*"
                                                           className="form-control-lg"
@@ -143,12 +145,11 @@ const Registration = () => {
 
                                         <div className="d-flex justify-content-center">
                                             <Button type="submit" variant="info"
-                                                    className="btn btn-info btn-lg gradient-custom-4 text-body w-100 rounded-0">Register</Button>
+                                                    className="btn btn-info btn-lg gradient-custom-4 text-body w-100 rounded-0">{t("buttons.register")}</Button>
                                         </div>
 
-                                        <p className="text-center text-muted mt-5 mb-0">Have already an
-                                            account? <Link  to="/authorization" className="fw-bold">
-                                                <u>Login here</u>
+                                        <p className="text-center text-muted mt-5 mb-0">{t("registration.lingText1")} <Link  to="/authorization" className="fw-bold">
+                                                <u>{t("registration.linkText2")}</u>
                                             </Link> </p>
                                     </Form>
                                 </Card.Body>

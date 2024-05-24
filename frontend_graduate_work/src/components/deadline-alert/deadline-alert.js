@@ -2,7 +2,9 @@ import {Alert} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {format} from "date-fns";
 import "./deadline-alert.css";
+import {useTranslation} from "react-i18next";
 const DeadlineAlert = ({ checkDeadlines }) => {
+    const {t} = useTranslation();
     const [visibleAlerts, setVisibleAlerts] = useState({});
     const getAlertVariant = (deadline) => {
         const now = new Date();
@@ -48,9 +50,9 @@ const DeadlineAlert = ({ checkDeadlines }) => {
                         visibleAlerts[index] && (
                             <div key={index} className="deadline-alert" style={{top: 20 + index * 80}}>
                                 <Alert variant={variant} onClose={() => handleClose(index)} dismissible>
-                                    <Alert.Heading>Project Deadline</Alert.Heading>
-                                    <p className="project-name">Project: {item.projectName}</p>
-                                    <p>Deadline: {format(item.deadline, 'dd.MM.yyyy HH:mm')}</p>
+                                    <Alert.Heading>{t("deadLineAlert.title")}</Alert.Heading>
+                                    <p className="project-name">{t("deadLineAlert.projectName")}: {item.projectName}</p>
+                                    <p>{t("deadLineAlert.deadline")}: {format(item.deadline, 'dd.MM.yyyy HH:mm')}</p>
                                 </Alert>
                             </div>
                         )

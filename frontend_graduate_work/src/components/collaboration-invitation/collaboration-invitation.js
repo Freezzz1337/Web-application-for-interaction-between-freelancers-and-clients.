@@ -8,8 +8,10 @@ import {
 } from "../../services/collaboration-invitation-service";
 import CollaborationInvitationReview from "../collaboration-invitation-review";
 import Spinner from "../spinner";
+import {useTranslation} from "react-i18next";
 
 const CollaborationInvitation = ({showModal, toggleModal, userId, projectId, collaborationAction, updateChat}) => {
+    const {t} = useTranslation();
     const {token} = useAuth();
     const [projectName, setProjectName] = useState(null);
 
@@ -88,10 +90,10 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId, col
             <Modal show={showModal} onHide={toggleModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {collaborationAction === "collaborate" ? "Collaboration Agreement" :
-                            collaborationAction === "approve" ? "Approve Collaboration Agreement" :
-                                collaborationAction === "decline" ? "Decline Collaboration Agreement" :
-                                    "Edit Collaboration Agreement"
+                        {collaborationAction === "collaborate" ?  `${t("modalCollaborationAction.title.collaborate")}`:
+                            collaborationAction === "approve" ? `${t("modalCollaborationAction.title.approve")}` :
+                                collaborationAction === "decline" ? `${t("modalCollaborationAction.title.decline")}` :
+                                    `${t("modalCollaborationAction.title.edit")}`
                         }
                     </Modal.Title>
                 </Modal.Header>
@@ -100,28 +102,27 @@ const CollaborationInvitation = ({showModal, toggleModal, userId, projectId, col
                     {(collaborationAction === "collaborate" || collaborationAction === "edit") && (
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="newBudget">
-                                <Form.Label className="mb-0 mt-3">Budget</Form.Label>
+                                <Form.Label className="mb-0 mt-3">{t("modalCollaborationAction.body.budget")}</Form.Label>
                                 <Form.Control type="text" name="newBudget" value={formData.newBudget}
                                               onChange={handleChange}/>
                             </Form.Group>
                             <Form.Group controlId="newDeadline">
-                                <Form.Label className="mb-0 mt-3">Deadline</Form.Label>
+                                <Form.Label className="mb-0 mt-3">{t("modalCollaborationAction.body.deadline")}</Form.Label>
                                 <Form.Control type="datetime-local" name="newDeadline"
                                               value={convertToDateTimeLocal(formData.newDeadline)}
                                               onChange={handleChange}/>
                             </Form.Group>
                             <Button variant="success" type="submit"
-                                    className="btn-lg w-100 rounded-0 mt-3">Confirm</Button>
+                                    className="btn-lg w-100 rounded-0 mt-3">{t("buttons.confirm")}</Button>
                         </Form>
                     )}
                     {(collaborationAction === "approve" || collaborationAction === "decline") && (
                         <>
-                            <p>Are you sure you want to {collaborationAction === "approve" ? "approve" : "decline"} the
-                                collaboration invitation for "{projectName}"?</p>
+                            <p>{t("modalCollaborationAction.body.collaborationAction.title1")} {collaborationAction === "approve" ? `${t("modalCollaborationAction.body.collaborationAction.approve")}` : `${t("modalCollaborationAction.body.collaborationAction.decline")}`} {t("modalCollaborationAction.body.collaborationAction.title2")} "{projectName}"?</p>
                             <Button variant="success" className="btn-lg w-100 rounded-0 mt-3"
-                                    onClick={handleApprove}>Confirm</Button>
+                                    onClick={handleApprove}>{t("buttons.confirm")}</Button>
                             <Button variant="danger" className="btn-lg w-100 rounded-0 mt-3"
-                                    onClick={handleDecline}>Cancel</Button>
+                                    onClick={handleDecline}>{t("buttons.cancel")}</Button>
                         </>
                     )}
                 </Modal.Body>

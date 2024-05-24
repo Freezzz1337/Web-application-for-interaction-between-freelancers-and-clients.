@@ -1,7 +1,9 @@
 import React from "react";
 import {Carousel, Image} from "react-bootstrap";
 import "./my-carousel.css";
+import {useTranslation} from "react-i18next";
 const MyCarousel = () => {
+    const {t} = useTranslation();
     return (
         <Carousel>
             <Carousel.Item>
@@ -11,8 +13,8 @@ const MyCarousel = () => {
                     alt="First slide"
                 />
                 <Carousel.Caption className="my-carousel-carousel-caption">
-                    <h3>Conquer the market with ease</h3>
-                    <p>Your path to success starts here.</p>
+                    <h3>{t("carousel.slide1.title")}</h3>
+                    <p>{t("carousel.slide1.text")}</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
@@ -22,8 +24,8 @@ const MyCarousel = () => {
                     alt="Second slide"
                 />
                 <Carousel.Caption className="my-carousel-carousel-caption">
-                    <h3>Unlock new opportunities with our app</h3>
-                    <p>Enhance the efficiency of your business.</p>
+                    <h3>{t("carousel.slide2.title")}</h3>
+                    <p>{t("carousel.slide2.text")}</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
@@ -33,8 +35,8 @@ const MyCarousel = () => {
                     alt="Third slide"
                 />
                 <Carousel.Caption className="my-carousel-carousel-caption">
-                    <h3>Turn ideas into results</h3>
-                    <p>Our app is the key to your success.</p>
+                    <h3>{t("carousel.slide3.title")}</h3>
+                    <p>{t("carousel.slide3.text")}</p>
                 </Carousel.Caption>
             </Carousel.Item>
         </Carousel>

@@ -6,8 +6,10 @@ import {editProfile} from "../../services/profile-service";
 import {useAuth} from "../../context/auth-context";
 import {convertFileToBase64} from "../../util/convert-file-to-base64";
 import Spinner from "../spinner";
+import {useTranslation} from "react-i18next";
 
 const ProfileEdit = () => {
+    const {t} = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState(null);
@@ -68,10 +70,10 @@ const ProfileEdit = () => {
                 <Col xs={12} md={9} lg={9} xl={8}>
                     <Card className="shadow-lg p-3 mb-5  rounded">
                         <Card.Body className="p-5">
-                            <h2 className="text-uppercase text-center mb-5">Edite profile</h2>
+                            <h2 className="text-uppercase text-center mb-5">{t("profileEdit.title")}</h2>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Your First Name and Last Name</Form.Label>
+                                    <Form.Label>{t("profileEdit.fullName")}</Form.Label>
 
                                     <Form.Control type="text"
                                                   className={`form-control-lg ${validErrors.fullName ? 'is-invalid' : ''}`}
@@ -85,7 +87,7 @@ const ProfileEdit = () => {
                                 </Form.Group>
 
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Bio</Form.Label>
+                                    <Form.Label>{t("profileEdit.bio")}</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={7}
@@ -96,7 +98,7 @@ const ProfileEdit = () => {
                                 </Form.Group>
 
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Choose your avatar</Form.Label>
+                                    <Form.Label>{t("profileEdit.profilePicture")}</Form.Label>
                                     <Form.Control type="file"
                                                   accept="image/*"
                                                   className="form-control-lg"
@@ -115,7 +117,7 @@ const ProfileEdit = () => {
 
                                 <div className="d-flex justify-content-center">
                                     <Button type="submit" variant="info"
-                                            className="btn btn-info btn-lg text-body w-100 rounded-0">Edit</Button>
+                                            className="btn btn-info btn-lg text-body w-100 rounded-0">{t("buttons.edit")}</Button>
                                 </div>
                             </Form>
                         </Card.Body>

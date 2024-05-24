@@ -1,0 +1,300 @@
+{
+  "buttons": {
+    "login": "Log in",
+    "signUp": "Sign Up",
+    "close": "Close",
+    "sendMessage": "Send Message",
+    "register": "Register",
+    "getInTouch": "Get in touch",
+    "submit": "Submit",
+    "edit": "Edit",
+    "editProfile": "Edit profile",
+    "logOut": "Log out",
+    "cancel": "Cancel",
+    "search": "Search",
+    "applyFilters": "Apply Filters",
+    "details": "Details",
+    "createProject": "Create Project",
+    "delete": "Delete",
+    "editProject": "Edit Project",
+    "send": "Send",
+    "moreDetails": "More details",
+    "createNewProject": "Create new project",
+    "submitReview": "Submit Review",
+    "confirm": "Confirm",
+    "createANewAccount": "Create a new account.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "signIn": "Sign in"
+  },
+  "carousel": {
+    "slide1": {
+      "title": "Conquer the market with ease",
+      "text": "Your path to success starts here."
+    },
+    "slide2": {
+      "title": "Unlock new opportunities with our app",
+      "text": "Enhance the efficiency of your business."
+    },
+    "slide3": {
+      "title": "Turn ideas into results",
+      "text": "Our app is the key to your success."
+    }
+  },
+  "ourServices": {
+    "title": "Our services",
+    "card1": {
+      "title": "Search for Freelancers",
+      "text": "We will help you find the best specialists for your project."
+    },
+    "card2": {
+      "title": "Quality assurance",
+      "text": "We ensure quality and reliability of work."
+    },
+    "card3": {
+      "title": "Publication of Projects",
+      "text": "Create projects and attract freelancers with the right skills."
+    }
+  },
+  "aboutUs": {
+    "title": "About Us",
+    "text1": "Welcome to FreelanceHub, the premier platform connecting skilled freelancers with innovative clients. Our mission is to streamline project collaboration by ensuring high standards of quality, trust, and efficiency. We offer a diverse range of projects, secure payments, and a user-friendly interface to support your professional success.",
+    "text2": "Join FreelanceHub today and take your freelancing or project management to the next level. Whether you're seeking top talent or exciting opportunities, our platform is designed to meet your needs and help you achieve your goals."
+  },
+  "getStart": {
+    "title": "Ready to Get Started?",
+    "text": "Join us today and find the perfect project or freelancer for your needs."
+  },
+  "testimonials": {
+    "title": "What Our Users Say",
+    "card1": {
+      "text": "\"This platform has been a game-changer for my freelance career!\",",
+      "name": "- John Doe"
+    },
+    "card2": {
+      "text": "\"I found the perfect freelancer for my project in no time.\",",
+      "name": "- Jane Smith"
+    }
+  },
+  "modalSupport": {
+    "title": "Contact Support",
+    "label": "Your Message",
+    "placeholder": "Please describe your issue or question here..."
+  },
+  "registration": {
+    "title": "Create an account",
+    "fullName": "Your First Name and Last Name",
+    "userType": "User Type",
+    "email": "Your Email",
+    "password": "Password",
+    "bio": "Bio",
+    "profilePicture": "Choose your avatar",
+    "lingText1": "Have already an account?",
+    "linkText2": "Login here"
+  },
+  "projectDetailsComment": {
+    "title": "freelancers left comments:",
+    "titleBudget": "Offered Price:",
+    "titleCreated": "You have already messaged this user"
+  },
+  "projectDetails": {
+    "projectType": "Project Type",
+    "subprojectType": "Subproject Type",
+    "status": "Status",
+    "description": "Description",
+    "deadline": "Deadline",
+    "createdAt": "Created At",
+    "form": {
+      "title1": "Request to participate",
+      "title2": "Offer your price"
+    },
+    "leaveAComment": {
+      "part1": {
+        "title": "Leave a comment",
+        "text": "Provide any additional information or questions you may have about the project"
+      },
+      "part2": {
+        "title": "Offer your price",
+        "text1.1": "Enter the amount you are willing to charge for completing the project",
+        "text1.2": "Make sure your offer is competitive and reflects the value of your work"
+      }
+    }
+  },
+  "profileEdit": {
+    "title": "Edite profile",
+    "fullName": "Your First Name and Last Name",
+    "bio": "Bio",
+    "profilePicture": "Choose your avatar"
+  },
+  "projectStatistics": {
+    "card1": {
+      "title": "Total Projects",
+      "text": "Total number of projects created by the user. This includes all projects that have been initiated by the user, regardless of their current status."
+    },
+    "card2": {
+      "title": "Active Projects",
+      "text": "Number of projects that are currently active and in progress. These projects are actively being worked on by the user or others involved."
+    },
+    "card3": {
+      "title": "Completed Projects",
+      "text": "Number of projects that have been successfully completed. These projects have reached their conclusion and fulfilled their objectives."
+    }
+  },
+  "reviews": {
+    "title": "Reviews",
+    "employer": "Employer",
+    "budget": "Budget",
+    "rating": "Rating"
+  },
+  "profile": {
+    "aboutMe": "About me"
+  },
+  "languageSelector": {
+    "english": "English",
+    "ukrainian": "Ukrainian"
+  },
+  "header": {
+    "findJobs": "Find Jobs",
+    "chat": "Chat",
+    "myProjects": "My Projects",
+    "profile": "Profile",
+    "support": "Support",
+    "alertText": "Thank you for contacting us, we will get back to you soon."
+  },
+  "modalConfirmLogout": {
+    "title": "Confirm Logout",
+    "body": "Are you sure you want to log out?"
+  },
+  "footer": {
+    "text1": "Back to top",
+    "text2": "All rights reserved"
+  },
+  "findJobs": {
+    "form": {
+      "title": "Filter by",
+      "select": {
+        "newest": "Newest first",
+        "oldest": "Oldest first",
+        "higherBudget": "Higher budget first",
+        "lowerBudget": "Lower budget first",
+        "nearestDeadline": "Nearest deadline first",
+        "farthestDeadline": "Farthest deadline first"
+      },
+      "budget": "Budget",
+      "projectType": "Project Type",
+      "subprojectType": "Subproject Type"
+    }
+  },
+  "error": "Error!",
+  "projectCreate": {
+    "tittle": "Create New Project"
+  },
+  "projectFields": {
+    "projectName": "Project name",
+    "projectType": "Project Type",
+    "selectProjectType": "Select a project",
+    "subprojectType": "Subproject Type",
+    "selectSubprojectType": "Select a subproject",
+    "description": "Description",
+    "budget": "Budget",
+    "deadline": "Deadline"
+  },
+  "projectDetailsEmployer": {
+    "header": "Project ID",
+    "freelancer": "Freelancer",
+    "noFreelancer": "No freelancer assigned",
+    "status": "Status",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
+  },
+  "deleteModal": {
+    "title": "Do you want to delete this project?"
+  },
+  "modalProjectDetails": {
+    "title": "Send Message",
+    "label": "Message"
+  },
+  "projectEdit": {
+    "title": "Edit Project"
+  },
+  "projectList": {
+    "emptyList": "This list is still empty",
+    "status": "Status",
+    "comments": "Comments"
+  },
+  "projectPage": {
+    "title": "My projects",
+    "tabs": {
+      "all": "All",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    }
+  },
+  "deadLineAlert": {
+    "title": "Project Deadline",
+    "projectName": "Project",
+    "deadline": "Deadline"
+  },
+  "modalCollaborationInvitationReview": {
+    "title": "Leave a Review",
+    "rating": "Rating",
+    "comment": "Comment"
+  },
+  "modalCollaborationAction": {
+    "title": {
+      "collaborate": "Collaboration Agreement",
+      "approve": "Approve Collaboration Agreement",
+      "decline": "Decline Collaboration Agreement",
+      "edit": "Edit Collaboration Agreement"
+    },
+    "body": {
+      "budget": "Budget",
+      "deadline": "Deadline",
+      "collaborationAction": {
+        "title1": "Are you sure you want to",
+        "title2": "the collaboration invitation for",
+        "approve": "approve",
+        "decline": "decline"
+      }
+    }
+  },
+  "authorization": {
+    "title": "Please sign in",
+    "text1": "Don't have an account?",
+    "text2": "Create a new account.",
+    "placeholderEmail": "Email address",
+    "placeholderPassword": "Password"
+  },
+  "chat": {
+    "title": "Chat list",
+    "noChat": "No chat has been created yet"
+  },
+  "inputComponent": {
+    "uploadFile": "Upload File",
+    "dropdown": {
+      "title": "Collaborate",
+      "approve": "Approve Work",
+      "decline": "Decline Work",
+      "edit": "Edit Collaboration"
+    }
+  },
+  "collaborationInvitationMessage": {
+    "title": "Collaboration Invitation",
+    "project": "Project",
+    "budget": "Budget",
+    "deadline": "Deadline",
+    "status": {
+      "accepted": "Invitation accepted!",
+      "declined": "Invitation declined!",
+      "updated": "Invitation updated!",
+      "completed": "Invitation completed!"
+    }
+  },
+  "chatPerson": {
+    "file": "File"
+  },
+  "chatPersonList": {
+    "status": "Status"
+  }
+}

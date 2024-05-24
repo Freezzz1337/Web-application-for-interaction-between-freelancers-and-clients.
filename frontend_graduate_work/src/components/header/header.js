@@ -4,8 +4,11 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Chat from "../chat";
 import SupportModal from "../support-modal";
+import LanguageSelector from "./language-selector";
+import {useTranslation} from "react-i18next";
 
 const Header = ({token}) => {
+    const {t} = useTranslation();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [showSupportModal, setShowSupportModal] = useState(false);
     const [showChat, setShowChat] = useState(false);
@@ -78,14 +81,14 @@ const Header = ({token}) => {
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                             <Nav className="ml-auto">
-                                <Nav.Link onClick={handleLogIn}>Log in</Nav.Link>
-                                <Nav.Link onClick={handleRegister}>Register</Nav.Link>
+                                <LanguageSelector/>
+                                <Nav.Link onClick={handleLogIn}>{t("buttons.login")}</Nav.Link>
+                                <Nav.Link onClick={handleRegister}>{t("buttons.register")}</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
             )}
-
             {token && (
                 <Navbar bg="dark" variant="dark" expand="lg">
                     <Container>
@@ -93,14 +96,15 @@ const Header = ({token}) => {
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                             <Nav className="ml-auto">
-                                <Nav.Link onClick={handleFindJobs}>Find Jobs</Nav.Link>
-                                <Nav.Link onClick={handleChatButtonClick}>Chat</Nav.Link>
+                                <Nav.Link onClick={handleFindJobs}>{t("header.findJobs")}</Nav.Link>
+                                <Nav.Link onClick={handleChatButtonClick}>{t("header.chat")}</Nav.Link>
                                 {userType === "EMPLOYER" &&
-                                    <Nav.Link onClick={handleMyProjects}>My Projects</Nav.Link>
+                                    <Nav.Link onClick={handleMyProjects}>{t("header.myProjects")}</Nav.Link>
                                 }
-                                <Nav.Link onClick={handleProfile}>Profile</Nav.Link>
-                                <Nav.Link onClick={handleSupportClick}>Support</Nav.Link>
-                                <Nav.Link onClick={handleLogoutClick}>Log out</Nav.Link>
+                                <Nav.Link onClick={handleProfile}>{t("header.profile")}</Nav.Link>
+                                <LanguageSelector/>
+                                <Nav.Link onClick={handleSupportClick}>{t("header.support")}</Nav.Link>
+                                <Nav.Link onClick={handleLogoutClick}>{t("buttons.logOut")}</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
@@ -111,15 +115,15 @@ const Header = ({token}) => {
 
             <Modal show={showLogoutModal} onHide={handleCloseLogoutModal} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm Logout</Modal.Title>
+                    <Modal.Title>{t("modalConfirmLogout.title")}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to log out?</Modal.Body>
+                <Modal.Body>{t("modalConfirmLogout.body")}</Modal.Body>
                 <Modal.Footer>
                     <Button onClick={handleLogout} variant="primary">
-                        Logout
+                        {t("buttons.logOut")}
                     </Button>
                     <Button onClick={handleCloseLogoutModal} variant="secondary">
-                        Cancel
+                        {t("buttons.cancel")}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -129,11 +133,10 @@ const Header = ({token}) => {
             {showAlert && (
                 <div className="mt-3">
                     <Alert variant="success" className="text-center mt-3">
-                        Thank you for contacting us, we will get back to you soon.
+                        {t("header.alertText")}
                     </Alert>
                 </div>
             )}
-
         </>
     );
 }

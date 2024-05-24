@@ -14,8 +14,10 @@ import filterValidation from "../../util/validation/filter-validation";
 import FindJobPagePagination from "./find-job-page-pagination/find-job-page-pagination";
 import formatCreatedAtDate from "../../util/format-created-at-date";
 import Spinner from "../spinner";
+import {useTranslation} from "react-i18next";
 
 const FindJobsPage = () => {
+    const {t} = useTranslation();
     const {token} = useAuth();
     const [projects, setProjects] = useState();
     const [projectTypes, setProjectTypes] = useState(null);
@@ -113,7 +115,7 @@ const FindJobsPage = () => {
 
     if (!projects) {
         return (
-            <div style={{height:"100%"}} className="d-flex justify-content-center align-items-center">
+            <div style={{height: "100%"}} className="d-flex justify-content-center align-items-center">
                 <Spinner size="10rem"/>
             </div>
         );
@@ -138,7 +140,7 @@ const FindJobsPage = () => {
                                 className="bg-white border rounded-pill shadow"
                                 type="submit"
                             >
-                                Search <BiSearch/>
+                                {t("buttons.search")} <BiSearch/>
                             </Button>
                         </InputGroup>
                     </Col>
@@ -155,25 +157,28 @@ const FindJobsPage = () => {
                                     <hr/>
 
                                     <Form className="mt-2">
-                                        <Form.Label><h6>Filter by:</h6></Form.Label>
+                                        <Form.Label><h6>{t("findJobs.form.title")}:</h6></Form.Label>
                                         <Form.Select
                                             as="select"
                                             name="filterBy"
                                             className="rounded-0"
                                             onChange={handleChange}
                                         >
-                                            <option value="newest">Newest first</option>
-                                            <option value="oldest">Oldest first</option>
-                                            <option value="higherBudget">Higher budget first</option>
-                                            <option value="lowerBudget">Lower budget first</option>
-                                            <option value="nearestDeadline">Nearest deadline first</option>
-                                            <option value="farthestDeadline">Farthest deadline first</option>
+                                            <option value="newest">{t("findJobs.form.select.newest")}</option>
+                                            <option value="oldest">{t("findJobs.form.select.oldest")}</option>
+                                            <option
+                                                value="higherBudget">{t("findJobs.form.select.higherBudget")}</option>
+                                            <option value="lowerBudget">{t("findJobs.form.select.lowerBudget")}</option>
+                                            <option
+                                                value="nearestDeadline">{t("findJobs.form.select.nearestDeadline")}</option>
+                                            <option
+                                                value="farthestDeadline">{t("findJobs.form.select.farthestDeadline")}</option>
                                         </Form.Select>
 
                                         <hr/>
 
                                         <Row>
-                                            <h6>Budget</h6>
+                                            <h6>{t("findJobs.form.budget")}</h6>
                                             <Col>
                                                 <Form.Group className="rounded-0">
                                                     <Form.Control
@@ -208,7 +213,7 @@ const FindJobsPage = () => {
 
                                         <Row>
                                             <Form.Group className="mb-4">
-                                                <Form.Label><h6>Project Type</h6></Form.Label>
+                                                <Form.Label><h6>{t("findJobs.form.projectType")}</h6></Form.Label>
                                                 <Form.Select
                                                     as="select"
                                                     name="projectType"
@@ -224,7 +229,7 @@ const FindJobsPage = () => {
                                             </Form.Group>
 
                                             <Form.Group className="mb-4">
-                                                <Form.Label><h6>Subproject Type</h6></Form.Label>
+                                                <Form.Label><h6>{t("findJobs.form.subprojectType")}</h6></Form.Label>
                                                 <Form.Select
                                                     as="select"
                                                     name="subprojectType"
@@ -244,64 +249,61 @@ const FindJobsPage = () => {
                                                 className="w-100 rounded-0"
                                                 onClick={handleSearchFilter}
                                                 type="submit">
-                                            Apply Filters
+                                            {t("buttons.applyFilters")}
                                         </Button>
                                     </Form>
 
                                 </div>
                             </Card.Body>
                         </Card>
-
-
                     </Col>
 
-
                     <Col xs={12} lg={9}>
-                            <Card className="mt-3 ">
-                                <Card.Body>
-                                    {projects && projects.map(project => (
-                                        <div key={project.id}>
-                                            <Row>
-                                                <Col sm={10}>
-                                                    <p className="title-wrapper">{project.title}
-                                                        <span> {formatCreatedAtDate(project.created_at)}</span>
-                                                    </p>
-                                                    <Col sm={12}>
-                                                        <p className="description-wrapper">{project.description}</p>
-                                                    </Col>
-                                                    <h6>Deadline: <span
-                                                        style={{fontWeight: "normal"}}>{formatDeadlineDate(project.deadline)}</span>
-                                                    </h6>
+                        <Card className="mt-3 ">
+                            <Card.Body>
+                                {projects && projects.map(project => (
+                                    <div key={project.id}>
+                                        <Row>
+                                            <Col sm={10}>
+                                                <p className="title-wrapper">{project.title}
+                                                    <span> {formatCreatedAtDate(project.created_at)}</span>
+                                                </p>
+                                                <Col sm={12}>
+                                                    <p className="description-wrapper">{project.description}</p>
                                                 </Col>
+                                                <h6>Deadline: <span
+                                                    style={{fontWeight: "normal"}}>{formatDeadlineDate(project.deadline)}</span>
+                                                </h6>
+                                            </Col>
 
-                                                <Col sm={2}>
-                                                    <h6>${project.budget}</h6>
+                                            <Col sm={2}>
+                                                <h6>${project.budget}</h6>
 
-                                                    <Link to={`/project/details/${project.id}`}
-                                                          className="btn btn-success text-center"
-                                                          align="center">
-                                                        Details
-                                                    </Link>
-                                                </Col>
-                                            </Row>
+                                                <Link to={`/project/details/${project.id}`}
+                                                      className="btn btn-success text-center"
+                                                      align="center">
+                                                    {t("buttons.details")}
+                                                </Link>
+                                            </Col>
+                                        </Row>
 
-                                            <hr/>
-                                        </div>
-                                    ))}
+                                        <hr/>
+                                    </div>
+                                ))}
 
-                                    <FindJobPagePagination paginationValue={paginationValue}
-                                                           setPaginationValue={setPaginationValue}
-                                                           setProjects={setProjects}
-                                                           token={token}
-                                                           formData={formData}/>
+                                <FindJobPagePagination paginationValue={paginationValue}
+                                                       setPaginationValue={setPaginationValue}
+                                                       setProjects={setProjects}
+                                                       token={token}
+                                                       formData={formData}/>
 
-                                </Card.Body>
-                            </Card>
-                            </Col>
-                            </Row>
-                            </Container>
-                            </div>
-                            );
-                        }
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+}
 
-                        export default FindJobsPage;
+export default FindJobsPage;

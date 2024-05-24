@@ -2,8 +2,10 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../../context/auth-context";
 import {sentFirstMessage} from "../../../../services/chat-service";
+import {useTranslation} from "react-i18next";
 
 const ModalProjectDetails = ({show, handleClose, freelancerId, projectId, updateProjectDetailsEmployer}) => {
+    const  {t} = useTranslation();
     const {token} = useAuth();
     const [formData, setFormData] = useState({
         freelancerId: freelancerId,
@@ -36,12 +38,12 @@ const ModalProjectDetails = ({show, handleClose, freelancerId, projectId, update
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Send Message</Modal.Title>
+                <Modal.Title>{t("modalProjectDetails.title")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleFormSubmit}>
                     <Form.Group controlId="formMessage">
-                        <Form.Label>Message</Form.Label>
+                        <Form.Label>{t("modalProjectDetails.label")}</Form.Label>
                         <Form.Control
                             as="textarea"
                             rows={3}
@@ -53,7 +55,7 @@ const ModalProjectDetails = ({show, handleClose, freelancerId, projectId, update
                     <Button
                         className="btn-info btn-lg text-body w-100 rounded-0 mt-3"
                         type="submit">
-                        Send
+                        {t("buttons.send")}
                     </Button>
                 </Form>
             </Modal.Body>

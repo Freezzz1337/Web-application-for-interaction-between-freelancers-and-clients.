@@ -5,9 +5,11 @@ import {authorization} from "../../services/auth-service";
 import icon from "../../assets/icon/icon.png";
 import {useAuth} from "../../context/auth-context";
 import {authorizationValidation} from "../../util/validation/auth-validation";
+import {useTranslation} from "react-i18next";
 
 
 const Authorization = () => {
+    const {t} = useTranslation();
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -58,12 +60,12 @@ const Authorization = () => {
                         width="72"
                         height="72"
                     />
-                    <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+                    <h1 className="h3 mb-3 font-weight-normal">{t("authorization.title")}</h1>
                     <Form.Group controlId="inputEmail">
                         <Form.Control
                             className={`form-control-lg rounded-0 ${validErrors.email ? 'is-invalid' : ''}`}
                             type="email" name="email"
-                            placeholder="Email address"
+                            placeholder={t("authorization.placeholderEmail")}
                             onChange={handleChange}
                             required/>
                         {validErrors.email &&
@@ -74,7 +76,7 @@ const Authorization = () => {
                         <Form.Control
                             className={`form-control-lg rounded-0 ${validErrors.password ? 'is-invalid' : ''}`}
                             type="password" name="password"
-                            placeholder="Password"
+                            placeholder={t("authorization.placeholderPassword")}
                             onChange={handleChange}
                             required/>
                         {validErrors.password &&
@@ -90,12 +92,12 @@ const Authorization = () => {
                     }
 
                     <Button variant="info" type="submit" className="btn-lg w-100 rounded-0 mt-3">
-                        Sign in
+                        {t("buttons.signIn")}
                     </Button>
 
                     <p className="mt-2">
-                        Don't have an account? <span>Create a new account. </span>
-                        <Link to="/registration" className="fw-bold">Create a new account.</Link>
+                        {t("authorization.text1")} <span>{t("authorization.text2")} </span>
+                        <Link to="/registration" className="fw-bold">{t("buttons.createANewAccount")}</Link>
                     </p>
 
                 </Form>

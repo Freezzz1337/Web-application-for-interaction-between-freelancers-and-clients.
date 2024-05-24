@@ -6,8 +6,10 @@ import {convertFileToBase64} from "../../../util/convert-file-to-base64";
 import "./input-component.css";
 import {useAuth} from "../../../context/auth-context";
 import CollaborationInvitationModal from "../../collaboration-invitation";
+import {useTranslation} from "react-i18next";
 
 const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive, updateChat}) => {
+    const {t} = useTranslation();
     const {userType} = useAuth();
 
     const [inputValue, setInputValue] = useState('');
@@ -102,7 +104,7 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive, upd
                         >
                             <Dropdown.Item as="label" htmlFor="fileInput"
                                            className={`btn ${!!inputValue ? 'disabled' : ''}`}>
-                                Upload File
+                                {t("inputComponent.uploadFile")}
                                 <input
                                     id="fileInput"
                                     type="file"
@@ -116,17 +118,14 @@ const InputComponent = ({onSubmit, userId, projectId, collaborationIsActive, upd
                             {userType === "EMPLOYER" && (
                                 <>
                                     {!collaborationIsActive && (
-                                        <Dropdown.Item onClick={handleCollaborate}>Collaborate</Dropdown.Item>
+                                        <Dropdown.Item onClick={handleCollaborate}>{t("inputComponent.dropdown.title")}</Dropdown.Item>
                                     )}
 
                                     {collaborationIsActive && (
                                         <>
-                                            <Dropdown.Item onClick={handleApproveCollaboration}>Approve
-                                                Work</Dropdown.Item>
-                                            <Dropdown.Item onClick={handleDeclineCollaboration}>Decline
-                                                Work</Dropdown.Item>
-                                            <Dropdown.Item onClick={handleEditCollaboration}>Edit
-                                                Collaboration</Dropdown.Item>
+                                            <Dropdown.Item onClick={handleApproveCollaboration}>{t("inputComponent.dropdown.approve")}</Dropdown.Item>
+                                            <Dropdown.Item onClick={handleDeclineCollaboration}>{t("inputComponent.dropdown.decline")}</Dropdown.Item>
+                                            <Dropdown.Item onClick={handleEditCollaboration}>{t("inputComponent.dropdown.edit")}</Dropdown.Item>
                                         </>
                                     )}
 

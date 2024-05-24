@@ -1,4 +1,4 @@
-import {Card, Col, Container, Row, Tab, Tabs} from "react-bootstrap";
+import {Col, Container, Row, Tab, Tabs} from "react-bootstrap";
 import "./project-page.css";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -12,8 +12,10 @@ import {useAuth} from "../../../context/auth-context";
 import ProjectList from "./project-list";
 import {FaCheckCircle, FaFolderOpen, FaList, FaSpinner} from "react-icons/fa";
 import Spinner from "../../spinner";
+import {useTranslation} from "react-i18next";
 
 const ProjectPage = () => {
+    const {t} = useTranslation();
     const {token} = useAuth();
     const [projects, setProjects] = useState(null);
     const [activeTab, setActiveTab] = useState('all');
@@ -57,26 +59,26 @@ const ProjectPage = () => {
     return (
         <Container >
             <Row className="justify-content-center">
-                <Col className="text-center mt-5 mb-5">
-                    <Link className="btn btn-info btn-lg text-body w-100 rounded-0" to="/project/create">
-                        Create new project
+                <Col className="text-center mt-5 mb-3">
+                    <Link className="btn btn-outline-success btn-lg w-50 rounded-5 shadow-lg" to="/project/create">
+                        {t("buttons.createNewProject")}
                     </Link>
                 </Col>
             </Row>
             <hr className="mt-0"/>
-            <h2 className="text-center">My projects</h2>
+            <h2 className="text-center">{t("projectPage.title")}</h2>
 
             <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-4">
-                <Tab eventKey="all" title={<span><FaList className="me-2"/> All</span>}>
+                <Tab eventKey="all" title={<span><FaList className="me-2"/> {t("projectPage.tabs.all")}</span>}>
                     <ProjectList projects={projects}/>
                 </Tab>
-                <Tab eventKey="open" title={<span><FaFolderOpen className="me-2"/> Open</span>}>
+                <Tab eventKey="open" title={<span><FaFolderOpen className="me-2"/> {t("projectPage.tabs.open")}</span>}>
                     <ProjectList projects={projects}/>
                 </Tab>
-                <Tab eventKey="in-progress" title={<span><FaSpinner className="me-2"/> In Progress</span>}>
+                <Tab eventKey="in-progress" title={<span><FaSpinner className="me-2"/> {t("projectPage.tabs.inProgress")}</span>}>
                     <ProjectList projects={projects}/>
                 </Tab>
-                <Tab eventKey="completed" title={<span><FaCheckCircle className="me-2"/> Completed</span>}>
+                <Tab eventKey="completed" title={<span><FaCheckCircle className="me-2"/> {t("projectPage.tabs.completed")}</span>}>
                     <ProjectList projects={projects}/>
                 </Tab>
             </Tabs>

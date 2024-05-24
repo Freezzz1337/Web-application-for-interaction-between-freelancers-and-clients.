@@ -4,8 +4,10 @@ import {
 } from "../../../../services/collaboration-invitation-service";
 import {useAuth} from "../../../../context/auth-context";
 import {format} from "date-fns";
+import {useTranslation} from "react-i18next";
 
 const CollaborationInvitationMessage = ({invitation, userType, updateChat}) => {
+    const {t} = useTranslation();
     const {token} = useAuth();
     const deadlineDate = new Date(invitation.deadline);
     const formattedDate = format(deadlineDate, 'dd.MM.yyyy HH:mm');
@@ -29,41 +31,41 @@ const CollaborationInvitationMessage = ({invitation, userType, updateChat}) => {
     return (
         <Row className="mt-3">
             <Col xs={12} className="text-center">
-                <h5>Collaboration Invitation</h5>
+                <h5>{t("collaborationInvitationMessage.title")}</h5>
             </Col>
             <Col xs={12}>
-                <p><strong>Project:</strong> {invitation.projectName}</p>
+                <p><strong>{t("collaborationInvitationMessage.project")}:</strong> {invitation.projectName}</p>
             </Col>
             <Col xs={12}>
-                <p><strong>Budget:</strong> ${invitation.budget}</p>
+                <p><strong>{t("collaborationInvitationMessage.budget")}:</strong> ${invitation.budget}</p>
             </Col>
             <Col xs={12}>
-                <p><strong>Deadline:</strong> {formattedDate}</p>
+                <p><strong>{t("collaborationInvitationMessage.deadline")}:</strong> {formattedDate}</p>
             </Col>
             <Col xs={12}>
                 {invitation.status === 'ACCEPTED' && (
-                    <h5 style={{color: "green"}} className="text-center">Invitation accepted!</h5>
+                    <h5 style={{color: "green"}} className="text-center">{t("collaborationInvitationMessage.status.accepted")}</h5>
                 )}
                 {invitation.status === 'DECLINED' && (
-                    <h5 style={{color: "red"}} className="text-center">Invitation declined!</h5>
+                    <h5 style={{color: "red"}} className="text-center">{t("collaborationInvitationMessage.status.declined")}</h5>
                 )}
                 {invitation.status === 'UPDATED' && (
-                    <h5 style={{color: "orange"}} className="text-center">Invitation updated!</h5>
+                    <h5 style={{color: "orange"}} className="text-center">{t("collaborationInvitationMessage.status.updated")}</h5>
                 )}
                 {invitation.status === 'COMPLETED' && (
-                    <h5 style={{color: "green"}} className="text-center">Invitation completed!</h5>
+                    <h5 style={{color: "green"}} className="text-center">{t("collaborationInvitationMessage.status.completed")}</h5>
                 )}
                 {userType === "FREELANCER" && invitation.status === 'PENDING' && (
                     <Row>
                         <Col xs={6}>
                             <Button variant="success"
                                     className="w-100"
-                                    onClick={handleAcceptInvitation}>Accept</Button>
+                                    onClick={handleAcceptInvitation}>{t("buttons.accept")}</Button>
                         </Col>
                         <Col xs={6}>
                             <Button variant="danger"
                                     className="w-100"
-                                    onClick={handleDeclineInvitation}>Decline</Button>
+                                    onClick={handleDeclineInvitation}>{t("buttons.decline")}</Button>
                         </Col>
                     </Row>
                 )}

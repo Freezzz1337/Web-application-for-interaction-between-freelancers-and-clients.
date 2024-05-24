@@ -1,7 +1,9 @@
 import React from 'react';
+import {useTranslation} from "react-i18next";
 
 const Error = () => {
-    return <h1>Error!</h1>
+    const {t} = useTranslation();
+    return <h1>{t("error")}</h1>
 }
 
 export default Error;

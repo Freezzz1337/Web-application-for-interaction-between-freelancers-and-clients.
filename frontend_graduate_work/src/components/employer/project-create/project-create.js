@@ -4,8 +4,10 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../../context/auth-context";
 import {createProject, getAllProjectTypes, getSubprojectsTypes} from "../../../services/project-service";
 import {createProjectValidation} from "../../../util/validation/project-validation";
+import {useTranslation} from "react-i18next";
 
 const ProjectCreate = () => {
+    const {t} = useTranslation();
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -78,11 +80,11 @@ const ProjectCreate = () => {
                     <Col xs={12} md={9} lg={9} xl={8}>
                         <Card className="shadow-lg p-3 mb-5  rounded">
                             <Card.Body className="p-5">
-                                <h2 className="text-uppercase text-center mb-5">Create New Project</h2>
+                                <h2 className="text-uppercase text-center mb-5">{t("projectCreate.tittle")}</h2>
                                 <Form ref={formRef} onSubmit={handleSubmit}>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Project name</Form.Label>
+                                        <Form.Label>{t("projectFields.projectName")}</Form.Label>
 
                                         <Form.Control type="text"
                                                       className={`form-control-lg ${validErrors.title ? 'is-invalid' : ''}`}
@@ -95,13 +97,13 @@ const ProjectCreate = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Project Type</Form.Label>
+                                        <Form.Label>{t("projectFields.projectType")}</Form.Label>
                                         <Form.Select
                                             as="select"
                                             name="projectType"
                                             onChange={handleChange}
                                             required>
-                                            <option value="0">Select a project</option>
+                                            <option value="0">{t("projectFields.selectProjectType")}</option>
                                             {projectTypes && projectTypes.map(projectType => (
                                                 <option key={projectType.id} value={projectType.id}>
                                                     {projectType.name}
@@ -111,7 +113,7 @@ const ProjectCreate = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Subproject Type</Form.Label>
+                                        <Form.Label>{t("projectFields.subprojectType")}</Form.Label>
                                         <Form.Select
                                             as="select"
                                             name="subprojectType"
@@ -119,7 +121,7 @@ const ProjectCreate = () => {
                                             disabled={formData.projectType === "" || formData.projectType === "0"}
                                             required>
                                             {formData.projectType === "" || formData.projectType === "0" ? (
-                                                <option value="0">Select a subproject</option>
+                                                <option value="0">{t("projectFields.selectSubprojectType")}</option>
                                             ) : (
                                                 subprojectTypes && subprojectTypes.map(subprojectType => (
                                                     <option key={subprojectType.id} value={subprojectType.id}>
@@ -131,7 +133,7 @@ const ProjectCreate = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Description</Form.Label>
+                                        <Form.Label>{t("projectFields.description")}</Form.Label>
                                         <Form.Control
                                             as="textarea"
                                             className={`form-control-lg ${validErrors.description ? 'is-invalid' : ''}`}
@@ -145,7 +147,7 @@ const ProjectCreate = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Budget (USD)</Form.Label>
+                                        <Form.Label>{t("projectFields.budget")} (USD)</Form.Label>
                                         <InputGroup>
                                             <Form.Control type="number"
                                                           step="0.01"
@@ -160,7 +162,7 @@ const ProjectCreate = () => {
                                                 type="invalid">{validErrors.budget}</Form.Control.Feedback>}
                                     </Form.Group>
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Deadline</Form.Label>
+                                        <Form.Label>{t("projectFields.deadline")}</Form.Label>
                                         <Form.Control type="datetime-local"
                                                       className={`form-control-lg ${validErrors.deadline ? 'is-invalid' : ''}`}
                                                       name="deadline"
@@ -181,8 +183,7 @@ const ProjectCreate = () => {
 
                                     <div className="d-flex justify-content-center">
                                         <Button type="submit" variant="info"
-                                                className="btn btn-info btn-lg text-body w-100 rounded-0">Create
-                                            Project</Button>
+                                                className="btn btn-outline-info btn-lg text-body w-100 rounded-0">{t("buttons.createProject")}</Button>
                                     </div>
                                 </Form>
                             </Card.Body>

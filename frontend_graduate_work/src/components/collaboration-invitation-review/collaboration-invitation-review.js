@@ -2,6 +2,7 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {useState} from "react";
 import StarRating from "../star-rating";
 import {completedCollaborationInvitation} from "../../services/collaboration-invitation-service";
+import {useTranslation} from "react-i18next";
 
 const CollaborationInvitationReview = ({
                                            showReviewModal,
@@ -12,7 +13,7 @@ const CollaborationInvitationReview = ({
                                            updateChat,
                                            token
                                        }) => {
-
+    const {t} = useTranslation();
     const [formData, setFormData] = useState({
         projectId: projectId,
         freelancerId: freelancerId,
@@ -52,23 +53,23 @@ const CollaborationInvitationReview = ({
     return (
         <Modal show={showReviewModal} onHide={() => setShowReviewModal(false)} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Leave a Review</Modal.Title>
+                <Modal.Title>{t("modalCollaborationInvitationReview.title")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="rating">
-                        <Form.Label>Rating:</Form.Label>
+                        <Form.Label>{t("modalCollaborationInvitationReview.rating")}:</Form.Label>
                         <StarRating rating={formData.review.rating} onRatingChange={handleRatingChange}/>
                     </Form.Group>
                     <Form.Group controlId="comment">
-                        <Form.Label>Comment:</Form.Label>
+                        <Form.Label>{t("modalCollaborationInvitationReview.comment")}:</Form.Label>
                         <Form.Control as="textarea" rows={3} value={formData.review.comment} name="comment"
                                       onChange={handleReviewChange}/>
                     </Form.Group>
                     <Button variant="success"
                             className="btn-lg w-100 rounded-0 mt-3"
                             onClick={handleSubmitReview}>
-                        Submit Review
+                        {t("buttons.submitReview")}
                     </Button>
                 </Form>
             </Modal.Body>

@@ -21,8 +21,10 @@ import {createCommentValidation} from "../../util/validation/comment-validation"
 import {createProjectComment} from "../../services/project-comment-service";
 import ProjectDetailsComment from "../project-details-comment";
 import Spinner from "../spinner";
+import {useTranslation} from "react-i18next";
 
 const ProjectDetails = () => {
+    const {t} = useTranslation();
     const {token, userType} = useAuth();
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
@@ -114,24 +116,24 @@ const ProjectDetails = () => {
                     </CardHeader>
                     <CardBody>
                         <CardText>
-                            <strong>Project Type:</strong> {project.projectType.name}
+                            <strong>{t("projectDetails.projectType")}:</strong> {project.projectType.name}
                         </CardText>
                         <CardText>
-                            <strong>Subproject Type:</strong> {project.subprojectType.name}
+                            <strong>{t("projectDetails.subprojectType")}:</strong> {project.subprojectType.name}
                         </CardText>
                         <CardText>
-                            <strong>Status:</strong> {project.status}
+                            <strong>{t("projectDetails.status")}:</strong> {project.status}
                         </CardText>
                         <CardText>
-                            <strong>Description:</strong> {project.description}
-                        </CardText>
-
-                        <CardText>
-                            <strong>Deadline:</strong> {formatDate(project.deadline)}
+                            <strong>{t("projectDetails.description")}:</strong> {project.description}
                         </CardText>
 
                         <CardText>
-                            <strong>Created At:</strong> {formatCreatedAtDate(project.createdAt)}
+                            <strong>{t("projectDetails.deadline")}:</strong> {formatDate(project.deadline)}
+                        </CardText>
+
+                        <CardText>
+                            <strong>{t("projectDetails.createdAt")}:</strong> {formatCreatedAtDate(project.createdAt)}
                         </CardText>
 
                         {userType !== "EMPLOYER" &&
@@ -155,7 +157,7 @@ const ProjectDetails = () => {
 
                                             <Form.Group>
                                                 <Form.Label className="mb-0">
-                                                    <h5>Request to participate</h5>
+                                                    <h5>{t("projectDetails.form.title1")}</h5>
                                                 </Form.Label>
                                                 <Form.Control as="textarea"
                                                               rows={3}
@@ -166,7 +168,7 @@ const ProjectDetails = () => {
                                             </Form.Group>
                                             <Form.Group>
                                                 <Form.Label className="mb-0 mt-3">
-                                                    <h5>Offer your price</h5>
+                                                    <h5>{t("projectDetails.form.title2")}</h5>
                                                 </Form.Label>
                                                 <InputGroup>
                                                     <Form.Control type="text"
@@ -180,7 +182,7 @@ const ProjectDetails = () => {
                                             <Button
                                                 className="btn-info btn-lg text-body w-100 rounded-0 mt-3"
                                                 variant="info"
-                                                type="submit">Submit</Button>
+                                                type="submit">{t("buttons.submit")}</Button>
 
                                         </Form>
                                     </Col>
@@ -192,21 +194,13 @@ const ProjectDetails = () => {
                                     >
                                         <div className="text-center">
                                             <BiInfoCircle className="fs-3 mb-2"/>
-                                            <p className="fw-bold mb-1">Leave a comment:</p>
-                                            <p className="text-muted mb-4">Provide any additional information or
-                                                questions
-                                                you
-                                                may have about the project.</p>
+                                            <p className="fw-bold mb-1">{t("projectDetails.leaveAComment.part1.title")}</p>
+                                            <p className="text-muted mb-4">{t("projectDetails.leaveAComment.part1.text")}.</p>
 
                                             <BiMoney className="fs-3 mb-2"/>
-                                            <p className="fw-bold mb-1">Offer your price:</p>
-                                            <p className="text-muted mb-0">Enter the amount you are willing to charge
-                                                for
-                                                completing the project.</p>
-                                            <p className="text-muted mb-4">Make sure your offer is competitive and
-                                                reflects
-                                                the
-                                                value of your work.</p>
+                                            <p className="fw-bold mb-1">{t("projectDetails.leaveAComment.part2.title")}:</p>
+                                            <p className="text-muted mb-0">{t("projectDetails.leaveAComment.part2.text1.1")}.</p>
+                                            <p className="text-muted mb-4">{t("projectDetails.leaveAComment.part2.text1.2")}.</p>
                                         </div>
                                     </Col>
                                 </Row>

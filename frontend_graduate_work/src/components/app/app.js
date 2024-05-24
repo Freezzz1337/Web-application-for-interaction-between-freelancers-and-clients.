@@ -46,13 +46,11 @@ function App() {
         <>
             {showHeaderFooter && <Header token={token}/>}
 
-            {checkDeadline && <DeadlineAlert checkDeadlines={checkDeadline} />}
+            {checkDeadline && <DeadlineAlert checkDeadlines={checkDeadline}/>}
 
             <Routes>
                 {token ? (
                     <>
-
-
                         <Route path="/find-jobs" element={<FindJobsPage/>}/>
 
                         <Route path="/profile" element={<Profile/>}/>
@@ -64,7 +62,6 @@ function App() {
                         <Route path="/project/edit/:projectId" element={<ProjectEdit/>}/>
 
                         <Route path="/project/details/:projectId" element={<ProjectDetails/>}/>
-
                     </>
                 ) : (
                     <>
@@ -75,7 +72,6 @@ function App() {
                 )}
 
             </Routes>
-
             {showHeaderFooter && <Footer/>}
         </>
     )

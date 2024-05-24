@@ -7,8 +7,10 @@ import formatCreatedAtDate from "../../../util/format-created-at-date";
 import InputComponent from "../input-component";
 import CollaborationInvitationMessage from "./collaboration-invitation-message";
 import Spinner from "../../spinner";
+import {useTranslation} from "react-i18next";
 
 const ChatPerson = ({userId, projectId}) => {
+    const {t} = useTranslation();
     const {token, userType} = useAuth();
     const [chatMessages, setChatMessages] = useState(null);
     const [collaborationIsActive, setCollaborationIsActive] = useState(false);
@@ -94,7 +96,7 @@ const ChatPerson = ({userId, projectId}) => {
                                     {message.fileName && message.file && (
                                         <div>
                                             <p>
-                                                File:{" "}
+                                                {t("chatPerson.file")}:{" "}
                                                 <a
                                                     href={`data:${message.fileType};base64,${message.file}`}
                                                     download={message.fileName}

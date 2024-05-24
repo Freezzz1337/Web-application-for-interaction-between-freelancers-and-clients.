@@ -1,9 +1,11 @@
 import {Button, Col, Row} from "react-bootstrap";
 import "./get-start.css";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const GetStart = () => {
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
     const handleLogIn = () => {
         navigate("/authorization");
@@ -15,8 +17,8 @@ const GetStart = () => {
     return (
         <Row className="get-start-bg">
             <Col lg={6} className="text-center">
-                <h2>Ready to Get Started?</h2>
-                <p>Join us today and find the perfect project or freelancer for your needs.</p>
+                <h2>{t("getStart.title")}</h2>
+                <p>{t("getStart.text")}</p>
             </Col>
             <Col lg={6} className="text-center">
                 <div className="mb-2">
@@ -24,14 +26,14 @@ const GetStart = () => {
                             className="w-50 rounded-0"
                             style={{height: "50px"}}
                             onClick={handleLogIn}
-                    >Login</Button>
+                    >{t("buttons.login")}</Button>
                 </div>
                 <div>
                     <Button variant="outline-secondary"
                             className="w-50 rounded-0"
                             style={{height: "50px"}}
                             onClick={handleRegister}
-                    >Sign Up</Button>
+                    >{t("buttons.signUp")}</Button>
                 </div>
             </Col>
         </Row>

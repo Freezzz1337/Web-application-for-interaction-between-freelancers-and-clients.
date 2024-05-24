@@ -5,7 +5,7 @@ import {
     CardBody,
     CardHeader,
     CardText, Col,
-    Container, Row
+    Container, Modal, Row
 } from "react-bootstrap";
 import {useAuth} from "../../../context/auth-context";
 import React, {useEffect, useState} from "react";
@@ -15,8 +15,10 @@ import ModalProjectDetails from "./modal-project-details/modal-project-details";
 import Chat from "../../chat";
 import "./project-details-employer.css";
 import Spinner from "../../spinner";
+import {useTranslation} from "react-i18next";
 
 const ProjectDetailsEmployer = () => {
+    const {t} = useTranslation();
     const {token} = useAuth();
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
@@ -32,6 +34,22 @@ const ProjectDetailsEmployer = () => {
     const [selectedUserName, setSelectedUserName] = useState(null);
 
     const [freelancerCollaborated, setFreelancerCollaborated] = useState(null);
+
+    const [showModalDelete, setShowModalDelete] = useState(false);
+
+    const handleCloseModalDelete = () => {
+        setShowModalDelete(false);
+    }
+    const handleOpenModalDelete = () => {
+        setShowModalDelete(true);
+    }
+
+    const handleDeleteProject = async (e) => {
+        e.preventDefault();
+        await deleteProject(projectId, token);
+        navigate(`/projects`);
+        handleCloseModalDelete();
+    };
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -76,11 +94,6 @@ const ProjectDetailsEmployer = () => {
         navigate(`/project/edit/${project.id}`);
     };
 
-    const handleDeleteProject = async (e) => {
-        e.preventDefault();
-        await deleteProject(projectId, token);
-        navigate(`/projects`);
-    };
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -102,26 +115,26 @@ const ProjectDetailsEmployer = () => {
                     <CardHeader>
                         <h5>{project.title}</h5>
                         <hr className="my-2"/>
-                        <small>Project ID: {project.id}</small>
+                        <small>{t("projectDetailsEmployer.header")}: {project.id}</small>
                     </CardHeader>
                     <CardBody>
                         <CardText>
-                            <strong>Project Type:</strong> {project.projectType.name}
+                            <strong>{t("projectFields.projectType")}:</strong> {project.projectType.name}
                         </CardText>
                         <CardText>
-                            <strong>Subproject Type:</strong> {project.subprojectType.name}
+                            <strong>{t("projectFields.subprojectType")}:</strong> {project.subprojectType.name}
                         </CardText>
                         <CardText>
-                            <strong>Description:</strong> {project.description}
+                            <strong>{t("projectFields.description")}:</strong> {project.description}
                         </CardText>
                         <CardText>
-                            <strong>Budget:</strong> {project.budget}
+                            <strong>{t("projectFields.budget")}:</strong> {project.budget}
                         </CardText>
                         <CardText>
-                            <strong>Deadline:</strong> {formatDate(project.deadline)}
+                            <strong>{t("projectFields.deadline")}:</strong> {formatDate(project.deadline)}
                         </CardText>
                         <CardText>
-                            <strong>Freelancer:</strong> {project.freelancer ? (
+                            <strong>{t("projectDetailsEmployer.freelancer")}:</strong> {project.freelancer ? (
                             <span
                                 onClick={() => handleOpenChat(project.freelancer.id, project.freelancer.fullName)}
                                 className="freelancer-info"
@@ -129,34 +142,47 @@ const ProjectDetailsEmployer = () => {
                                     {project.freelancer.fullName}
                                 </span>
                         ) : (
-                            'No freelancer assigned'
+                            `${t("projectDetailsEmployer.noFreelancer")}`
                         )}
                         </CardText>
                         <CardText>
-                            <strong>Status:</strong> {project.status}
+                            <strong>{t("projectDetailsEmployer.status")}:</strong> {project.status}
                         </CardText>
                         <CardText>
-                            <strong>Created At:</strong> {formatDate(project.createdAt)}
+                            <strong>{t("projectDetailsEmployer.createdAt")}:</strong> {formatDate(project.createdAt)}
                         </CardText>
                         <CardText>
-                            <strong>Updated At:</strong> {formatDate(project.updatedAt)}
+                            <strong>{t("projectDetailsEmployer.updatedAt")}:</strong> {formatDate(project.updatedAt)}
                         </CardText>
 
                         <Row>
                             <hr/>
                             <Col lg={6} xs={12}>
                                 <Button onClick={handleEditProject}
-                                        className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">Edit
-                                    Project</Button>
+                                        className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">{t("buttons.editProject")}</Button>
                             </Col>
                             <Col lg={6} xs={12}>
-                                <Button onClick={handleDeleteProject} variant="info"
-                                        className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">Delete</Button>
+                                <Button onClick={handleOpenModalDelete} variant="info"
+                                        className="btn btn-info btn-lg text-body w-100 rounded-0 mt-1">{t("buttons.delete")}</Button>
                             </Col>
                         </Row>
                     </CardBody>
                 </Card>
             )}
+
+            <Modal show={showModalDelete} onHide={handleCloseModalDelete} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t("deleteModal.title")}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Button variant="danger"
+                            className="w-50 btn-lg rounded-5"
+                            onClick={handleDeleteProject}>{t("buttons.delete")}</Button>
+                    <Button variant="secondary"
+                            className="w-50 btn-lg rounded-5"
+                            onClick={handleCloseModalDelete}>{t("buttons.cancel")}</Button>
+                </Modal.Body>
+            </Modal>
 
             {comments && (
                 <>

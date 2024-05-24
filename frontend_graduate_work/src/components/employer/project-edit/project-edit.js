@@ -20,8 +20,10 @@ import {
 } from "../../../services/project-service";
 import {convertToDateTimeLocal} from "../../../util/convert-to-date-time-local";
 import Spinner from "../../spinner";
+import {useTranslation} from "react-i18next";
 
 const ProjectEdit = () => {
+    const {t} = useTranslation();
     const {projectId} = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({});
@@ -119,7 +121,7 @@ const ProjectEdit = () => {
                     <Col xs={12} md={9} lg={8} xl={9}>
                         <Card className="shadow-lg p-3 mb-5  rounded">
                             <Card.Body className="p-5">
-                                <h2 className="text-uppercase text-center mb-5">Edit Project</h2>
+                                <h2 className="text-uppercase text-center mb-5">{t("projectEdit.title")}</h2>
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group className="mb-4">
                                         <Form.Label>Project name</Form.Label>
@@ -136,7 +138,7 @@ const ProjectEdit = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Project Type</Form.Label>
+                                        <Form.Label>{t("projectFields.projectType")}</Form.Label>
                                         <Form.Select
                                             as="select"
                                             name="projectType"
@@ -152,7 +154,7 @@ const ProjectEdit = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Subproject Type</Form.Label>
+                                        <Form.Label>{t("projectFields.subprojectType")}</Form.Label>
                                         <Form.Select
                                             as="select"
                                             name="subprojectType"
@@ -160,7 +162,7 @@ const ProjectEdit = () => {
                                             value={formData.projectType ? formData.subprojectType.id : ""}
                                             required>
                                             {formData.projectType && (formData.projectType.name === "" || formData.projectType.id === "0") ? (
-                                                <option value="0">Select a subproject</option>
+                                                <option value="0">{t("projectFields.selectSubprojectType")}</option>
                                             ) : (
                                                 subprojectTypes && subprojectTypes.map(subprojectType => (
                                                     <option key={subprojectType.id} value={subprojectType.id}>
@@ -172,7 +174,7 @@ const ProjectEdit = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Description</Form.Label>
+                                        <Form.Label>{t("projectFields.description")}</Form.Label>
                                         <Form.Control
                                             as="textarea"
                                             className={`form-control-lg ${validErrors.description ? 'is-invalid' : ''}`}
@@ -187,7 +189,7 @@ const ProjectEdit = () => {
                                     </Form.Group>
 
                                     <Form.Group className="mb-4">
-                                        <Form.Label>Budget (USD)</Form.Label>
+                                        <Form.Label>{t("projectFields.budget")} (USD)</Form.Label>
                                         <InputGroup>
                                             <Form.Control type="number"
                                                           step="0.01"
@@ -226,7 +228,7 @@ const ProjectEdit = () => {
 
                                     <div className="d-flex justify-content-center">
                                         <Button type="submit" variant="info"
-                                                className="btn btn-info btn-lg text-body w-100 rounded-0">Edit Project</Button>
+                                                className="btn btn-info btn-lg text-body w-100 rounded-0">{t("buttons.editProject")}</Button>
                                     </div>
 
                                 </Form>

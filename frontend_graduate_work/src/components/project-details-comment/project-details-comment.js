@@ -1,11 +1,13 @@
 import {Button, Card, Col, Row} from "react-bootstrap";
 import "./project-details-comment.css";
 import formatCreatedAtDate from "../../util/format-created-at-date";
+import {useTranslation} from "react-i18next";
 
 const ProjectDetailsComment = ({ comments, forEmployer, handleOpenModal, handleOpenChat, freelancerCollaborated }) => {
+    const {t} = useTranslation();
     return (
         <div className="mt-5">
-            <h3>{comments.length} freelancers left comments:</h3>
+            <h3>{comments.length} {t("projectDetailsComment.title")}</h3>
             <hr/>
 
             {comments.map((comment, index) => {
@@ -27,7 +29,7 @@ const ProjectDetailsComment = ({ comments, forEmployer, handleOpenModal, handleO
                                             <span> {formatCreatedAtDate(comment.createdAt)}</span>
                                         </div>
 
-                                        <h6 style={{color: "green"}}>Offered Price: {comment.budget}$</h6>
+                                        <h6 style={{color: "green"}}>{t("projectDetailsComment.titleBudget")} {comment.budget}$</h6>
                                         <div>{comment.commentText}</div>
                                     </div>
                                 </Col>
@@ -41,7 +43,7 @@ const ProjectDetailsComment = ({ comments, forEmployer, handleOpenModal, handleO
                                                     onClick={() => isActive && handleOpenChat(comment.userId, comment.userName)}
                                                     className={`project-details-comment-clickable ${!isActive ? 'inactive' : ''}`}
                                                     style={{ cursor: !isActive ? 'not-allowed' : 'pointer' }}>
-                                                    <h4 className="text-center">You have already messaged this user</h4>
+                                                    <h4 className="text-center">{t("projectDetailsComment.titleCreated")}</h4>
                                                 </div>
                                             </>
                                         ) : (
@@ -49,7 +51,7 @@ const ProjectDetailsComment = ({ comments, forEmployer, handleOpenModal, handleO
                                                 onClick={() => isActive && handleOpenModal(comment.userId)}
                                                 className="btn-info btn-lg text-body w-100 rounded-0 mt-3"
                                                 disabled={!isActive}>
-                                                Get in touch
+                                                {t("buttons.getInTouch")}
                                             </Button>
                                         )}
                                     </Col>

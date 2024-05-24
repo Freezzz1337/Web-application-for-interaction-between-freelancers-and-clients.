@@ -8,8 +8,10 @@ import {BiChevronLeft} from "react-icons/bi";
 import ChatPerson from "./chat-person";
 import "./chat.css";
 import Spinner from "../spinner";
+import {useTranslation} from "react-i18next";
 
 const Chat = ({show, onHide, userId, userName, projectId, projectName}) => {
+    const {t} = useTranslation();
     const [projects, setProjects] = useState(null);
     const [selectedProjectId, setSelectedProjectId] = useState(projectId);
     const [selectedProjectName, setSelectedProjectName] = useState(null);
@@ -75,7 +77,7 @@ const Chat = ({show, onHide, userId, userName, projectId, projectName}) => {
                                 <BiChevronLeft size={24}/>
                             </Button>
                         ) : (
-                            <h4 className="mb-0">Chat list</h4>
+                            <h4 className="mb-0">{t("chat.title")}</h4>
                         )}
                         <span> {chatMode === "chat" ? selectedUserName : selectedProjectName}</span>
                     </div>
@@ -97,7 +99,7 @@ const Chat = ({show, onHide, userId, userName, projectId, projectName}) => {
                     </div>
                 )}
                 {projects && projects.length <= 0 && (
-                    <h4 className="text-center">No chat has been created yet =(</h4>
+                    <h4 className="text-center">{t("chat.noChat")} =(</h4>
                 )}
             </Offcanvas.Body>
         </Offcanvas>

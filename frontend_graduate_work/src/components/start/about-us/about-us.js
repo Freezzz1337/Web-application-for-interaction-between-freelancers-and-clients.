@@ -1,6 +1,8 @@
 import {Row, Col, Image} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
 
 const AboutUs = () => {
+    const {t} = useTranslation();
     return (
         <Row className="mt-3">
             <Col lg={6}>
@@ -11,9 +13,9 @@ const AboutUs = () => {
                 />
             </Col>
             <Col lg={6} className="start-bg text-center">
-                <h2>About Us</h2>
-                <p>Welcome to FreelanceHub, the premier platform connecting skilled freelancers with innovative clients. Our mission is to streamline project collaboration by ensuring high standards of quality, trust, and efficiency. We offer a diverse range of projects, secure payments, and a user-friendly interface to support your professional success.</p>
-                <p>Join FreelanceHub today and take your freelancing or project management to the next level. Whether you're seeking top talent or exciting opportunities, our platform is designed to meet your needs and help you achieve your goals.</p>
+                <h2>{t("aboutUs.title")}</h2>
+                <p>{t("aboutUs.text1")}</p>
+                <p>{t("aboutUs.text2")}</p>
             </Col>
         </Row>
     );
