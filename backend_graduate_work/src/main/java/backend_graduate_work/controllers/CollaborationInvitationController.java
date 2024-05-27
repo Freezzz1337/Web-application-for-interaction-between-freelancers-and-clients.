@@ -63,5 +63,4 @@ public class CollaborationInvitationController {
     private ResponseEntity<CheckDeadlineDTO> checkDeadline() {
         return ResponseEntity.ok(collaborationInvitationService.checkDeadline());
     }
-
 }

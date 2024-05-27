@@ -96,8 +96,8 @@ const Authorization = () => {
                     </Button>
 
                     <p className="mt-2">
-                        {t("authorization.text1")} <span>{t("authorization.text2")} </span>
-                        <Link to="/registration" className="fw-bold">{t("buttons.createANewAccount")}</Link>
+                        {t("authorization.text1")}&nbsp;
+                        <Link to="/registration" className="fw-bold">{t("authorization.text2")}</Link>
                     </p>
 
                 </Form>
